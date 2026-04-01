@@ -25,25 +25,24 @@ Ne code rien avant de l'avoir lu.
 ```
 metadev-protocol/
 ├── template/                    # Ce qui est injecté dans les nouveaux projets
-│   ├── copier.yml               # Questions d'init (à la racine du template)
 │   ├── CLAUDE.md.jinja          # Instructions Claude Code du projet généré
 │   ├── pyproject.toml.jinja     # Dépendances par profil
 │   ├── .gitignore.jinja
-│   └── {{project_slug}}/
-│       └── .meta/
-│           ├── PILOT.md.jinja   # Cockpit de session du projet généré
-│           └── scratch/.gitkeep
+│   ├── .pre-commit-config.yaml  # Config pre-commit (copié tel quel)
+│   └── .meta/
+│       ├── PILOT.md.jinja       # Cockpit de session du projet généré
+│       ├── scratch/.gitkeep
+│       ├── sessions/.gitkeep
+│       └── decisions/.gitkeep
 ├── .meta/                       # Cockpit de CE repo (développement du template)
 │   ├── PILOT.md                 # État de session courant → LIS EN PREMIER
+│   ├── ARCHITECTURE.md          # Décisions architecturales validées
+│   ├── DECISIONS.md             # Journal des ADRs
 │   ├── sessions/                # Historique des sessions passées
 │   ├── decisions/               # ADRs en cours de maturation
 │   └── scratch/                 # Brouillons — jamais committés (.gitignored)
-├── docs/
-│   ├── PHILOSOPHY.md            # Le pourquoi en profondeur
-│   └── PATTERNS.md              # Patterns et anti-patterns documentés
 ├── CLAUDE.md                    # Ce fichier
-├── ARCHITECTURE.md              # Décisions architecturales validées
-├── DECISIONS.md                 # Journal des ADRs
+├── .pre-commit-config.yaml      # Config pre-commit du meta-repo
 ├── copier.yml                   # Moteur de templating (questions d'init)
 └── pyproject.toml               # Dépendances du meta-repo lui-même
 ```

@@ -19,10 +19,10 @@ project_type:
   type: str
   help: "Type de projet — détermine les garde-fous et les dépendances"
   choices:
-    minimal: "Side project / Expérimentation rapide"
-    app: "Application Web / API / Backend"
-    data: "Data Engineering / ETL / Pipelines"
-    quant: "Analyse Quantitative / Backtesting"
+    "Side project / Expérimentation rapide": minimal
+    "Application Web / API / Backend": app
+    "Data Engineering / ETL / Pipelines": data
+    "Analyse Quantitative / Backtesting": quant
   default: minimal
 
 author_name:

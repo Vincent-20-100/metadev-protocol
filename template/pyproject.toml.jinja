@@ -1,0 +1,30 @@
+[project]
+name = "{{ project_slug }}"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+authors = [
+    { name = "{{ author_name }}" }
+]
+requires-python = ">={{ python_version }}"
+dependencies = [
+{% if project_type == "app" %}    "fastapi>=0.115.0",
+    "uvicorn>=0.34.0",
+    "pyright>=1.1.390",
+{% elif project_type == "data" %}    "polars>=1.20.0",
+    "duckdb>=1.2.0",
+{% elif project_type == "quant" %}    "numpy>=2.2.0",
+    "pandas>=2.2.0",
+    "matplotlib>=3.10.0",
+{% endif %}]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.0",
+    "ruff>=0.11.0",
+    "pre-commit>=4.2.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

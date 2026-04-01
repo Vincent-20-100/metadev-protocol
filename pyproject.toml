@@ -1,16 +1,16 @@
 [project]
 name = "metadev-protocol"
 version = "0.1.0"
-description = "Add your description here"
+description = "Systeme de templates pour bootstrapper des projets Python assistes par IA"
 readme = "README.md"
 authors = [
     { name = "Vincent", email = "vincent.lamy.33@gmail.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.12"
 dependencies = [
     "copier>=9.14.1",
-    "pytest>=9.0.2",
-    "ruff>=0.15.8",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.0",
 ]
 
 [build-system]

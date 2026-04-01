@@ -26,12 +26,17 @@ pas un idéal théorique copié de Gemini.
 | `ARCHITECTURE.md` | ✅ Refondu | ADRs propres |
 | `DECISIONS.md` | ✅ Refondu | Journal des choix |
 | `PILOT.md` (ce fichier) | ✅ Refondu | |
-| `template/CLAUDE.md.jinja` | ⏳ À créer | Template pour projets générés |
-| `template/.meta/PILOT.md.jinja` | ⏳ À créer | Cockpit template |
-| `copier.yml` | ⏳ À créer | Questions d'init |
-| `pyproject.toml` (meta-repo) | ⏳ À valider | Dépendances de ce repo |
-| `.pre-commit-config.yaml` | ⏳ À créer | ruff hooks |
-| Push to origin | ❌ Bloqué sur cette session | |
+| `template/CLAUDE.md.jinja` | ✅ | Template pour projets générés |
+| `template/.meta/PILOT.md.jinja` | ✅ | Cockpit template |
+| `template/pyproject.toml.jinja` | ✅ | Dépendances par profil |
+| `template/.gitignore.jinja` | ✅ | Gitignore template |
+| `template/.pre-commit-config.yaml` | ✅ | Config pre-commit template |
+| `copier.yml` | ✅ Corrigé | Choices format fixé |
+| `pyproject.toml` (meta-repo) | ✅ Corrigé | Python >=3.12, pre-commit ajouté |
+| `.pre-commit-config.yaml` | ✅ | ruff hooks |
+| Test `copier copy` | ✅ | Génération fonctionnelle |
+| `pre-commit install` | ✅ | Hooks installés |
+| Push to origin | ⏳ En cours | |
 | Instanciation Claude Code | ❌ Après le push | |
 
 ---
