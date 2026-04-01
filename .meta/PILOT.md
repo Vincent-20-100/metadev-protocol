@@ -1,73 +1,74 @@
-# PILOT.md — Session : metadev-protocol bootstrap
+# PILOT.md — metadev-protocol
 
 **Date :** 2026-04-01
-**Phase :** Fondation — avant premier push to origin
+**Phase :** Fondation terminee — patterns P0/P1 implementes
 
 ---
 
-## 🎯 Objectif de cette session
-
-Finaliser et valider tous les documents de fondation avant de pousser sur GitHub
-et d'instancier Claude Code dans ce repo.
-
-Les docs doivent être cohérents, précis, et représenter l'état réel du projet —
-pas un idéal théorique copié de Gemini.
-
----
-
-## 📊 État du projet
+## Etat du projet
 
 | Composant | Statut | Notes |
 |---|---|---|
-| Repo GitHub créé | ✅ | `metadev-protocol` |
-| Premier commit local | ✅ | Structure initiale |
-| `.venv` + `uv` configurés | ✅ | |
-| `CLAUDE.md` | ✅ Refondu | Instructions Claude Code correctes |
-| `ARCHITECTURE.md` | ✅ Refondu | ADRs propres |
-| `DECISIONS.md` | ✅ Refondu | Journal des choix |
-| `PILOT.md` (ce fichier) | ✅ Refondu | |
-| `template/CLAUDE.md.jinja` | ✅ | Template pour projets générés |
-| `template/.meta/PILOT.md.jinja` | ✅ | Cockpit template |
-| `template/pyproject.toml.jinja` | ✅ | Dépendances par profil |
-| `template/.gitignore.jinja` | ✅ | Gitignore template |
-| `template/.pre-commit-config.yaml` | ✅ | Config pre-commit template |
-| `copier.yml` | ✅ Corrigé | Choices format fixé |
-| `pyproject.toml` (meta-repo) | ✅ Corrigé | Python >=3.12, pre-commit ajouté |
-| `.pre-commit-config.yaml` | ✅ | ruff hooks |
-| Test `copier copy` | ✅ | Génération fonctionnelle |
-| `pre-commit install` | ✅ | Hooks installés |
-| Push to origin | ⏳ En cours | |
-| Instanciation Claude Code | ❌ Après le push | |
+| Repo GitHub | ✅ | `metadev-protocol` |
+| `pyproject.toml` meta-repo | ✅ | Python >=3.12, copier + ruff + pre-commit |
+| `.pre-commit-config.yaml` meta-repo | ✅ | ruff check + format |
+| `copier.yml` | ✅ | 5 questions, _tasks: git init, profils minimal/app/data/quant |
+| `template/CLAUDE.md.jinja` | ✅ v2 | 57-63 lignes, regles anti-LLM, workflow 5 phases |
+| `template/pyproject.toml.jinja` | ✅ | Deps conditionnelles par profil |
+| `template/.gitignore.jinja` | ✅ | |
+| `template/.pre-commit-config.yaml` | ✅ | ruff hooks |
+| `template/.meta/PILOT.md.jinja` | ✅ v2 | Workflow 5 phases integre |
+| `template/.meta/SESSION-CONTEXT.md.jinja` | ✅ | Pattern "rewrite, don't append" |
+| `template/tests/conftest.py.jinja` | ✅ | Fixture tmp_data minimale |
+| Test `copier copy` (minimal + app) | ✅ | Generation fonctionnelle |
+| `pre-commit install` | ✅ | Hooks actifs |
+| Push to origin | ✅ | Branche claude/setup-metadev-protocol-umMBp |
+| Recherche etat de l'art | ✅ | 5 fichiers dans .meta/references/ |
+| Audit EgoVault | ✅ | 11 patterns classes |
+| ADR-001 (patterns a integrer) | ✅ | 7 adoptes, 2 adaptes, 4 rejetes |
 
 ---
 
-## 🚦 Prochaines étapes (dans l'ordre)
+## Reste a faire (P2/P3)
 
-1. **Valider ces docs** avec Claude.ai (en cours)
-2. **Créer `copier.yml`** — questions d'init + structure conditionnelle
-3. **Créer `template/CLAUDE.md.jinja`** — le contrat Claude Code des projets générés
-4. **Créer `template/.meta/PILOT.md.jinja`** — le cockpit template
-5. **Créer `template/pyproject.toml.jinja`** avec les 4 profils de dépendances
-6. **Créer `.pre-commit-config.yaml`** au niveau du meta-repo
-7. **Push to origin** (main branch)
-8. **Instancier Claude Code** dans ce repo et tester la session
+| Priorite | Action | Fichier |
+|----------|--------|---------|
+| P2 | Config 3 niveaux pour profil app | template/config/ (conditionnel) |
+| P2 | Ajouter src/{{project_slug}}/__init__.py au template | template/src/ |
+| P3 | Explorer hooks Claude Code (.claude/settings.json) | template/.claude/ |
+| P3 | Enrichir watchlist au fil de la veille | .meta/references/watchlist.md |
 
 ---
 
-## 🧠 Contexte important pour l'IA
+## Contexte pour l'IA
 
-- Ce repo EST le template — toute modification dans `template/` doit être testée
-  avec `copier copy . /tmp/test-proj --defaults` avant commit
-- Claude Code lira ce `PILOT.md` automatiquement (via `CLAUDE.md` qui l'instruite)
-- La philosophie centrale : séparer le produit du process via `.meta/`
+- Ce repo EST le template — toute modification dans `template/` doit etre testee
+  avec `copier copy . /tmp/test-proj --defaults --trust -d project_name="test"` avant commit
+- La philosophie : separer le produit du process via `.meta/`
 - Stack : Python 3.12+, uv, ruff, copier, pre-commit
+- ADR-001 dans `.meta/decisions/` contient les decisions de design validees
 
 ---
 
-## 📝 Notes de session
+## Recap session 2026-04-01
 
-- Gemini a fourni la direction générale mais contenait des erreurs factuelles
-  (notamment sur la lecture automatique de CLAUDE.md par Claude Code)
-- La conversation initiale a validé le concept `.meta/` et l'approche `copier`
-- Les branches orphelines ont été explorées et rejetées → `copier.yml` avec conditionnels Jinja
-- L'approche récursive (utiliser la méthode pour créer la méthode) est le bon angle de test
+### Infrastructure
+- pyproject.toml corrige (Python >=3.12, pre-commit ajoute)
+- .pre-commit-config.yaml cree (meta-repo + template)
+- Template complet : pyproject.toml.jinja, .gitignore.jinja, .meta/ structure
+- copier.yml corrige (choices format) + _tasks: git init
+- Generation testee et fonctionnelle
+
+### Recherche et audit
+- 3 sources leak Claude Code dans .meta/references/
+- Etat de l'art vibe coding (CLAUDE.md sizing, hooks, progressive disclosure)
+- Posts LinkedIn curates (MCP vs Skills, 9 couches app IA)
+- Audit EgoVault complet (11 patterns identifies et classes)
+- ADR-001 : croisement audit + etat de l'art
+
+### Implementation patterns (P0/P1)
+- CLAUDE.md.jinja reecrit : 57-63 lignes, regles anti-LLM, workflow 5 phases, hierarchie doc
+- SESSION-CONTEXT.md.jinja cree (reecrit chaque session, pas accumule)
+- PILOT.md.jinja enrichi (workflow 5 phases)
+- tests/conftest.py.jinja cree
+- Teste sur profils minimal et app
