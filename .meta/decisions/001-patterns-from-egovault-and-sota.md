@@ -1,7 +1,7 @@
 # ADR-001 — Patterns a integrer dans le template (EgoVault + Etat de l'art)
 
 **Date :** 2026-04-01
-**Statut :** DRAFT — en attente de validation Vincent
+**Statut :** VALIDATED — approuve par Vincent, implemente dans ADR-002 et ADR-003
 **Sources :** audit-egovault.md, state-of-the-art-vibe-coding.md, claude-code-leak-analysis.md
 
 ---
