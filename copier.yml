@@ -47,6 +47,9 @@ _exclude:
   - ".meta/scratch/*"
   - "!.meta/scratch/.gitkeep"
 
+_tasks:
+  - "git init"
+
 _message_after_copy: |
   ✅ Projet {{ project_name }} créé avec The Meta Protocol.
 
