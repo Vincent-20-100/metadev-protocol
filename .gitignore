@@ -1,0 +1,6 @@
+# Ignorer les artefacts de build et cache
+.venv/
+.env
+__pycache__/
+.meta/scratch/*
+!.meta/scratch/.gitkeep
