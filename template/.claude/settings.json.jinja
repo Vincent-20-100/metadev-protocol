@@ -1,0 +1,45 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(uv *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Read",
+      "Edit(src/**)",
+      "Edit(tests/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(sudo *)",
+      "Edit(.env)",
+      "Edit(.git/**)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | xargs -I {} sh -c 'case \"{}\" in *.py) uv run ruff format \"{}\" 2>/dev/null && uv run ruff check \"{}\" --fix 2>/dev/null;; esac; exit 0'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat .meta/PILOT.md 2>/dev/null | head -30 || true"
+          }
+        ]
+      }
+    ]
+  }
+}
