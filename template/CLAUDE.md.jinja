@@ -1,0 +1,67 @@
+# CLAUDE.md — {{ project_name }}
+
+> Lu automatiquement par Claude Code à chaque session.
+
+## Première action obligatoire
+
+Lire `.meta/PILOT.md` — état courant du projet, objectif de session, bloquants.
+Ne génère rien avant de l'avoir lu.
+
+## Architecture
+
+```
+{{ project_slug }}/
+├── src/
+│   └── {{ project_slug }}/    # Code source validé uniquement
+├── tests/                      # Parité avec src/ — un test par module
+├── .meta/                      # Cockpit — espace de travail IA
+│   ├── PILOT.md                # État de session (LIS EN PREMIER)
+│   ├── sessions/               # Historique des sessions
+│   ├── decisions/              # ADRs en incubation
+│   └── scratch/                # Brouillons — jamais committés
+├── docs/                       # Documentation finale uniquement
+├── CLAUDE.md                   # Ce fichier
+└── pyproject.toml
+```
+
+## Règles absolues
+
+1. **Brouillons dans `.meta/scratch/`** — jamais à la racine, jamais dans `src/`
+2. **`src/` reçoit du code testé** — pas de code "en cours" dans le module principal
+3. **Conventional Commits** — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
+4. **Avant toute implémentation** — vérifie si ça existe déjà dans `src/` ou dans les dépendances
+{% if project_type == "quant" %}
+5. **Zéro boucle Python sur des données** — NumPy/vectorisation systématique
+6. **Documenter les hypothèses mathématiques** — chaque formule a son explication dans la docstring
+{% elif project_type == "app" %}
+5. **Injection de dépendances** — pas de singletons globaux, pas d'état global mutable
+6. **Chaque endpoint a son test** — pas de route sans test d'intégration
+{% elif project_type == "data" %}
+5. **Pipelines idempotents** — re-runnable sans effets de bord
+6. **Les données raw sont immutables** — transformations uniquement dans `data/processed/`
+{% endif %}
+
+## Stack
+
+- Python >= 3.12
+- `uv` exclusivement (pas pip, pas poetry)
+- `ruff` pour lint + format
+{% if project_type == "app" %}
+- `pyright` pour le type checking
+{% endif %}
+
+## Commandes
+
+```bash
+uv sync                     # Installer les dépendances
+uv run ruff check .         # Linter
+uv run ruff format .        # Formatter
+uv run pytest               # Tests
+{% if project_type == "app" %}uv run pyright              # Type checking
+{% endif %}```
+
+## Ce que tu NE fais pas
+
+- Pas d'installation globale — tout passe par `uv run`
+- Pas de `requirements.txt` — `pyproject.toml` + `uv.lock` uniquement
+- Pas de commentaires évidents — le code s'explique, les commentaires expliquent le *pourquoi*

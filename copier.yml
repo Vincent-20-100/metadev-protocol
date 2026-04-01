@@ -1,0 +1,60 @@
+# copier.yml — The Meta Protocol
+# Moteur de génération de projets
+# Usage : copier copy gh:TON_USER/metadev-protocol mon-nouveau-projet
+
+# ─────────────────────────────────────────
+# Questions d'initialisation
+# ─────────────────────────────────────────
+
+project_name:
+  type: str
+  help: "Nom du projet (ex: egovault, price-tracker)"
+
+project_slug:
+  type: str
+  help: "Slug Python du projet (snake_case, pas de tirets)"
+  default: "{{ project_name | lower | replace('-', '_') | replace(' ', '_') }}"
+
+project_type:
+  type: str
+  help: "Type de projet — détermine les garde-fous et les dépendances"
+  choices:
+    minimal: "Side project / Expérimentation rapide"
+    app: "Application Web / API / Backend"
+    data: "Data Engineering / ETL / Pipelines"
+    quant: "Analyse Quantitative / Backtesting"
+  default: minimal
+
+author_name:
+  type: str
+  help: "Ton prénom (pour pyproject.toml)"
+  default: "Vincent"
+
+python_version:
+  type: str
+  help: "Version Python minimale"
+  default: "3.12"
+
+# ─────────────────────────────────────────
+# Configuration copier
+# ─────────────────────────────────────────
+
+_subdirectory: template
+
+_exclude:
+  - "*.pyc"
+  - "__pycache__"
+  - ".meta/scratch/*"
+  - "!.meta/scratch/.gitkeep"
+
+_message_after_copy: |
+  ✅ Projet {{ project_name }} créé avec The Meta Protocol.
+
+  Prochaines étapes :
+    1. cd {{ project_slug }}
+    2. uv sync
+    3. uv run pre-commit install
+    4. Ouvre .meta/PILOT.md et définis l'objectif de ta première session
+    5. Lance Claude Code : claude
+
+  Stack : Python {{ python_version }} | uv | ruff | profil : {{ project_type }}
