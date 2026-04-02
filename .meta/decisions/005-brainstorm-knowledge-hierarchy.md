@@ -84,11 +84,84 @@ dans le TEMPLATE genere :
 └── scratch/        ← Brouillons (gitignored)
 ```
 
-## A brainstormer plus tard
+## Idee 6 : Timestamp = verite (plus recent gagne)
+
+**Le probleme :** Si tout est sauvegarde, on accumule des fichiers qui peuvent se
+contredire. Un gold file de janvier peut dire le contraire d'un gold file d'avril.
+
+**La regle proposee :** Chaque fichier est timestampe. En cas de contradiction,
+**le plus recent fait foi.** Simple, deterministe, pas d'ambiguite.
+
+**Implication sur le header standardise :**
+```markdown
+> DATE : 2026-04-01
+> SUPERSEDES : context-management-v1.md (si applicable)
+```
+
+## Idee 7 : Maintenance de la base de connaissances — Tri et nettoyage
+
+**Le probleme :** Si on sauvegarde tout, ca devient un dump. Il faut du tri.
+
+**3 mecanismes de tri proposes :**
+
+### A. Human-in-the-loop (le plus fiable)
+- L'humain decide periodiquement : garder, archiver, supprimer
+- Skill /tidy qui liste les fichiers par date, taille, et demande "on garde ?"
+- Frequence : fin de sprint ou quand .meta/ depasse un seuil
+
+### B. Dream Mode (automatise, inspire du leak)
+- Un process (skill ou hook) qui consolide les connaissances :
+  - Fusionne les fichiers qui se recoupent
+  - Archive les fichiers obsoletes (superseded)
+  - Met a jour INDEX.md
+- Equivalent de notre /consolidate mais pour TOUTE la base gold/references
+- Pourrait etre une skill /dream ou /maintain
+
+### C. Lifecycle naturel (convention)
+- Les fichiers references/ ont une duree de vie limitee
+  - > 3 mois sans etre cite par un gold → candidat a l'archivage
+- Les fichiers gold/ sont maintenus tant que le sujet est actif
+- Les fichiers decisions/ sont permanents (ADRs ne sont jamais supprimes)
+
+**Les 3 mecanismes sont complementaires, pas exclusifs.**
+
+## Idee 8 : Cycle de vie d'un fichier de connaissance
+
+```
+RECHERCHE                    SYNTHESE                    MAINTENANCE
+   |                            |                            |
+   v                            v                            v
+references/raw.md  --/digest--> gold/synthesis.md  --/dream--> gold/synthesis-v2.md
+   (bronze)                     (gold)                       (gold, mis a jour)
+                                  |
+                                  v
+                              INDEX.md (mis a jour)
+                                  |
+                                  v
+                          decisions/ADR-xxx.md (si decision prise)
+```
+
+### Les transitions :
+1. **Recherche → Reference** : agent web/parsing, sauvegarde timestampee
+2. **Reference → Gold** : skill /digest, extraction key takeaways
+3. **Gold → Gold v2** : skill /dream ou /consolidate, fusion/mise a jour
+4. **Gold → Decision** : humain valide, cree un ADR
+5. **Reference → Archive** : /tidy ou human-in-the-loop, fichier obsolete
+
+### Les regles de transition :
+- Ref → Gold : TOUJOURS (pas de ref qui reste sans synthese)
+- Gold stale (>3 mois sans update) : flag pour review humain
+- Gold contradictoire : plus recent gagne, ancien archive
+- Decision : JAMAIS supprimee, peut etre SUPERSEDED par une nouvelle
+
+## Questions ouvertes pour le brainstorm
 
 - Format exact de l'INDEX.md (table? liste? sections?)
 - Comment la skill /digest met a jour l'INDEX.md automatiquement
-- Est-ce que CLAUDE.md devrait pointer vers INDEX.md ("lis .meta/gold/INDEX.md pour le contexte") ?
-- Comment gerer le versioning des gold files (date? hash?)
+- Est-ce que CLAUDE.md devrait pointer vers INDEX.md ("lis .meta/gold/INDEX.md") ?
 - Est-ce que les sessions/ devraient aussi avoir un INDEX?
-- Comment faire pour que le LLM sache quand un gold file est stale?
+- Seuil de volume pour declencher /tidy (nombre de fichiers? taille totale?)
+- Est-ce que /dream tourne automatiquement (hook SessionStart?) ou manuellement?
+- Comment gerer les gold files qui couvrent plusieurs domaines?
+- Est-ce que le template genere devrait inclure gold/ et references/ vides
+  ou seulement les creer a la premiere utilisation?
