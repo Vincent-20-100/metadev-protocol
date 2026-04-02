@@ -1,80 +1,73 @@
 # PILOT.md — metadev-protocol
 
-**Date :** 2026-04-01
-**Phase :** Recherche terminee — pret pour implementation skills
+**Date:** 2026-04-01
+**Phase:** Strategic brainstorm done — ready for MVP implementation
 
 ---
 
-## Etat du projet
+## Project state
 
-### Infrastructure (FAIT)
+### Infrastructure (DONE)
 - pyproject.toml, .pre-commit-config.yaml, copier.yml ✅
-- Template complet : CLAUDE.md, pyproject.toml, .gitignore, .meta/, tests/, .claude/ ✅
-- Generation testee (minimal + app) ✅
-- Pre-commit installe ✅
+- Template generates successfully (minimal + app tested) ✅
+- Pre-commit installed ✅
 
-### Recherche (FAIT)
-- 12 fichiers raw dans .meta/references/ ✅
-- 4 fichiers gold dans .meta/gold/ ✅
-  - skills-workflow-and-utilities.md
-  - context-management.md
-  - claude-code-architecture.md
-  - vibe-coding-practices.md
-- 4 ADRs dans .meta/decisions/ ✅
+### Research (DONE)
+- 15 raw references in .meta/references/ ✅
+- 5 gold syntheses in .meta/gold/ ✅
+- 6 ADRs in .meta/decisions/ ✅
 
-### Implementation patterns (FAIT)
-- CLAUDE.md.jinja v2 (<120 lignes, regles anti-LLM) ✅
-- SESSION-CONTEXT.md.jinja ✅
-- .claude/settings.json (permissions + hooks) ✅
-- Skill /test ✅
+### Strategic brainstorm (DONE)
+- Target audience: B/C (devs discovering vibe coding) ✅
+- Identity: "brand new workshop" (opinionated lightweight framework) ✅
+- Language: English default, 3 levels (code/project/meta) ✅
+- Superpowers: autonomous, inspired, credited ✅
+- Versioning: one-shot for now ✅
+- All decisions in ADR-006 ✅
 
-### Skills fondation (A FAIRE — prochain sprint)
+### MVP scope (NEXT — 1 session)
 
-| Tier | Skill | Statut |
-|------|-------|--------|
-| T1 | /brainstorm | ❌ |
-| T1 | /plan | ❌ |
-| T1 | /ship | ❌ |
-| T2 | /spec | ❌ |
-| T2 | /tdd | ❌ |
-| T2 | /review | ❌ |
-| T2 | /debug | ❌ |
-| T2 | /lint | ❌ |
-| T2 | /consolidate | ❌ |
-| T3 | /learn | ❌ |
-| T3 | /digest | ❌ |
+| # | Action | Status |
+|---|--------|--------|
+| 1 | Rewrite all templates to English | ❌ |
+| 2 | Add src/{{project_slug}}/__init__.py | ❌ |
+| 3 | Switch build backend to uv_build | ❌ |
+| 4 | Add ruff + pytest config in pyproject.toml.jinja | ❌ |
+| 5 | Enrich pre-commit (trailing-whitespace, check-yaml, no-commit-to-branch) | ❌ |
+| 6 | Add no-co-author-llm hook (pre-commit + settings.json) | ❌ |
+| 7 | Create skill /brainstorm (prescriptive, Superpowers-inspired) | ❌ |
+| 8 | Create skill /plan (writes to .meta/scratch/plan.md) | ❌ |
+| 9 | Create skill /ship (checklist + PILOT update + SESSION-CONTEXT rewrite) | ❌ |
+| 10 | Create skill /lint (ruff check + format) | ❌ |
+| 11 | Update CLAUDE.md.jinja (English, first-session detection, skill shortlist) | ❌ |
+| 12 | Test full generation (all profiles) | ❌ |
 
-### Reste a faire (apres skills)
-
-- src/{{project_slug}}/__init__.py dans template
-- Config 3 niveaux pour profil app
-- Instruction compaction dans CLAUDE.md
-- Subagent guidance dans CLAUDE.md
-- Skills profilees (api-test, pipeline-run, backtest)
-- Ruff 120 chars config
+### Post-MVP (vision C)
+- Skills T2: /spec, /tdd, /review, /debug, /consolidate
+- Knowledge hierarchy: INDEX.md, /digest, /dream, /tidy
+- GitHub Actions CI
+- Config 3 levels (app profile)
+- Language params in copier.yml
+- Profile-specific skills
 
 ---
 
-## Structure des fichiers gold
+## Gold files (knowledge base)
 
 ```
-.meta/
-├── gold/                              ← Syntheses actionnables
-│   ├── skills-workflow-and-utilities.md   ← Pipeline + utilitaires
-│   ├── context-management.md             ← Compaction, memoire, sessions
-│   ├── claude-code-architecture.md       ← Leak + doc officielle
-│   └── vibe-coding-practices.md          ← Principes + anti-patterns
-├── references/                        ← Sources brutes (12 fichiers)
-├── decisions/                         ← ADRs (4 fichiers)
-└── scratch/                           ← Brouillons (prompts, etc.)
+.meta/gold/
+├── skills-workflow-and-utilities.md    <- 13 skills classified T1/T2/T3
+├── context-management.md              <- 3 axes, 5 compaction levels
+├── claude-code-architecture.md        <- Leak + official docs
+├── vibe-coding-practices.md           <- 5 principles, 7 anti-patterns
+└── python-dev-and-templating.md       <- 8 decisions, sprint plan
 ```
 
----
+## AI context
 
-## Contexte pour l'IA
-
-- Les fichiers gold/ sont la source de verite synthetisee
-- Les fichiers references/ sont les sources brutes (bronze)
-- Les decisions/ sont les ADRs avec rationale et confiance
-- Toute modification de template/ doit etre testee avec copier copy
-- Stack : Python 3.12+, uv, ruff, copier, pre-commit
+- Gold files are the synthesized source of truth
+- References are raw sources (bronze)
+- Decisions are ADRs with rationale and confidence levels
+- Any change to template/ must be tested with copier copy
+- Stack: Python 3.12+, uv, ruff, copier, pre-commit
+- ALL template output must be in English
