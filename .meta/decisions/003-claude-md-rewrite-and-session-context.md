@@ -1,139 +1,139 @@
-# ADR-003 — Rewrite CLAUDE.md.jinja et ajout SESSION-CONTEXT.md
+# ADR-003 — Rewrite CLAUDE.md.jinja and add SESSION-CONTEXT.md
 
-**Date :** 2026-04-01
-**Statut :** IMPLEMENTED
-**Sources :**
-- `.meta/references/state-of-the-art-vibe-coding.md` (finding #1 : <200 lignes)
+**Date:** 2026-04-01
+**Status:** IMPLEMENTED
+**Sources:**
+- `.meta/references/state-of-the-art-vibe-coding.md` (finding #1: <200 lines)
 - `.meta/references/audit-egovault.md` (patterns #2, #3, #7)
 - ADR-001 decisions #1, #2, #3, #6
 
 ---
 
-## Probleme
+## Problem
 
-Le CLAUDE.md initial du template (v1) etait fonctionnel mais :
-- Pas de regles anti-LLM (les erreurs recurrentes des IA n'etaient pas adressees)
-- Pas de workflow de session (l'IA ne savait pas par ou commencer)
-- Pas de hierarchie documentaire (quoi prime sur quoi ?)
-- Pas de SESSION-CONTEXT.md (le cockpit n'avait qu'un seul fichier)
+The initial template CLAUDE.md (v1) was functional but:
+- No anti-LLM rules (recurring AI errors were not addressed)
+- No session workflow (the AI did not know where to start)
+- No document hierarchy (what takes precedence over what?)
+- No SESSION-CONTEXT.md (the cockpit had only one file)
 
 ## Decisions
 
-### 1. CLAUDE.md < 120 lignes
+### 1. CLAUDE.md < 120 lines
 
-**Pourquoi :**
-- Boris Cherny (createur Claude Code) garde son CLAUDE.md a ~100 lignes / 2500 tokens
-- Au-dela de ~200 lignes, la compliance chute significativement
-- L'ancien CLAUDE.md d'EgoVault faisait 350 lignes = les regles en fin de fichier
-  etaient souvent ignorees
+**Why:**
+- Boris Cherny (creator of Claude Code) keeps his CLAUDE.md at ~100 lines / 2500 tokens
+- Beyond ~200 lines, compliance drops significantly
+- The old EgoVault CLAUDE.md was 350 lines = rules at the end of the file
+  were often ignored
 
-**Resultat :** 57 lignes (profil minimal), 63 lignes (profil app).
-Le detail (exemples Wrong/Right des regles G1-G13 d'EgoVault) est dans les
-skills et la doc, PAS dans CLAUDE.md.
+**Result:** 57 lines (minimal profile), 63 lines (app profile).
+The detail (Wrong/Right examples of EgoVault G1-G13 rules) is in the
+skills and docs, NOT in CLAUDE.md.
 
-**Niveau de confiance : ELEVE** — Le sizing est documente par le createur de l'outil.
-La logique est simple : plus c'est court, plus c'est lu.
+**Confidence level: HIGH** — Sizing is documented by the tool's creator.
+The logic is simple: the shorter it is, the more it gets read.
 
-### 2. Regles anti-LLM (G2, G5, G6, G13)
+### 2. Anti-LLM rules (G2, G5, G6, G13)
 
-**Quoi :** 4 regles universelles extraites des 13 d'EgoVault, plus 2 profilables.
+**What:** 4 universal rules extracted from EgoVault's 13, plus 2 profile-specific ones.
 
-**Regles universelles :**
-- **R4 — Docstrings WHAT pas HOW** (source : EgoVault G2) — Les LLM ont tendance
-  a decrire l'implementation plutot que le contrat
-- **R5 — Pas d'over-engineering** (source : EgoVault G5) — Le piege #1 des LLM :
-  abstractions prematurees, factories de factories, patterns inutiles
-- **R6 — Chaque except log ou re-raise** (source : EgoVault G6) — Les LLM ecrivent
-  des `except: pass` silencieux par defaut
-- **R7 — Commentaires chirurgicaux** (source : EgoVault G13) — Les LLM noient le code
-  de commentaires evidents ("# Initialize the variable")
+**Universal rules:**
+- **R4 — Docstrings WHAT not HOW** (source: EgoVault G2) — LLMs tend
+  to describe the implementation rather than the contract
+- **R5 — No over-engineering** (source: EgoVault G5) — LLM trap #1:
+  premature abstractions, factories of factories, useless patterns
+- **R6 — Every except must log or re-raise** (source: EgoVault G6) — LLMs write
+  silent `except: pass` by default
+- **R7 — Surgical comments** (source: EgoVault G13) — LLMs drown code
+  in obvious comments ("# Initialize the variable")
 
-**Regles profilables :**
-- **app :** R8 routing mince (<15 lignes) + R9 injection de dependances
-- **quant :** R8 zero boucle Python (vectorisation) + R9 documenter hypotheses math
-- **data :** R8 pipelines idempotents + R9 raw data immutable
+**Profile-specific rules:**
+- **app:** R8 thin routing (<15 lines) + R9 dependency injection
+- **quant:** R8 zero Python loops (vectorization) + R9 document math assumptions
+- **data:** R8 idempotent pipelines + R9 raw data immutable
 
-**Pourquoi ces 4 et pas les 13 :**
-- Budget de 120 lignes = on ne peut pas tout mettre
-- G1 (noms de librairies), G4 (imports inter-couches), G7-G12 sont trop
-  specifiques a l'architecture hexagonale d'EgoVault
-- Les 4 choisies s'appliquent a TOUT projet Python, quel que soit le profil
+**Why these 4 and not all 13:**
+- Budget of 120 lines = cannot include everything
+- G1 (library names), G4 (inter-layer imports), G7-G12 are too
+  specific to EgoVault's hexagonal architecture
+- The 4 chosen apply to ALL Python projects, regardless of profile
 
-**D'ou vient l'idee :** Audit EgoVault section 4, confirme par l'etat de l'art
-qui dit "verification commands > style guidelines" mais les anti-patterns LLM
-sont une exception — ils DOIVENT etre dans CLAUDE.md.
+**Where the idea comes from:** EgoVault audit section 4, confirmed by the state of the art
+which says "verification commands > style guidelines" but LLM anti-patterns
+are an exception — they MUST be in CLAUDE.md.
 
-**Niveau de confiance : ELEVE** — Teste sur 374 tests dans EgoVault. Les 4 regles
-sont les plus universelles. Le risque = en ajouter trop, pas en avoir trop peu.
+**Confidence level: HIGH** — Tested on 374 tests in EgoVault. The 4 rules
+are the most universal. The risk = adding too many, not having too few.
 
-### 3. Cockpit 2 fichiers (PILOT.md + SESSION-CONTEXT.md)
+### 3. Two-file cockpit (PILOT.md + SESSION-CONTEXT.md)
 
-**Quoi :**
-- `PILOT.md` = etat factuel (quoi) — tableau de statut, prochaines etapes
-- `SESSION-CONTEXT.md` = contexte decisionnel (pourquoi) — decisions actives,
-  pieges, questions ouvertes
+**What:**
+- `PILOT.md` = factual state (what) — status table, next steps
+- `SESSION-CONTEXT.md` = decision context (why) — active decisions,
+  pitfalls, open questions
 
-**Pourquoi 2 fichiers au lieu d'1 :**
-- Source : EgoVault utilise PROJECT-STATUS.md + SESSION-CONTEXT.md avec succes
-- PILOT.md accumule (on ajoute des lignes au tableau)
-- SESSION-CONTEXT.md est REECRIT chaque session (pas complete)
-- Le rewrite force a ne garder que le contexte pertinent = pas de bloat
-- Un fichier unique finit toujours par devenir un log illisible
+**Why 2 files instead of 1:**
+- Source: EgoVault uses PROJECT-STATUS.md + SESSION-CONTEXT.md successfully
+- PILOT.md accumulates (rows are added to the table)
+- SESSION-CONTEXT.md is REWRITTEN each session (not appended to)
+- The rewrite forces keeping only the relevant context = no bloat
+- A single file always ends up becoming an unreadable log
 
-**La regle cle : "rewrite, don't append"**
-- SESSION-CONTEXT.md n'est PAS un journal
-- Chaque session, on reecrit depuis zero les decisions actives
-- Le raisonnement obsolete est supprime, pas commente
-- Ca garde le fichier sous 50 lignes = toujours lisible
+**The key rule: "rewrite, don't append"**
+- SESSION-CONTEXT.md is NOT a journal
+- Each session, active decisions are rewritten from scratch
+- Obsolete reasoning is deleted, not commented out
+- This keeps the file under 50 lines = always readable
 
-**Comment s'en servir :**
-1. Debut de session : Claude lit PILOT.md (etat) + SESSION-CONTEXT.md (contexte)
-2. Pendant la session : les decisions sont prises avec le contexte en tete
-3. Fin de session : mettre a jour PILOT.md (nouveau statut) et REECRIRE
-   SESSION-CONTEXT.md (nouveau contexte pour la prochaine session)
+**How to use it:**
+1. Start of session: Claude reads PILOT.md (state) + SESSION-CONTEXT.md (context)
+2. During the session: decisions are made with the context in mind
+3. End of session: update PILOT.md (new status) and REWRITE
+   SESSION-CONTEXT.md (new context for the next session)
 
-**Niveau de confiance : ELEVE** — Teste et valide sur EgoVault (2+ mois d'utilisation).
-Le pattern "rewrite" est contre-intuitif mais c'est ce qui le rend efficace.
+**Confidence level: HIGH** — Tested and validated on EgoVault (2+ months of use).
+The "rewrite" pattern is counterintuitive but that is what makes it effective.
 
-### 4. Workflow 5 phases
+### 4. Five-phase workflow
 
-**Quoi :** Research > Plan > Implement > Test > Ship
+**What:** Research > Plan > Implement > Test > Ship
 
-**Pourquoi 5 et pas 7 (EgoVault en avait 7) :**
-- EgoVault : BRAINSTORM > SPEC > PLAN > IMPLEMENT > TEST > AUDIT > SHIP
-- BRAINSTORM et SPEC fusionnes en "Research" — un bootstrap n'a pas besoin
-  de specs formelles
-- AUDIT supprime — trop lourd pour un nouveau projet, pertinent pour projets matures
-- L'etat de l'art confirme : "Research > Plan > Execute > Review > Ship" est
-  le workflow universel
+**Why 5 and not 7 (EgoVault had 7):**
+- EgoVault: BRAINSTORM > SPEC > PLAN > IMPLEMENT > TEST > AUDIT > SHIP
+- BRAINSTORM and SPEC merged into "Research" — a bootstrap does not need
+  formal specs
+- AUDIT removed — too heavy for a new project, relevant for mature projects
+- State of the art confirms: "Research > Plan > Execute > Review > Ship" is
+  the universal workflow
 
-**D'ou vient l'idee :**
-- EgoVault (simplifie)
-- Etat de l'art finding #7 (convergence de toutes les sources)
+**Where the idea comes from:**
+- EgoVault (simplified)
+- State of the art finding #7 (convergence from all sources)
 
-**Niveau de confiance : MOYEN** — Le workflow est consensuel mais on ne l'a pas
-teste tel quel sur un projet from scratch. EgoVault utilisait la version 7 phases.
-La simplification est un pari raisonnable.
+**Confidence level: MEDIUM** — The workflow is consensual but has not been
+tested as-is on a project from scratch. EgoVault used the 7-phase version.
+The simplification is a reasonable bet.
 
-### 5. Hierarchie documentaire
+### 5. Document hierarchy
 
-**Quoi :** CLAUDE.md > `.meta/decisions/` > docstrings > commentaires inline
+**What:** CLAUDE.md > `.meta/decisions/` > docstrings > inline comments
 
-**Pourquoi :**
-- Source : EgoVault CLAUDE.md §3 ("permanent wins on conflict")
-- Quand Claude trouve une contradiction entre CLAUDE.md et un commentaire
-  dans le code, il doit savoir quoi suivre
-- `.meta/` est provisoire (workspace IA), `docs/` est permanent
+**Why:**
+- Source: EgoVault CLAUDE.md §3 ("permanent wins on conflict")
+- When Claude finds a contradiction between CLAUDE.md and a comment
+  in the code, it needs to know what to follow
+- `.meta/` is provisional (AI workspace), `docs/` is permanent
 
-**Niveau de confiance : ELEVE** — C'est une convention de bon sens. Le risque
-est negligeable.
+**Confidence level: HIGH** — This is a common-sense convention. The risk
+is negligible.
 
 ---
 
-## Fichiers impactes
+## Impacted files
 
-| Fichier | Action |
-|---------|--------|
-| `template/CLAUDE.md.jinja` | REECRIT — v2 avec regles, workflow, hierarchie |
-| `template/.meta/PILOT.md.jinja` | MIS A JOUR — workflow 5 phases ajoute |
-| `template/.meta/SESSION-CONTEXT.md.jinja` | CREE — cockpit decisionnel |
+| File | Action |
+|------|--------|
+| `template/CLAUDE.md.jinja` | REWRITTEN — v2 with rules, workflow, hierarchy |
+| `template/.meta/PILOT.md.jinja` | UPDATED — 5-phase workflow added |
+| `template/.meta/SESSION-CONTEXT.md.jinja` | CREATED — decision cockpit |

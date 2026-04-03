@@ -1,125 +1,125 @@
-# ADR-001 — Patterns a integrer dans le template (EgoVault + Etat de l'art)
+# ADR-001 — Patterns to integrate into the template (EgoVault + State of the Art)
 
-**Date :** 2026-04-01
-**Statut :** VALIDATED — approuve par Vincent, implemente dans ADR-002 et ADR-003
-**Sources :** audit-egovault.md, state-of-the-art-vibe-coding.md, claude-code-leak-analysis.md
+**Date:** 2026-04-01
+**Status:** VALIDATED — approved by Vincent, implemented in ADR-002 and ADR-003
+**Sources:** audit-egovault.md, state-of-the-art-vibe-coding.md, claude-code-leak-analysis.md
 
 ---
 
-## Contexte
+## Context
 
-Croisement de l'audit EgoVault (projet reel, 374 tests, architecture mature) avec
-la recherche etat de l'art (CLAUDE.md sizing, hooks vs instructions, progressive disclosure).
-L'objectif est de decider quels patterns integrer dans le template metadev-protocol.
+Cross-referencing the EgoVault audit (real project, 374 tests, mature architecture) with
+state-of-the-art research (CLAUDE.md sizing, hooks vs instructions, progressive disclosure).
+The goal is to decide which patterns to integrate into the metadev-protocol template.
 
 ---
 
 ## Decisions
 
-### ADOPTER — Integration directe dans le template
+### ADOPT — Direct integration into the template
 
-#### 1. Cockpit 2 fichiers : PILOT.md (etat) + SESSION-CONTEXT.md (pourquoi)
+#### 1. Two-file cockpit: PILOT.md (state) + SESSION-CONTEXT.md (why)
 
-- **Source :** EgoVault (PROJECT-STATUS + SESSION-CONTEXT)
-- **Adaptation :** Renommer en PILOT.md (deja fait) + ajouter SESSION-CONTEXT.md.jinja
-- **Regle cle :** SESSION-CONTEXT.md est REECRIT chaque session, pas complete
-- **Impact :** `template/.meta/` — ajouter SESSION-CONTEXT.md.jinja
+- **Source:** EgoVault (PROJECT-STATUS + SESSION-CONTEXT)
+- **Adaptation:** Rename to PILOT.md (already done) + add SESSION-CONTEXT.md.jinja
+- **Key rule:** SESSION-CONTEXT.md is REWRITTEN each session, not appended to
+- **Impact:** `template/.meta/` — add SESSION-CONTEXT.md.jinja
 
-#### 2. Regles anti-LLM universelles dans CLAUDE.md
+#### 2. Universal anti-LLM rules in CLAUDE.md
 
-- **Source :** EgoVault G1-G13, filtre sur les universelles
-- **Regles a inclure dans tous les profils :**
+- **Source:** EgoVault G1-G13, filtered to universals
+- **Rules to include in all profiles:**
   - G2 — Docstrings: WHAT not HOW
   - G5 — No over-engineering
   - G6 — Every except must log or re-raise
-  - G13 — Comments: concis, chirurgicaux
-- **Regles profilables (app seulement) :**
-  - G4 — tools n'importent jamais infrastructure
+  - G13 — Comments: concise, surgical
+- **Profile-specific rules (app only):**
+  - G4 — tools never import infrastructure
   - G11 — Routing layers are thin (<15 lines)
-- **Impact :** `template/CLAUDE.md.jinja` — ajouter section regles
+- **Impact:** `template/CLAUDE.md.jinja` — add rules section
 
-#### 3. CLAUDE.md < 200 lignes (contrainte de sizing)
+#### 3. CLAUDE.md < 200 lines (sizing constraint)
 
-- **Source :** Etat de l'art (Boris Cherny, ~100 lignes / 2500 tokens)
-- **Constat :** EgoVault a 350 lignes = trop long. Compliance drops au-dela de 200.
-- **Decision :** Le template genere un CLAUDE.md de 80-120 lignes max
-- **Trade-off :** Les regles detaillees (exemples Wrong/Right) vont dans `.claude/` skills,
-  pas dans CLAUDE.md
-- **Impact :** `template/CLAUDE.md.jinja` — garder lean, deporter le detail
+- **Source:** State of the art (Boris Cherny, ~100 lines / 2500 tokens)
+- **Finding:** EgoVault has 350 lines = too long. Compliance drops beyond 200.
+- **Decision:** The template generates a CLAUDE.md of 80-120 lines max
+- **Trade-off:** Detailed rules (Wrong/Right examples) go in `.claude/` skills,
+  not in CLAUDE.md
+- **Impact:** `template/CLAUDE.md.jinja` — keep lean, offload detail
 
-#### 4. Hooks > CLAUDE.md pour l'enforcement
+#### 4. Hooks > CLAUDE.md for enforcement
 
-- **Source :** Etat de l'art (hooks = 100% compliance vs CLAUDE.md = ~70-80%)
-- **Constat :** EgoVault n'a AUCUN hook — tout est porte par CLAUDE.md = fragile
-- **Decision :** Le template genere `.pre-commit-config.yaml` avec ruff (deja fait)
-  + potentiellement des hooks Claude Code dans `.claude/settings.json`
-- **Impact :** Deja partiellement fait. Explorer les hooks Claude Code.
+- **Source:** State of the art (hooks = 100% compliance vs CLAUDE.md = ~70-80%)
+- **Finding:** EgoVault has NO hooks — everything is carried by CLAUDE.md = fragile
+- **Decision:** The template generates `.pre-commit-config.yaml` with ruff (already done)
+  + potentially Claude Code hooks in `.claude/settings.json`
+- **Impact:** Already partially done. Explore Claude Code hooks.
 
-#### 5. Config a 3 niveaux (system / user / install)
+#### 5. Three-level config (system / user / install)
 
-- **Source :** EgoVault config/
-- **Adaptation :** Pour le profil `app`, generer `config/` avec .example files
-- **Impact :** `template/` — conditionnel sur project_type == "app"
+- **Source:** EgoVault config/
+- **Adaptation:** For the `app` profile, generate `config/` with .example files
+- **Impact:** `template/` — conditional on project_type == "app"
 
-#### 6. Hierarchie documentaire permanente / provisoire
+#### 6. Permanent / provisional document hierarchy
 
-- **Source :** EgoVault CLAUDE.md §3
-- **Decision :** Integrer dans le CLAUDE.md genere : "CLAUDE.md > docs/ > docstrings"
-  + distinguer `.meta/` (provisoire) de `docs/` (permanent)
-- **Impact :** `template/CLAUDE.md.jinja`
+- **Source:** EgoVault CLAUDE.md §3
+- **Decision:** Integrate into the generated CLAUDE.md: "CLAUDE.md > docs/ > docstrings"
+  + distinguish `.meta/` (provisional) from `docs/` (permanent)
+- **Impact:** `template/CLAUDE.md.jinja`
 
-#### 7. Tests miroir structure + conftest.py avec DI mock
+#### 7. Mirror structure tests + conftest.py with DI mock
 
-- **Source :** EgoVault tests/conftest.py
-- **Decision :** Generer `tests/conftest.py` minimal avec fixtures de base
-- **Impact :** `template/tests/conftest.py.jinja`
+- **Source:** EgoVault tests/conftest.py
+- **Decision:** Generate minimal `tests/conftest.py` with base fixtures
+- **Impact:** `template/tests/conftest.py.jinja`
 
-### ADAPTER — A moduler par profil
+### ADAPT — To be modulated by profile
 
-#### 8. Workflow de developpement
+#### 8. Development workflow
 
-- **Source :** EgoVault (7 phases) + Etat de l'art (Research > Plan > Execute > Review > Ship)
-- **Decision :** Le template inclut un workflow simplifie dans PILOT.md :
-  Research > Plan > Implement > Test > Ship (5 phases, pas 7)
-- **EgoVault ajoutait BRAINSTORM + AUDIT** = pertinent pour projets matures, pas bootstrap
-- **Impact :** `template/.meta/PILOT.md.jinja`
+- **Source:** EgoVault (7 phases) + State of the art (Research > Plan > Execute > Review > Ship)
+- **Decision:** The template includes a simplified workflow in PILOT.md:
+  Research > Plan > Implement > Test > Ship (5 phases, not 7)
+- **EgoVault added BRAINSTORM + AUDIT** = relevant for mature projects, not bootstrap
+- **Impact:** `template/.meta/PILOT.md.jinja`
 
-#### 9. Surfaces multiples (API + CLI + MCP)
+#### 9. Multiple surfaces (API + CLI + MCP)
 
-- **Source :** EgoVault
-- **Decision :** Pas dans le template de base. Documenter comme pattern dans CLAUDE.md
-  du profil `app` : "Si tu as besoin de plusieurs surfaces, suis le pattern ports & adapters"
-- **Impact :** `template/CLAUDE.md.jinja` (section conditionnelle app)
+- **Source:** EgoVault
+- **Decision:** Not in the base template. Document as a pattern in CLAUDE.md
+  for the `app` profile: "If you need multiple surfaces, follow the ports & adapters pattern"
+- **Impact:** `template/CLAUDE.md.jinja` (conditional app section)
 
-### REJETER — Trop specifique ou over-engineered pour un bootstrap
+### REJECT — Too specific or over-engineered for a bootstrap
 
-#### 10. @loggable decorator avec callback injection
+#### 10. @loggable decorator with callback injection
 
-- Trop specifique a EgoVault. Le pattern est elegant mais pas generalisable a un bootstrap.
+- Too specific to EgoVault. The pattern is elegant but not generalizable to a bootstrap.
 
-#### 11. Taxonomie config-driven
+#### 11. Config-driven taxonomy
 
-- Specifique aux projets avec classification utilisateur. Pas un pattern de template.
+- Specific to projects with user classification. Not a template pattern.
 
-#### 12. Workflow 7 phases complet
+#### 12. Complete 7-phase workflow
 
-- Over-engineered pour un bootstrap. Simplifie en 5 phases (voir #8).
+- Over-engineered for a bootstrap. Simplified to 5 phases (see #8).
 
 #### 13. docs/superpowers/ lifecycle (specs/plans/audits/archive)
 
-- Trop lourd. Le template genere `.meta/decisions/` pour les ADRs, c'est suffisant.
+- Too heavy. The template generates `.meta/decisions/` for ADRs, that is sufficient.
 
 ---
 
-## Plan d'implementation
+## Implementation Plan
 
-| Priorite | Action | Fichier impacte |
-|----------|--------|-----------------|
-| P0 | Reduire CLAUDE.md.jinja a <120 lignes | template/CLAUDE.md.jinja |
-| P0 | Ajouter regles anti-LLM (G2, G5, G6, G13) | template/CLAUDE.md.jinja |
-| P1 | Creer SESSION-CONTEXT.md.jinja | template/.meta/ |
-| P1 | Enrichir PILOT.md.jinja (workflow 5 phases) | template/.meta/PILOT.md.jinja |
-| P1 | Ajouter `_tasks` post-copy dans copier.yml | copier.yml |
-| P2 | Generer tests/conftest.py minimal | template/tests/ |
-| P2 | Config 3 niveaux pour profil app | template/config/ (conditionnel) |
-| P3 | Explorer hooks Claude Code (.claude/settings.json) | template/.claude/ |
+| Priority | Action | Impacted file |
+|----------|--------|----------------|
+| P0 | Reduce CLAUDE.md.jinja to <120 lines | template/CLAUDE.md.jinja |
+| P0 | Add anti-LLM rules (G2, G5, G6, G13) | template/CLAUDE.md.jinja |
+| P1 | Create SESSION-CONTEXT.md.jinja | template/.meta/ |
+| P1 | Enrich PILOT.md.jinja (5-phase workflow) | template/.meta/PILOT.md.jinja |
+| P1 | Add `_tasks` post-copy in copier.yml | copier.yml |
+| P2 | Generate minimal tests/conftest.py | template/tests/ |
+| P2 | 3-level config for app profile | template/config/ (conditional) |
+| P3 | Explore Claude Code hooks (.claude/settings.json) | template/.claude/ |

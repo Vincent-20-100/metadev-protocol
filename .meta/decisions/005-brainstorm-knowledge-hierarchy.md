@@ -1,167 +1,167 @@
-# Idees brutes — Systeme de connaissances hierarchique
+# Raw ideas — Hierarchical knowledge system
 
-> Capture des idees de Vincent, 2026-04-01. A brainstormer en profondeur plus tard.
-> PAS une decision — un input pour le brainstorm.
+> Capture of Vincent's ideas, 2026-04-01. To be brainstormed in depth later.
+> NOT a decision — an input for the brainstorm.
 
 ---
 
-## Idee 1 : Skill /digest — Traitement d'information systematique
+## Idea 1: Skill /digest — Systematic information processing
 
-**Le probleme :** Quand un agent fait de la recherche web ou parse un gros document,
-le resultat reste dans le chat (contexte volatile) ou dans un fichier brut non structure.
+**The problem:** When an agent does web research or parses a large document,
+the result stays in the chat (volatile context) or in an unstructured raw file.
 
-**La regle proposee :** Des qu'un agent fait de la recherche ou du parsing, il DOIT
-produire (ou proposer) un fichier de synthese. Le travail est restitue ET memorise.
+**The proposed rule:** As soon as an agent does research or parsing, it MUST
+produce (or propose) a synthesis file. The work is returned AND memorized.
 
-**Implications :**
-- Ce n'est pas juste une skill, c'est une **convention de travail** a mettre dans CLAUDE.md
-- La skill /digest automatise la transformation raw → gold
-- Mais la regle "toujours produire une synthese" est plus large que la skill
+**Implications:**
+- This is not just a skill, it is a **work convention** to put in CLAUDE.md
+- The /digest skill automates the raw → gold transformation
+- But the rule "always produce a synthesis" is broader than the skill
 
-## Idee 2 : Hierarchie de connaissances avec docstrings
+## Idea 2: Knowledge hierarchy with docstrings
 
-**Le probleme :** Un LLM qui arrive dans un projet doit comprendre le contexte
-general AVANT de plonger dans les details. Aujourd'hui il doit ouvrir et lire
-chaque fichier.
+**The problem:** An LLM arriving in a project must understand the general
+context BEFORE diving into the details. Today it has to open and read
+each file.
 
-**La solution proposee :** Utiliser les docstrings/headers comme des "resumes executifs"
-a chaque niveau de la hierarchie :
+**The proposed solution:** Use docstrings/headers as "executive summaries"
+at each level of the hierarchy:
 
 ```
 .meta/gold/
-├── INDEX.md                         ← Resume de TOUS les gold files (10-20 lignes)
-│                                       Lu en premier, donne la carte
-├── skills-workflow-and-utilities.md ← Header = resume (5 lignes)
-│                                       Body = detail complet
-├── context-management.md           ← Header = resume (5 lignes)
-│                                       Body = detail complet
+├── INDEX.md                         ← Summary of ALL gold files (10-20 lines)
+│                                       Read first, provides the map
+├── skills-workflow-and-utilities.md ← Header = summary (5 lines)
+│                                       Body = full detail
+├── context-management.md           ← Header = summary (5 lines)
+│                                       Body = full detail
 └── ...
 ```
 
-**Le flow de lecture d'un LLM :**
-1. Lit INDEX.md (20 lignes) → comprend tout ce qu'on sait
-2. Ouvre le fichier gold pertinent → detail actionnable
-3. Si besoin, va a la source dans references/ → raw data
+**The LLM reading flow:**
+1. Reads INDEX.md (20 lines) → understands everything we know
+2. Opens the relevant gold file → actionable detail
+3. If needed, goes to the source in references/ → raw data
 
-**C'est du progressive disclosure applique a la documentation, pas juste aux skills.**
+**This is progressive disclosure applied to documentation, not just to skills.**
 
-## Idee 3 : Mapping sur les 3 niveaux
+## Idea 3: Mapping onto the 3 levels
 
-| Niveau | Contenu | Quand le lire | Equivalent |
-|--------|---------|---------------|------------|
-| **Carte** (INDEX.md) | 1-2 lignes par sujet | Toujours | Description de skill |
-| **Gold** (gold/*.md) | Key takeaways structures | Quand on travaille sur le sujet | Body de skill |
-| **Source** (references/*.md) | Raw data, URLs, citations | Quand on a besoin de preuves | Documentation externe |
+| Level | Content | When to read | Equivalent |
+|-------|---------|--------------|------------|
+| **Map** (INDEX.md) | 1-2 lines per topic | Always | Skill description |
+| **Gold** (gold/*.md) | Structured key takeaways | When working on the topic | Skill body |
+| **Source** (references/*.md) | Raw data, URLs, citations | When you need proof | External documentation |
 
-## Idee 4 : Convention pour les fichiers
+## Idea 4: File convention
 
-Chaque fichier .md dans gold/ et references/ commence par un header standardise :
+Each .md file in gold/ and references/ starts with a standardized header:
 
 ```markdown
-# Titre
+# Title
 
-> RESUME : [1-2 phrases qui disent l'essentiel]
-> SOURCES : [fichiers source]
-> DATE : [date de creation]
-> CONFIANCE : [haute/moyenne/basse]
+> SUMMARY: [1-2 sentences that convey the essence]
+> SOURCES: [source files]
+> DATE: [creation date]
+> CONFIDENCE: [high/medium/low]
 ```
 
-Ce header est ce qui apparait dans l'INDEX.md. Le LLM peut scanner
-les headers sans ouvrir les fichiers.
+This header is what appears in INDEX.md. The LLM can scan
+the headers without opening the files.
 
-## Idee 5 : Generaliser au template
+## Idea 5: Generalize to the template
 
-Cette hierarchie n'est pas juste pour metadev-protocol. Elle devrait etre
-dans le TEMPLATE genere :
+This hierarchy is not just for metadev-protocol. It should be
+in the GENERATED template:
 
 ```
 .meta/
-├── gold/           ← Syntheses actionnables (le LLM lit ca en priorite)
-│   └── INDEX.md    ← Carte de tout ce qu'on sait
-├── references/     ← Sources brutes (le LLM y va si besoin)
-├── decisions/      ← ADRs (pourquoi on a choisi)
-├── sessions/       ← Historique
-└── scratch/        ← Brouillons (gitignored)
+├── gold/           ← Actionable syntheses (the LLM reads this first)
+│   └── INDEX.md    ← Map of everything we know
+├── references/     ← Raw sources (the LLM goes here if needed)
+├── decisions/      ← ADRs (why we chose)
+├── sessions/       ← History
+└── scratch/        ← Drafts (gitignored)
 ```
 
-## Idee 6 : Timestamp = verite (plus recent gagne)
+## Idea 6: Timestamp = truth (most recent wins)
 
-**Le probleme :** Si tout est sauvegarde, on accumule des fichiers qui peuvent se
-contredire. Un gold file de janvier peut dire le contraire d'un gold file d'avril.
+**The problem:** If everything is saved, files can accumulate and contradict each other.
+A gold file from January may say the opposite of a gold file from April.
 
-**La regle proposee :** Chaque fichier est timestampe. En cas de contradiction,
-**le plus recent fait foi.** Simple, deterministe, pas d'ambiguite.
+**The proposed rule:** Each file is timestamped. In case of contradiction,
+**the most recent takes precedence.** Simple, deterministic, no ambiguity.
 
-**Implication sur le header standardise :**
+**Implication for the standardized header:**
 ```markdown
-> DATE : 2026-04-01
-> SUPERSEDES : context-management-v1.md (si applicable)
+> DATE: 2026-04-01
+> SUPERSEDES: context-management-v1.md (if applicable)
 ```
 
-## Idee 7 : Maintenance de la base de connaissances — Tri et nettoyage
+## Idea 7: Knowledge base maintenance — Sorting and cleanup
 
-**Le probleme :** Si on sauvegarde tout, ca devient un dump. Il faut du tri.
+**The problem:** If everything is saved, it becomes a dump. Sorting is needed.
 
-**3 mecanismes de tri proposes :**
+**3 proposed sorting mechanisms:**
 
-### A. Human-in-the-loop (le plus fiable)
-- L'humain decide periodiquement : garder, archiver, supprimer
-- Skill /tidy qui liste les fichiers par date, taille, et demande "on garde ?"
-- Frequence : fin de sprint ou quand .meta/ depasse un seuil
+### A. Human-in-the-loop (most reliable)
+- The human decides periodically: keep, archive, delete
+- Skill /tidy that lists files by date, size, and asks "do we keep this?"
+- Frequency: end of sprint or when .meta/ exceeds a threshold
 
-### B. Dream Mode (automatise, inspire du leak)
-- Un process (skill ou hook) qui consolide les connaissances :
-  - Fusionne les fichiers qui se recoupent
-  - Archive les fichiers obsoletes (superseded)
-  - Met a jour INDEX.md
-- Equivalent de notre /consolidate mais pour TOUTE la base gold/references
-- Pourrait etre une skill /dream ou /maintain
+### B. Dream Mode (automated, inspired by the leak)
+- A process (skill or hook) that consolidates knowledge:
+  - Merges overlapping files
+  - Archives obsolete files (superseded)
+  - Updates INDEX.md
+- Equivalent of our /consolidate but for THE ENTIRE gold/references base
+- Could be a skill /dream or /maintain
 
-### C. Lifecycle naturel (convention)
-- Les fichiers references/ ont une duree de vie limitee
-  - > 3 mois sans etre cite par un gold → candidat a l'archivage
-- Les fichiers gold/ sont maintenus tant que le sujet est actif
-- Les fichiers decisions/ sont permanents (ADRs ne sont jamais supprimes)
+### C. Natural lifecycle (convention)
+- references/ files have a limited lifespan
+  - > 3 months without being cited by a gold file → archive candidate
+- gold/ files are maintained as long as the topic is active
+- decisions/ files are permanent (ADRs are never deleted)
 
-**Les 3 mecanismes sont complementaires, pas exclusifs.**
+**The 3 mechanisms are complementary, not mutually exclusive.**
 
-## Idee 8 : Cycle de vie d'un fichier de connaissance
+## Idea 8: Knowledge file lifecycle
 
 ```
-RECHERCHE                    SYNTHESE                    MAINTENANCE
+RESEARCH                     SYNTHESIS                   MAINTENANCE
    |                            |                            |
    v                            v                            v
 references/raw.md  --/digest--> gold/synthesis.md  --/dream--> gold/synthesis-v2.md
-   (bronze)                     (gold)                       (gold, mis a jour)
+   (bronze)                     (gold)                       (gold, updated)
                                   |
                                   v
-                              INDEX.md (mis a jour)
+                              INDEX.md (updated)
                                   |
                                   v
-                          decisions/ADR-xxx.md (si decision prise)
+                          decisions/ADR-xxx.md (if decision made)
 ```
 
-### Les transitions :
-1. **Recherche → Reference** : agent web/parsing, sauvegarde timestampee
-2. **Reference → Gold** : skill /digest, extraction key takeaways
-3. **Gold → Gold v2** : skill /dream ou /consolidate, fusion/mise a jour
-4. **Gold → Decision** : humain valide, cree un ADR
-5. **Reference → Archive** : /tidy ou human-in-the-loop, fichier obsolete
+### The transitions:
+1. **Research → Reference**: web/parsing agent, timestamped save
+2. **Reference → Gold**: skill /digest, key takeaways extraction
+3. **Gold → Gold v2**: skill /dream or /consolidate, merge/update
+4. **Gold → Decision**: human validates, creates an ADR
+5. **Reference → Archive**: /tidy or human-in-the-loop, obsolete file
 
-### Les regles de transition :
-- Ref → Gold : TOUJOURS (pas de ref qui reste sans synthese)
-- Gold stale (>3 mois sans update) : flag pour review humain
-- Gold contradictoire : plus recent gagne, ancien archive
-- Decision : JAMAIS supprimee, peut etre SUPERSEDED par une nouvelle
+### The transition rules:
+- Ref → Gold: ALWAYS (no ref that stays without a synthesis)
+- Stale gold (>3 months without update): flag for human review
+- Contradictory gold: most recent wins, old one archived
+- Decision: NEVER deleted, can be SUPERSEDED by a new one
 
-## Questions ouvertes pour le brainstorm
+## Open questions for the brainstorm
 
-- Format exact de l'INDEX.md (table? liste? sections?)
-- Comment la skill /digest met a jour l'INDEX.md automatiquement
-- Est-ce que CLAUDE.md devrait pointer vers INDEX.md ("lis .meta/gold/INDEX.md") ?
-- Est-ce que les sessions/ devraient aussi avoir un INDEX?
-- Seuil de volume pour declencher /tidy (nombre de fichiers? taille totale?)
-- Est-ce que /dream tourne automatiquement (hook SessionStart?) ou manuellement?
-- Comment gerer les gold files qui couvrent plusieurs domaines?
-- Est-ce que le template genere devrait inclure gold/ et references/ vides
-  ou seulement les creer a la premiere utilisation?
+- Exact format of INDEX.md (table? list? sections?)
+- How the /digest skill updates INDEX.md automatically
+- Should CLAUDE.md point to INDEX.md ("read .meta/gold/INDEX.md")?
+- Should sessions/ also have an INDEX?
+- Volume threshold to trigger /tidy (number of files? total size?)
+- Does /dream run automatically (SessionStart hook?) or manually?
+- How to handle gold files that cover multiple domains?
+- Should the generated template include empty gold/ and references/ directories
+  or only create them on first use?

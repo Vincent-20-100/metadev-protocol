@@ -1,145 +1,145 @@
-# ADR-004 — Matrice de decision : tous les patterns classes
+# ADR-004 — Decision matrix: all patterns classified
 
-**Date :** 2026-04-01
-**Statut :** DRAFT — en attente de validation Vincent
-
----
-
-## Grille de classification
-
-### Axe 1 — Priorite (qualite/importance)
-
-| Tier | Signification | Critere |
-|------|--------------|---------|
-| **T1 INDISPENSABLE** | Si c'est pas la, le template n'a pas de valeur | Sans ca, le projet genere est pire qu'un `mkdir` |
-| **T2 RECOMMANDE** | Forte valeur ajoutee, consensus de la communaute | Adopte par >50% des bons repos, impact mesurable |
-| **T3 NICE-TO-HAVE** | Utile mais pas critique, peut venir plus tard | Ameliore l'experience sans etre bloquant |
-| **T4 A EVITER** | Over-engineering, trop specifique, ou contre-productif | Ajoute de la complexite sans benefice clair pour un bootstrap |
-
-### Axe 2 — Scope (vanilla vs custom)
-
-| Scope | Signification |
-|-------|--------------|
-| **VANILLA** | Dans tous les profils (minimal/app/data/quant) |
-| **PROFILE** | Conditionnel au type de projet |
-| **USER** | L'utilisateur l'ajoute lui-meme si besoin |
+**Date:** 2026-04-01
+**Status:** DRAFT — pending validation by Vincent
 
 ---
 
-## La matrice
+## Classification grid
 
-### T1 INDISPENSABLE
+### Axis 1 — Priority (quality/importance)
 
-| Pattern | Scope | Source | Implemente ? |
-|---------|-------|--------|-------------|
-| CLAUDE.md avec instructions IA (<120 lignes) | VANILLA | SOTA, ADR-003 | OUI |
-| pyproject.toml avec deps par profil | VANILLA | EgoVault, SOTA | OUI |
-| .gitignore propre | VANILLA | Standard | OUI |
-| uv comme gestionnaire de deps | VANILLA | SOTA, consensus | OUI |
-| ruff pour lint + format | VANILLA | SOTA, consensus | OUI |
-| pre-commit hooks (ruff) | VANILLA | SOTA, ADR-001 | OUI |
-| Conventional commits documentes | VANILLA | EgoVault, SOTA | OUI |
-| .meta/ cockpit (PILOT.md) | VANILLA | EgoVault, ADR-003 | OUI |
-| tests/ avec conftest.py | VANILLA | EgoVault, SOTA | OUI |
-| .claude/settings.json (permissions) | VANILLA | ADR-002 | OUI |
-| git init post-copy | VANILLA | SOTA | OUI |
+| Tier | Meaning | Criterion |
+|------|---------|-----------|
+| **T1 ESSENTIAL** | If this is missing, the template has no value | Without it, the generated project is worse than a `mkdir` |
+| **T2 RECOMMENDED** | High added value, community consensus | Adopted by >50% of good repos, measurable impact |
+| **T3 NICE-TO-HAVE** | Useful but not critical, can come later | Improves experience without being a blocker |
+| **T4 AVOID** | Over-engineering, too specific, or counterproductive | Adds complexity with no clear benefit for a bootstrap |
 
-### T2 RECOMMANDE
+### Axis 2 — Scope (vanilla vs custom)
 
-| Pattern | Scope | Source | Implemente ? |
-|---------|-------|--------|-------------|
-| SESSION-CONTEXT.md (rewrite, don't append) | VANILLA | EgoVault, ADR-003 | OUI |
-| Workflow 5 phases dans PILOT.md | VANILLA | EgoVault+SOTA, ADR-003 | OUI |
-| Hierarchie documentaire (CLAUDE.md > decisions > docstrings) | VANILLA | EgoVault, ADR-003 | OUI |
-| Regles anti-LLM universelles (G2, G5, G6, G13) | VANILLA | EgoVault, ADR-003 | OUI |
-| Hook auto-ruff PostToolUse | VANILLA | ADR-002, SOTA | OUI |
-| Hook re-injection contexte apres compaction | VANILLA | ADR-002, ref hooks | OUI |
-| Skill /test (pytest) | VANILLA | ADR-002 | OUI |
-| Deny permissions (rm -rf, sudo, .env, .git) | VANILLA | ADR-002 | OUI |
-| Skill /lint (ruff check + format) | VANILLA | Logique directe | **NON** |
-| Skill /ship (checklist pre-commit) | VANILLA | SOTA workflow | **NON** |
-| src/{{project_slug}}/__init__.py | VANILLA | Standard Python | **NON** |
-| PEP 735 dependency groups (dev/test) | VANILLA | SOTA | OUI (partiel) |
-| Regles profilees app (routing mince, DI) | PROFILE:app | EgoVault G4/G11 | OUI |
-| Regles profilees quant (vectorisation, doc math) | PROFILE:quant | EgoVault adapte | OUI |
-| Regles profilees data (idempotent, raw immutable) | PROFILE:data | EgoVault adapte | OUI |
-| Config 3 niveaux (system/user/install) | PROFILE:app | EgoVault, ADR-001 | **NON** |
-| Deps fastapi+uvicorn | PROFILE:app | Standard | OUI |
-| Deps polars+duckdb | PROFILE:data | Standard | OUI |
-| Deps numpy+pandas+matplotlib | PROFILE:quant | Standard | OUI |
+| Scope | Meaning |
+|-------|---------|
+| **VANILLA** | In all profiles (minimal/app/data/quant) |
+| **PROFILE** | Conditional on project type |
+| **USER** | The user adds it themselves if needed |
+
+---
+
+## The matrix
+
+### T1 ESSENTIAL
+
+| Pattern | Scope | Source | Implemented? |
+|---------|-------|--------|--------------|
+| CLAUDE.md with AI instructions (<120 lines) | VANILLA | SOTA, ADR-003 | YES |
+| pyproject.toml with deps by profile | VANILLA | EgoVault, SOTA | YES |
+| Clean .gitignore | VANILLA | Standard | YES |
+| uv as dependency manager | VANILLA | SOTA, consensus | YES |
+| ruff for lint + format | VANILLA | SOTA, consensus | YES |
+| pre-commit hooks (ruff) | VANILLA | SOTA, ADR-001 | YES |
+| Conventional commits documented | VANILLA | EgoVault, SOTA | YES |
+| .meta/ cockpit (PILOT.md) | VANILLA | EgoVault, ADR-003 | YES |
+| tests/ with conftest.py | VANILLA | EgoVault, SOTA | YES |
+| .claude/settings.json (permissions) | VANILLA | ADR-002 | YES |
+| git init post-copy | VANILLA | SOTA | YES |
+
+### T2 RECOMMENDED
+
+| Pattern | Scope | Source | Implemented? |
+|---------|-------|--------|--------------|
+| SESSION-CONTEXT.md (rewrite, don't append) | VANILLA | EgoVault, ADR-003 | YES |
+| 5-phase workflow in PILOT.md | VANILLA | EgoVault+SOTA, ADR-003 | YES |
+| Document hierarchy (CLAUDE.md > decisions > docstrings) | VANILLA | EgoVault, ADR-003 | YES |
+| Universal anti-LLM rules (G2, G5, G6, G13) | VANILLA | EgoVault, ADR-003 | YES |
+| Auto-ruff PostToolUse hook | VANILLA | ADR-002, SOTA | YES |
+| Context re-injection hook after compaction | VANILLA | ADR-002, ref hooks | YES |
+| Skill /test (pytest) | VANILLA | ADR-002 | YES |
+| Deny permissions (rm -rf, sudo, .env, .git) | VANILLA | ADR-002 | YES |
+| Skill /lint (ruff check + format) | VANILLA | Direct logic | **NO** |
+| Skill /ship (pre-commit checklist) | VANILLA | SOTA workflow | **NO** |
+| src/{{project_slug}}/__init__.py | VANILLA | Standard Python | **NO** |
+| PEP 735 dependency groups (dev/test) | VANILLA | SOTA | YES (partial) |
+| Profile-specific app rules (thin routing, DI) | PROFILE:app | EgoVault G4/G11 | YES |
+| Profile-specific quant rules (vectorization, math docs) | PROFILE:quant | EgoVault adapted | YES |
+| Profile-specific data rules (idempotent, raw immutable) | PROFILE:data | EgoVault adapted | YES |
+| 3-level config (system/user/install) | PROFILE:app | EgoVault, ADR-001 | **NO** |
+| Deps fastapi+uvicorn | PROFILE:app | Standard | YES |
+| Deps polars+duckdb | PROFILE:data | Standard | YES |
+| Deps numpy+pandas+matplotlib | PROFILE:quant | Standard | YES |
 
 ### T3 NICE-TO-HAVE
 
-| Pattern | Scope | Source | Implemente ? |
-|---------|-------|--------|-------------|
-| Skill /review (code review en subagent fork) | VANILLA | Ref hooks/skills | **NON** |
-| Instruction compaction dans CLAUDE.md | VANILLA | SOTA | **NON** |
-| 120-char line length ruff config | VANILLA | SOTA consensus | **NON** |
-| Dynamic versioning (git tags) | VANILLA | SOTA | **NON** |
-| Skill /api-test (test endpoints) | PROFILE:app | Logique directe | **NON** |
-| Skill /pipeline-run | PROFILE:data | Logique directe | **NON** |
-| Skill /backtest | PROFILE:quant | Logique directe | **NON** |
-| .mcp.json vide/template | USER | Ref MCP | **NON** |
-| Subagent investigation pattern | USER | SOTA, leak | **NON** |
-| Red Zone / Green Zone documentation | USER | SOTA | **NON** |
-| 9 couches app IA comme checklist | PROFILE:app | LinkedIn posts | **NON** |
-| Recursive arguing (code + review agents) | USER | SOTA | **NON** |
-| agnix linter pour CLAUDE.md/skills | USER | top-repos | **NON** |
-| Research-first development guide | VANILLA | SOTA | **NON** |
+| Pattern | Scope | Source | Implemented? |
+|---------|-------|--------|--------------|
+| Skill /review (code review in subagent fork) | VANILLA | Ref hooks/skills | **NO** |
+| Compaction instruction in CLAUDE.md | VANILLA | SOTA | **NO** |
+| 120-char line length ruff config | VANILLA | SOTA consensus | **NO** |
+| Dynamic versioning (git tags) | VANILLA | SOTA | **NO** |
+| Skill /api-test (test endpoints) | PROFILE:app | Direct logic | **NO** |
+| Skill /pipeline-run | PROFILE:data | Direct logic | **NO** |
+| Skill /backtest | PROFILE:quant | Direct logic | **NO** |
+| Empty/template .mcp.json | USER | Ref MCP | **NO** |
+| Subagent investigation pattern | USER | SOTA, leak | **NO** |
+| Red Zone / Green Zone documentation | USER | SOTA | **NO** |
+| 9-layer AI app as checklist | PROFILE:app | LinkedIn posts | **NO** |
+| Recursive arguing (code + review agents) | USER | SOTA | **NO** |
+| agnix linter for CLAUDE.md/skills | USER | top-repos | **NO** |
+| Research-first development guide | VANILLA | SOTA | **NO** |
 
-### T4 A EVITER (pour un bootstrap)
+### T4 AVOID (for a bootstrap)
 
-| Pattern | Pourquoi on le rejette | Source |
-|---------|----------------------|--------|
-| Workflow 7 phases (BRAINSTORM→AUDIT) | Over-engineered pour un nouveau projet | EgoVault |
-| docs/superpowers/ lifecycle (specs/plans/audits/archive) | Trop lourd, pertinent pour projets matures | EgoVault |
-| @loggable decorator avec callback injection | Trop specifique a l'architecture EgoVault | EgoVault |
-| Taxonomie config-driven (YAML enums) | Specifique aux projets avec classification user | EgoVault |
-| Sandbox Claude Code active par defaut | Trop restrictif, casse le flow de dev | Ref hooks |
-| MCP servers pre-configures | Trop specifique a chaque user/environnement | Ref MCP |
-| Hook PreToolUse bloquer rm (redondant avec deny) | Le deny dans permissions fait deja le job | Ref hooks |
-| KAIROS/autoDream/ULTRAPLAN patterns | Features non-releasees, pas utilisables | Leak |
-| Anti-distillation fake tools | Specifique Anthropic, pas un pattern de dev | Leak |
-| pyright/mypy active par defaut | Ajoute friction sans benefice pour un bootstrap | SOTA |
-| CI/CD pipeline genere | Trop specifique (GitHub Actions vs GitLab vs...) | Standard |
-
----
-
-## Prochaines actions (par priorite)
-
-### Sprint 1 — Completer les T2 manquants
-
-| Action | Effort |
-|--------|--------|
-| Creer skill /lint | Petit |
-| Creer skill /ship | Petit |
-| Creer src/{{project_slug}}/__init__.py dans template | Petit |
-| Creer config/ 3 niveaux pour profil app | Moyen |
-
-### Sprint 2 — T3 a forte valeur
-
-| Action | Effort |
-|--------|--------|
-| Instruction compaction dans CLAUDE.md | Petit |
-| Config ruff 120 chars dans pyproject.toml.jinja | Petit |
-| Skill /review (subagent fork) | Moyen |
-| Skills profilees (api-test, pipeline-run, backtest) | Moyen |
-
-### Sprint 3 — Documentation et polish
-
-| Action | Effort |
-|--------|--------|
-| Guide "comment ajouter ses propres skills" | Petit |
-| Guide MCP configuration | Petit |
-| Research-first development tips dans CLAUDE.md | Petit |
+| Pattern | Why we reject it | Source |
+|---------|-----------------|--------|
+| 7-phase workflow (BRAINSTORM→AUDIT) | Over-engineered for a new project | EgoVault |
+| docs/superpowers/ lifecycle (specs/plans/audits/archive) | Too heavy, relevant for mature projects | EgoVault |
+| @loggable decorator with callback injection | Too specific to EgoVault's architecture | EgoVault |
+| Config-driven taxonomy (YAML enums) | Specific to projects with user classification | EgoVault |
+| Claude Code sandbox enabled by default | Too restrictive, breaks the dev flow | Ref hooks |
+| Pre-configured MCP servers | Too specific to each user/environment | Ref MCP |
+| PreToolUse hook to block rm (redundant with deny) | The deny in permissions already does the job | Ref hooks |
+| KAIROS/autoDream/ULTRAPLAN patterns | Unreleased features, not usable | Leak |
+| Anti-distillation fake tools | Anthropic-specific, not a dev pattern | Leak |
+| pyright/mypy enabled by default | Adds friction without benefit for a bootstrap | SOTA |
+| Generated CI/CD pipeline | Too specific (GitHub Actions vs GitLab vs...) | Standard |
 
 ---
 
-## Niveaux de confiance
+## Next actions (by priority)
 
-| Tier | Confiance | Justification |
-|------|-----------|---------------|
-| T1 | TRES ELEVE | Standards de l'industrie, consensus large |
-| T2 | ELEVE | Teste sur EgoVault et/ou documente par la communaute |
-| T3 | MOYEN | Bonne idee mais pas encore testee dans notre contexte |
-| T4 | ELEVE (sur le rejet) | Over-engineering prouve ou trop specifique |
+### Sprint 1 — Complete missing T2s
+
+| Action | Effort |
+|--------|--------|
+| Create skill /lint | Small |
+| Create skill /ship | Small |
+| Create src/{{project_slug}}/__init__.py in template | Small |
+| Create 3-level config/ for app profile | Medium |
+
+### Sprint 2 — High-value T3s
+
+| Action | Effort |
+|--------|--------|
+| Compaction instruction in CLAUDE.md | Small |
+| Ruff 120 chars config in pyproject.toml.jinja | Small |
+| Skill /review (subagent fork) | Medium |
+| Profile-specific skills (api-test, pipeline-run, backtest) | Medium |
+
+### Sprint 3 — Documentation and polish
+
+| Action | Effort |
+|--------|--------|
+| Guide "how to add your own skills" | Small |
+| MCP configuration guide | Small |
+| Research-first development tips in CLAUDE.md | Small |
+
+---
+
+## Confidence levels
+
+| Tier | Confidence | Justification |
+|------|------------|---------------|
+| T1 | VERY HIGH | Industry standards, broad consensus |
+| T2 | HIGH | Tested on EgoVault and/or documented by the community |
+| T3 | MEDIUM | Good idea but not yet tested in our context |
+| T4 | HIGH (on the rejection) | Proven over-engineering or too specific |
