@@ -79,17 +79,21 @@ Skills (`.claude/skills/`) are the right place for dev workflow:
 - **Not hooks** — too rigid, can't handle interactive workflows
 - **Skills** — loaded on demand, shared via git, composable in pipelines
 
-Five skills ship with every project:
+The strategy is two-tier:
+
+**Project-specific skills** ship with every project and handle what's unique to the project workflow:
 
 | Skill | When | What it does |
 |-------|------|-------------|
-| `/brainstorm` | Idea is vague | Socratic exploration: one question at a time, 2-3 alternatives, YAGNI |
-| `/plan` | Scope is clear | Break work into 2-5 min tasks with file mapping and verification |
-| `/ship` | Work is done | Checklist (tests + lint + files), update PILOT.md, rewrite SESSION-CONTEXT.md |
+| `/save-progress` | Work is done | Checklist (tests + lint + files), update PILOT.md, rewrite SESSION-CONTEXT.md |
 | `/lint` | Anytime | ruff check + format on the whole project |
 | `/test` | Anytime | Run pytest with optional arguments |
+| `/brainstorm` | Idea is vague | Lightweight fallback: one question at a time, 2-3 alternatives, YAGNI |
+| `/plan` | Scope is clear | Lightweight fallback: tasks with file mapping and verification |
 
-Skills form a pipeline: brainstorm → plan → implement → test → ship. Each can work standalone too.
+**General workflow skills** are delegated to the [Superpowers plugin](https://github.com/obra/superpowers) (`/install-plugin obra/superpowers`). When installed, Superpowers provides more thorough versions of brainstorming, planning, debugging, code review, and TDD. The basic `/brainstorm` and `/plan` remain as fallbacks when the plugin is not installed.
+
+Skills form a pipeline: brainstorm → plan → implement → test → save-progress. Each can work standalone too.
 
 ### 6. Context survives sessions
 
@@ -158,9 +162,10 @@ Currently one-shot: `copier copy` once, the project lives its life. No `copier u
 - 5 skills (brainstorm, plan, ship, lint, test)
 - Auto-setup (uv sync + pre-commit install)
 
-**Phase C (v2) — Planned:**
-- Skills T2: /spec, /tdd, /review, /debug, /consolidate
-- Knowledge hierarchy: INDEX.md, /digest, /dream, /tidy
+**Phase C (v2) — In Progress:**
+- Superpowers integration (general workflow skills delegated to plugin)
+- /ship renamed to /save-progress
+- Knowledge hierarchy: L1/L2/L3 temporal layers (aligned with Claude Code native memory)
 - GitHub Actions CI
 - Profile-specific skills
-- Multi-language templates
+- Multi-agent support (AGENTS.md)

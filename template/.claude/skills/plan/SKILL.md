@@ -3,6 +3,9 @@ name: plan
 description: Break work into concrete tasks with verification steps
 ---
 
+> If you have the Superpowers plugin installed, prefer `superpowers:writing-plans`
+> for more detailed implementation plans. This skill is a lightweight fallback.
+
 You are in PLANNING mode. Your job is to decompose work into actionable tasks.
 
 ## Hard rules

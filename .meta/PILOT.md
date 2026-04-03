@@ -1,7 +1,7 @@
 # PILOT.md — metadev-protocol
 
-**Date:** 2026-04-02
-**Phase:** v2 brainstorming in progress
+**Date:** 2026-04-03
+**Phase:** v2 Part 1 DONE, Part 2 brainstorm DONE — next: Part 3
 
 ---
 
@@ -24,13 +24,13 @@
 
 | Part | Scope | Status |
 |------|-------|--------|
-| 1 | Superpowers integration + /save-progress rename | SPEC DONE |
-| 2 | Knowledge hierarchy (L1/L2/L3 context layers) | BRAINSTORM IN PROGRESS |
+| 1 | Superpowers integration + /save-progress rename | DONE |
+| 2 | Knowledge hierarchy (L1/L2/L3 context layers) | BRAINSTORM DONE |
 | 3 | Infrastructure (CI, config levels, language params) | TO BRAINSTORM |
 | 4 | Profile-specific skills | TO BRAINSTORM |
 | 5 | Multi-agent support (AGENTS.md) | TO BRAINSTORM |
 
-### Key decisions this session (v2 brainstorm)
+### Key decisions (v2)
 
 - Skills T2 delegated to Superpowers plugin (not custom)
 - Superpowers outputs redirected to .meta/scratch/ via CLAUDE.md
@@ -38,7 +38,7 @@
 - /ship renamed to /save-progress
 - /consolidate dropped (YAGNI)
 - Auto-install Superpowers: check → propose → install if user agrees
-- Knowledge hierarchy: L1/L2/L3 temporal layers selected
+- Knowledge hierarchy: L1/L2/L3 aligned with Claude Code native memory (MEMORY.md = L2)
 - Mini-RAG deferred (too ambitious for v2, revisit if L1/L2/L3 insufficient)
 - AGENTS.md support planned as Part 5
 - Deep Agents, AGENTS.md spec added to recommended ecosystem

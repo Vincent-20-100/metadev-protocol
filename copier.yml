@@ -50,15 +50,9 @@ _exclude:
 _tasks:
   - "git init"
   - >
-    command -v uv >/dev/null 2>&1 && {
-      uv sync && uv run pre-commit install &&
-      echo '✅ Dependencies installed, pre-commit activated.';
-    } || {
-      echo '';
-      echo '⚠️  uv not found.';
-      echo 'Install it: curl -LsSf https://astral.sh/uv/install.sh | sh';
-      echo 'Then run: uv sync && uv run pre-commit install';
-    }
+    uv sync && uv run pre-commit install &&
+    echo 'Dependencies installed, pre-commit activated.' ||
+    echo 'uv not found or sync failed. Install uv then run: uv sync && uv run pre-commit install'
 
 _message_after_copy: |
   ✅ Project {{ project_name }} created with The Meta Protocol.

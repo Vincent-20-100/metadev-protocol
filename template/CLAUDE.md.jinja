@@ -12,12 +12,14 @@ These behaviors are mandatory. Apply them without being asked.
 
 1. **Session start** — read PILOT.md + SESSION-CONTEXT.md before any action
 2. **First session** — if `first_session: true` in PILOT.md, offer a conversational intro: project structure, available skills, how a session works. Then set the flag to `false`
-3. **Before coding** — propose a plan before implementing. If scope is unclear, suggest `/brainstorm` first
-4. **Milestone completed** — update PILOT.md (status table, objectives, next steps)
-5. **End of session** — rewrite SESSION-CONTEXT.md: architecture snapshot, active decisions, traps, open questions
-6. **Every commit** — conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
-7. **Architecture changes** — if `.meta/ARCHITECTURE.md` doesn't exist and architecture is defined, create it. Keep it in sync with the code. On divergence, ask the user: if intentional, rewrite the file; if not, guide back to the defined architecture
-8. **Always** — apply the rules below and draw from `.meta/GUIDELINES.md`
+3. **Superpowers plugin** — if superpowers skills are not available, recommend installing the plugin: `/install-plugin obra/superpowers`. It provides advanced workflows (brainstorming, debugging, code review, TDD). If the user agrees, run the install command
+4. **Before coding** — propose a plan before implementing. If scope is unclear, suggest `/brainstorm` first
+5. **Milestone completed** — update PILOT.md (status table, objectives, next steps)
+6. **End of session** — rewrite SESSION-CONTEXT.md: architecture snapshot, active decisions, traps, open questions
+7. **Every commit** — conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
+8. **Architecture changes** — if `.meta/ARCHITECTURE.md` doesn't exist and architecture is defined, create it. Keep it in sync with the code. On divergence, ask the user: if intentional, rewrite the file; if not, guide back to the defined architecture
+9. **Context recall** — if you lack context on a past decision, check `.meta/sessions/` for session archives before asking the user
+10. **Always** — apply the rules below and draw from `.meta/GUIDELINES.md`
 
 ## Rules
 
@@ -55,13 +57,32 @@ Non-negotiable. These apply to every action.
 
 ## Skills
 
+Project skills (always available):
+
 ```
-/brainstorm  — structured exploration before coding (one question at a time)
-/plan        — break work into tasks with verification steps
-/ship        — pre-commit checklist + context update (does NOT commit)
-/lint        — ruff check + format on the whole project
-/test        — run pytest
+/save-progress  — checklist + context update (does NOT commit)
+/lint            — ruff check + format on the whole project
+/test            — run pytest
+/brainstorm      — structured exploration (basic — use superpowers:brainstorming if available)
+/plan            — task decomposition (basic — use superpowers:writing-plans if available)
 ```
+
+Recommended plugin (install with `/install-plugin obra/superpowers`):
+
+```
+superpowers:brainstorming          — full design process with spec writing
+superpowers:writing-plans          — detailed implementation plans
+superpowers:executing-plans        — guided plan execution with checkpoints
+superpowers:systematic-debugging   — evidence-first debugging (4 phases)
+superpowers:requesting-code-review — two-stage code review
+superpowers:test-driven-development — red-green-refactor cycle
+```
+
+## Superpowers output paths
+
+Specs and plans go in `.meta/scratch/`, not `docs/superpowers/`:
+- Specs → `.meta/scratch/spec-<topic>.md`
+- Plans → `.meta/scratch/plan-<topic>.md`
 
 ## Commands
 

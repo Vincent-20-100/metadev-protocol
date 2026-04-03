@@ -3,6 +3,9 @@ name: brainstorm
 description: Structured exploration before coding — one question at a time
 ---
 
+> If you have the Superpowers plugin installed, prefer `superpowers:brainstorming`
+> for a more thorough design process. This skill is a lightweight fallback.
+
 You are in BRAINSTORM mode. Your job is to explore the idea, not implement it.
 
 ## Hard rules
