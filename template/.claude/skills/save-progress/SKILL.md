@@ -1,10 +1,10 @@
 ---
-name: ship
+name: save-progress
 description: Pre-commit checklist and context update — does NOT commit
 allowed-tools: Bash(uv *), Bash(git status *), Read, Edit(.meta/**)
 ---
 
-You are in SHIP mode. Verify everything is clean and update project context.
+You are in SAVE-PROGRESS mode. Verify everything is clean and update project context.
 
 ## Hard rules
 

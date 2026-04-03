@@ -24,7 +24,7 @@ Every session follows the same cycle. The LLM does this automatically — you do
            │
            ▼
 ┌─ Session end ───────────────────────────────────┐
-│  Run /ship (or LLM does it when you signal end) │
+│  Run /save-progress (or LLM does it at end)     │
 │  SESSION-CONTEXT.md gets rewritten              │
 │  Commit your work                               │
 └─────────────────────────────────────────────────┘
@@ -62,7 +62,7 @@ Output: `.meta/scratch/plan.md`
 
 **Use when:** scope is clear, you're ready to start implementing.
 
-### /ship — when work is done
+### /save-progress — when work is done
 
 Runs a checklist (tests pass? lint clean? no stray files?), then updates PILOT.md and rewrites SESSION-CONTEXT.md. Does NOT commit — that's your call.
 
@@ -80,6 +80,22 @@ Runs `uv run pytest` with optional arguments (e.g., `/test -k test_auth -v`).
 
 **Use when:** you want to run the test suite.
 
+## Recommended plugin: Superpowers
+
+For advanced workflows (structured debugging, code review, TDD), install the
+Superpowers plugin:
+
+    /install-plugin obra/superpowers
+
+The plugin provides skills like `superpowers:brainstorming` (full design process),
+`superpowers:systematic-debugging` (evidence-first, 4 phases), and
+`superpowers:requesting-code-review` (two-stage review).
+
+The LLM will suggest installing it on first session if it's not already present.
+When installed, Superpowers overrides the basic `/brainstorm` and `/plan` skills
+with more thorough versions. The project-specific skills (`/save-progress`, `/lint`,
+`/test`) remain unchanged.
+
 ## Common workflows
 
 ### Starting a new feature
@@ -90,7 +106,7 @@ LLM: (proposes a plan or suggests /brainstorm if scope is unclear)
 You: (approve the plan)
 LLM: (implements step by step, updates PILOT.md)
 You: "looks good, let's wrap up"
-LLM: (runs /ship checklist, updates context, reports ready to commit)
+LLM: (runs /save-progress checklist, updates context, reports ready to commit)
 ```
 
 ### Resuming after a break
@@ -167,4 +183,4 @@ uv run ruff format .        # Format
 uv run pytest               # Test
 ```
 
-Skills: `/brainstorm` → `/plan` → implement → `/test` → `/ship`
+Skills: `/brainstorm` → `/plan` → implement → `/test` → `/save-progress`

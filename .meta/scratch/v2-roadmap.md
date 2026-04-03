@@ -1,7 +1,7 @@
 # v2 Phase C — Roadmap
 
 **Date:** 2026-04-02
-**Status:** Parts 2-5 pending brainstorm
+**Status:** Part 1 DONE, Part 2 brainstorm DONE, Parts 3-5 pending
 
 ---
 
@@ -12,13 +12,12 @@
 - Drop /consolidate (YAGNI)
 - Spec: `.meta/scratch/v2-part1-spec.md`
 
-## Part 2: Knowledge Hierarchy (TO BRAINSTORM)
-- INDEX.md — project knowledge index
-- /digest — transform raw sources into key takeaways
-- /dream — auto-extraction of patterns between sessions
-- /tidy — cleanup and consolidation of .meta/ files
-- Timestamp-based truth resolution
-- 3 maintenance mechanisms (human-in-the-loop, dream mode, lifecycle)
+## Part 2: Knowledge Hierarchy (BRAINSTORM DONE)
+- L1/L2/L3 temporal layers aligned with Claude Code native memory
+- L1 = SESSION-CONTEXT.md (hot), L2 = native MEMORY.md + PILOT.md (warm), L3 = sessions/ archive (cold)
+- /digest, /dream, /tidy dropped (YAGNI) — /save-progress covers L1→L2 promotion
+- Mini-RAG deferred to Part 6 if L1/L2/L3 proves insufficient
+- Spec: `.meta/scratch/v2-part2-brainstorm.md`
 
 ## Part 3: Infrastructure (TO BRAINSTORM)
 - GitHub Actions CI for the template repo
