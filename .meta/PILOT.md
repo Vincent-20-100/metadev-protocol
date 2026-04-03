@@ -1,73 +1,69 @@
 # PILOT.md — metadev-protocol
 
 **Date:** 2026-04-02
-**Phase:** MVP Phase A complete — ready for dogfooding
+**Phase:** v2 brainstorming in progress
 
 ---
 
 ## Project state
 
-### Infrastructure (DONE)
-- pyproject.toml, .pre-commit-config.yaml, copier.yml ✅
-- Template generates successfully (all 4 profiles tested) ✅
-- Pre-commit installed ✅
-
-### Research (DONE)
-- 15 raw references in .meta/references/ ✅
-- 5 gold syntheses in .meta/gold/ ✅
-- 6 ADRs in .meta/decisions/ ✅
-
-### Strategic brainstorm (DONE)
-- Target audience: B/C (devs discovering vibe coding) ✅
-- Identity: "brand new workshop" (opinionated lightweight framework) ✅
-- Language: English default, 3 levels (code/project/meta) ✅
-- Superpowers: autonomous, inspired, credited ✅
-- Versioning: one-shot for now ✅
-- All decisions in ADR-006 ✅
-
 ### MVP Phase A (DONE)
+- All templates in English ✅
+- CLAUDE.md (law) + GUIDELINES.md (mentor) ✅
+- PILOT.md + SESSION-CONTEXT.md (context) ✅
+- 5 skills (brainstorm, plan, ship, lint, test) ✅
+- pyproject.toml (uv_build + ruff + pytest) ✅
+- Pre-commit enriched ✅
+- copier.yml English + auto-setup ✅
+- All 4 profiles tested ✅
+- docs/PHILOSOPHY.md + template GUIDE.md ✅
+- All meta-repo files in English ✅
+- Repo cleaned (removed src/, .env.example, .python-version, .claudeignore) ✅
 
-| # | Action | Status |
-|---|--------|--------|
-| 1 | Rewrite all templates to English | ✅ |
-| 2 | Add src/{{project_slug}}/__init__.py | ✅ |
-| 3 | Switch build backend to uv_build | ✅ |
-| 4 | Add ruff + pytest config in pyproject.toml.jinja | ✅ |
-| 5 | Enrich pre-commit (trailing-whitespace, check-yaml, no-commit-to-branch) | ✅ |
-| 6 | Update settings.json (add .meta/ permissions, remove compact hook) | ✅ |
-| 7 | Create skill /brainstorm (prescriptive, Superpowers-inspired) | ✅ |
-| 8 | Create skill /plan (writes to .meta/scratch/plan.md) | ✅ |
-| 9 | Create skill /ship (checklist + PILOT update + SESSION-CONTEXT rewrite) | ✅ |
-| 10 | Create skill /lint (ruff check + format) | ✅ |
-| 11 | Create CLAUDE.md.jinja v2 (English, automatisms, rules, skills, GUIDELINES.md) | ✅ |
-| 12 | Test full generation (all profiles) | ✅ |
+### v2 Phase C — Roadmap
 
-### Post-MVP (vision C)
-- Skills T2: /spec, /tdd, /review, /debug, /consolidate
-- Knowledge hierarchy: INDEX.md, /digest, /dream, /tidy
-- GitHub Actions CI
-- Config 3 levels (app profile)
-- Language params in copier.yml
-- Profile-specific skills
+| Part | Scope | Status |
+|------|-------|--------|
+| 1 | Superpowers integration + /save-progress rename | SPEC DONE |
+| 2 | Knowledge hierarchy (L1/L2/L3 context layers) | BRAINSTORM IN PROGRESS |
+| 3 | Infrastructure (CI, config levels, language params) | TO BRAINSTORM |
+| 4 | Profile-specific skills | TO BRAINSTORM |
+| 5 | Multi-agent support (AGENTS.md) | TO BRAINSTORM |
+
+### Key decisions this session (v2 brainstorm)
+
+- Skills T2 delegated to Superpowers plugin (not custom)
+- Superpowers outputs redirected to .meta/scratch/ via CLAUDE.md
+- /brainstorm + /plan kept as lightweight fallbacks
+- /ship renamed to /save-progress
+- /consolidate dropped (YAGNI)
+- Auto-install Superpowers: check → propose → install if user agrees
+- Knowledge hierarchy: L1/L2/L3 temporal layers selected
+- Mini-RAG deferred (too ambitious for v2, revisit if L1/L2/L3 insufficient)
+- AGENTS.md support planned as Part 5
+- Deep Agents, AGENTS.md spec added to recommended ecosystem
 
 ---
 
-## Gold files (knowledge base)
+## Scratch files (current brainstorms)
 
 ```
-.meta/gold/
-├── skills-workflow-and-utilities.md    <- 13 skills classified T1/T2/T3
-├── context-management.md              <- 3 axes, 5 compaction levels
-├── claude-code-architecture.md        <- Leak + official docs
-├── vibe-coding-practices.md           <- 5 principles, 7 anti-patterns
-└── python-dev-and-templating.md       <- 8 decisions, sprint plan
+.meta/scratch/
+├── mvp-phase-a-spec.md          # MVP spec (archived as ADR-007)
+├── mvp-phase-a-plan.md          # MVP implementation plan
+├── v2-roadmap.md                # Full v2 roadmap with sequence
+├── v2-part1-spec.md             # Superpowers integration spec
+└── v2-part2-brainstorm.md       # Knowledge hierarchy brainstorm (IN PROGRESS)
 ```
+
+---
 
 ## AI context
 
 - Gold files are the synthesized source of truth
-- References are raw sources (bronze)
 - Decisions are ADRs with rationale and confidence levels
 - Any change to template/ must be tested with copier copy
-- Stack: Python 3.12+, uv, ruff, copier, pre-commit
-- ALL template output must be in English
+- Stack: Python 3.13+, uv, ruff, copier, pre-commit
+- ALL template output in English
+- Superpowers plugin is the recommended complement (not a dependency)
+- AGENTS.md standard tracked for future multi-agent support
