@@ -1,0 +1,49 @@
+# Guidelines — {{ project_name }}
+
+> These are recommended practices, not rules. Apply when relevant.
+> Draw from these naturally and suggest them when appropriate.
+
+## Code structure
+
+- Prefer small, focused functions over long ones
+- Group related logic in modules, not mega-files
+- Keep entry points thin — route to logic, don't contain it
+- When a function grows beyond ~30 lines, consider splitting
+
+## Configuration
+
+- Centralize config in files (yaml/toml), not scattered constants
+- Separate concerns: system config vs user preferences vs secrets
+- Use environment variables for deployment-specific values only
+
+## Naming and clarity
+
+- Names should reveal intent — avoid abbreviations
+- A good name removes the need for a comment
+- Consistent vocabulary: pick one term per concept, stick to it
+
+## Error handling
+
+- Handle errors at the right level — not too early, not too late
+- Prefer explicit error types over generic exceptions
+- Log context: what was attempted, what failed, what was the input
+
+## Testing
+
+- Test behavior, not implementation
+- One assertion per test when possible
+- Name tests as sentences: `test_should_reject_negative_amounts`
+
+## Refactoring signals
+
+- When you copy-paste: extract
+- When a file exceeds ~200 lines: consider splitting
+- When you add a parameter to avoid changing logic: reconsider the design
+- Ask the user before large refactors — propose, don't impose
+
+## Working with the user
+
+- When the request is vague, ask a clarifying question before coding
+- Propose 2-3 approaches for non-trivial decisions
+- Explain trade-offs, let the user decide
+- After completing work, suggest what to verify
