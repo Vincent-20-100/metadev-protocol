@@ -1,67 +1,78 @@
 # CLAUDE.md — {{ project_name }}
 
-> Lu automatiquement par Claude Code à chaque session.
+> Read automatically by Claude Code at every session.
 
-## Première action
+## First action
 
-Lis `.meta/PILOT.md` (état du projet) puis `.meta/SESSION-CONTEXT.md` (contexte décisionnel).
-Ne code rien avant.
+Read `.meta/PILOT.md` then `.meta/SESSION-CONTEXT.md`. Do nothing before.
+
+## Automatisms
+
+These behaviors are mandatory. Apply them without being asked.
+
+1. **Session start** — read PILOT.md + SESSION-CONTEXT.md before any action
+2. **First session** — if `first_session: true` in PILOT.md, offer a conversational intro: project structure, available skills, how a session works. Then set the flag to `false`
+3. **Before coding** — propose a plan before implementing. If scope is unclear, suggest `/brainstorm` first
+4. **Milestone completed** — update PILOT.md (status table, objectives, next steps)
+5. **End of session** — rewrite SESSION-CONTEXT.md: architecture snapshot, active decisions, traps, open questions
+6. **Every commit** — conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
+7. **Architecture changes** — if `.meta/ARCHITECTURE.md` doesn't exist and architecture is defined, create it. Keep it in sync with the code. On divergence, ask the user: if intentional, rewrite the file; if not, guide back to the defined architecture
+8. **Always** — apply the rules below and draw from `.meta/GUIDELINES.md`
+
+## Rules
+
+Non-negotiable. These apply to every action.
+
+1. **Single responsibility** — one function, one purpose
+2. **Config over hardcode** — prefer yaml/toml config files over scattered variables
+3. **Minimize hardcoding** — anything that can change = config or parameter
+4. **No silent errors** — every `except` logs or re-raises
+5. **Conventional commits** — always
+6. **Drafts in `.meta/scratch/`** — never at root, never in `src/`
+7. **Docstrings: WHAT not HOW** — describe purpose, not implementation
+8. **YAGNI** — no over-engineering, complexity must be justified
 
 ## Architecture
 
 ```
 {{ project_slug }}/
-├── src/{{ project_slug }}/    # Code source validé
-├── tests/                     # Miroir de src/ — un test par module
+├── src/{{ project_slug }}/    # Validated source code
+├── tests/                     # Mirror of src/ — one test per module
 ├── .meta/
-│   ├── PILOT.md               # État du projet (LIS EN PREMIER)
-│   ├── SESSION-CONTEXT.md     # Contexte décisionnel (réécrit chaque session)
+│   ├── PILOT.md               # Project dashboard (READ FIRST)
+│   ├── SESSION-CONTEXT.md     # Living context (rewritten each session)
+│   ├── GUIDELINES.md          # Recommended practices (advisory)
 │   ├── decisions/             # ADRs
-│   ├── sessions/              # Historique
-│   └── scratch/               # Brouillons (gitignored)
+│   ├── sessions/              # Session archives
+│   └── scratch/               # Drafts (gitignored)
 {% if project_type == "app" %}├── config/
-│   ├── system.yaml            # Params applicatifs (versionné)
-│   ├── user.yaml.example      # Préférences utilisateur (gitignored)
-│   └── install.yaml.example   # Secrets et chemins (gitignored)
+│   ├── system.yaml            # App config (versioned)
+│   ├── user.yaml.example      # User prefs (gitignored)
+│   └── install.yaml.example   # Secrets and paths (gitignored)
 {% endif %}├── CLAUDE.md
 └── pyproject.toml
 ```
 
-## Hiérarchie documentaire
+## Skills
 
-CLAUDE.md > `.meta/decisions/` > docstrings > commentaires inline.
-`.meta/` est provisoire (workspace IA). `docs/` est permanent (mis à jour avec le code).
+```
+/brainstorm  — structured exploration before coding (one question at a time)
+/plan        — break work into tasks with verification steps
+/ship        — pre-commit checklist + context update (does NOT commit)
+/lint        — ruff check + format on the whole project
+/test        — run pytest
+```
 
-## Règles
-
-1. **Brouillons dans `.meta/scratch/`** — jamais à la racine, jamais dans `src/`
-2. **`src/` = code testé uniquement** — pas de code "en cours"
-3. **Conventional Commits** — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
-4. **Docstrings : WHAT, pas HOW** — décrire ce que fait la fonction, pas comment
-5. **Pas d'over-engineering** — la complexité doit être justifiée par un besoin réel
-6. **Chaque `except` log ou re-raise** — jamais de `except: pass` silencieux
-7. **Commentaires chirurgicaux** — expliquer le *pourquoi*, pas le *quoi*
-{% if project_type == "app" %}8. **Couches de routing minces** — handlers API/CLI < 15 lignes, zéro business logic
-9. **Injection de dépendances** — pas de singletons, pas d'état global mutable
-{% elif project_type == "quant" %}8. **Zéro boucle Python sur des données** — NumPy/vectorisation systématique
-9. **Documenter les hypothèses mathématiques** — formule = docstring
-{% elif project_type == "data" %}8. **Pipelines idempotents** — re-runnable sans effets de bord
-9. **Données raw immutables** — transformations dans `data/processed/`
-{% endif %}
-
-## Commandes
+## Commands
 
 ```bash
-uv sync                     # Installer les dépendances
+uv sync                     # Install dependencies
 uv run ruff check .         # Linter
 uv run ruff format .        # Formatter
 uv run pytest               # Tests
 ```
 
-## Workflow de session
+## Guidelines
 
-1. **Research** — lire PILOT.md + SESSION-CONTEXT.md, comprendre le contexte
-2. **Plan** — définir l'approche, valider avant de coder
-3. **Implement** — coder, tester au fur et à mesure
-4. **Test** — `uv run pytest`, vérifier que rien ne casse
-5. **Ship** — commit, mettre à jour PILOT.md et SESSION-CONTEXT.md
+Read `.meta/GUIDELINES.md` — it contains recommended practices.
+Apply them when relevant. They are suggestions, not rules.
