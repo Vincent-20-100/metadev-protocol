@@ -1,134 +1,158 @@
 # ARCHITECTURE.md — metadev-protocol
 
-> Les décisions structurantes et le raisonnement derrière chaque choix.
-> Pour les décisions en cours de réflexion → voir `.meta/decisions/`
+> Validated structural decisions and the reasoning behind each choice.
+> For decisions still being explored → see `.meta/decisions/`
 
-## Vision centrale
+## Core vision
 
-**"Sépare le produit du process."**
+**"Separate the product from the process."**
 
-Un projet propre maintient deux sphères distinctes :
-- **Le produit** (`src/`, `docs/`) : ce qui est livré, révisé, stable
-- **Le process** (`.meta/`) : les notes de session, brouillons d'idées, contexte IA
+A clean project maintains two distinct spheres:
+- **The product** (`src/`, `tests/`, `docs/`) — what gets delivered, reviewed, stable
+- **The process** (`.meta/`) — session notes, draft ideas, AI context
 
-La pollution de `src/` par du code "en cours" ou de la racine par des notes de session
-est le vecteur principal de dette cognitive et d'instabilité des projets.
-
----
-
-## ADR-001 : `copier` comme moteur de templating
-
-**Statut :** Accepté  
-**Date :** 2026-04-01
-
-**Contexte :** Le repo doit générer des projets typés (minimal, app, data, quant) à partir
-d'une base commune. Plusieurs approches envisagées.
-
-**Décision :** `copier` (Python), pas de branches orphelines, pas de script shell.
-
-**Raisonnement :**
-- Les **branches orphelines** nécessitent de cherry-pick chaque amélioration vers chaque branche — une mise à jour de hook = 4 opérations manuelles. Fragile.
-- Un **script shell** est non-typé, non-versionné proprement, dépendant du shell cible.
-- **`copier`** est déclaratif (`copier.yml`), supporte Jinja2 pour les conditionnels, et permet surtout `copier update` pour propager les améliorations du template vers les projets existants.
-
-**Conséquence :** Un seul template avec des blocs `{% if project_type == "quant" %}`.
-Maintenabilité maximale — une seule source de vérité.
+Polluting `src/` with work-in-progress code or the root with session notes
+is the primary vector for cognitive debt and project instability.
 
 ---
 
-## ADR-002 : `.meta/` obligatoire dans chaque projet
+## ADR-001: `copier` as template engine
 
-**Statut :** Accepté  
-**Date :** 2026-04-01
+**Status:** Accepted
+**Date:** 2026-04-01
 
-**Contexte :** Les sessions de vibe-coding accumulent des brouillons, notes, versions
-intermédiaires qui polluent le repo.
+**Context:** The repo needs to generate typed projects (minimal, app, data, quant) from
+a common base. Several approaches were considered.
 
-**Décision :** Chaque projet généré contient un `.meta/` à la racine.
+**Decision:** `copier` (Python), no orphan branches, no shell scripts.
 
-**Contenu :**
+**Reasoning:**
+- **Orphan branches** require cherry-picking every improvement to each branch — one hook update = 4 manual operations. Fragile.
+- A **shell script** is untyped, not versioned properly, shell-dependent.
+- **`copier`** is declarative (`copier.yml`), supports Jinja2 for conditionals, and enables `copier update` to propagate template improvements to existing projects.
+
+**Consequence:** A single template with `{% if project_type == "quant" %}` blocks.
+Maximum maintainability — one source of truth.
+
+---
+
+## ADR-002: `.meta/` mandatory in every project
+
+**Status:** Accepted
+**Date:** 2026-04-01
+
+**Context:** Vibe-coding sessions accumulate drafts, notes, intermediate versions
+that pollute the repo.
+
+**Decision:** Every generated project contains a `.meta/` at root.
+
+**Contents:**
 ```
 .meta/
-├── PILOT.md        # État de session — versionné, mis à jour à chaque session
-├── sessions/       # Archives des sessions passées — versionnées
-├── decisions/      # ADRs en incubation — versionnés
-└── scratch/        # Brouillons temporaires — .gitignored
+├── PILOT.md        # Project state — versioned, updated each session
+├── SESSION-CONTEXT.md  # Living context — rewritten each session
+├── GUIDELINES.md   # Advisory best practices
+├── sessions/       # Past session archives — versioned
+├── decisions/      # Incubating ADRs — versioned
+└── scratch/        # Temporary drafts — .gitignored
 ```
 
-**Règle de gitignore :**
+**Gitignore rule:**
 ```gitignore
-# .meta/scratch est ignoré — brouillons éphémères
 .meta/scratch/*
 !.meta/scratch/.gitkeep
-
-# Tout le reste de .meta est versionné
 ```
 
-**Anti-pattern à éviter :** Ignorer tout `.meta/` (perte de la mémoire de session)
-ou versionner `scratch/` (pollution du git log).
+**Anti-pattern to avoid:** Ignoring all of `.meta/` (loss of session memory)
+or versioning `scratch/` (git log pollution).
 
 ---
 
-## ADR-003 : `CLAUDE.md` comme contrat de session
+## ADR-003: `CLAUDE.md` as session contract
 
-**Statut :** Accepté  
-**Date :** 2026-04-01
+**Status:** Accepted
+**Date:** 2026-04-01
 
-**Contexte :** Claude Code lit automatiquement `CLAUDE.md` à chaque initialisation de session.
-Ce fichier est le point d'entrée principal pour contextualiser l'IA.
+**Context:** Claude Code automatically reads `CLAUDE.md` at every session initialization.
+This file is the primary entry point for contextualizing the AI.
 
-**Décision :** `CLAUDE.md` à la racine de chaque projet généré, avec des sections standardisées.
+**Decision:** `CLAUDE.md` at the root of every generated project, with two companion files.
 
-**Sections obligatoires :**
-1. Architecture du projet (arbre de dossiers)
-2. Règles absolues (5 max — au-delà, elles ne sont plus lues)
-3. Commandes (build, test, lint)
-4. Ce que l'IA NE fait pas (aussi important que ce qu'elle fait)
+**Design principles:**
+1. **CLAUDE.md is the law** — few rules, non-negotiable, the LLM obeys
+2. **GUIDELINES.md is the mentor** — best practices, proposed not imposed
+3. **Automatisms over instructions** — hard-wired behaviors the LLM applies without being asked
 
-**Note critique sur la doc Gemini :** Gemini indiquait que CLAUDE.md nécessite une
-instruction manuelle de lecture. C'est vrai pour claude.ai (interface web). Pour **Claude Code**
-(CLI), la lecture est automatique et native. Ce repo cible Claude Code.
+**Mandatory sections:**
+1. First action (read PILOT.md + SESSION-CONTEXT.md)
+2. Automatisms (8 hard-wired behaviors)
+3. Rules (8 universal dev rules, max)
+4. Architecture (project tree)
+5. Skills (available commands)
+6. Commands (build, test, lint)
+7. Guidelines pointer
 
 ---
 
-## ADR-004 : 4 profils de projet dans `copier.yml`
+## ADR-004: 4 project profiles in `copier.yml`
 
-**Statut :** Accepté  
-**Date :** 2026-04-01
+**Status:** Accepted
+**Date:** 2026-04-01
 
-**Contexte :** Les besoins en garde-fous, dépendances et structure divergent fortement
-entre un side-project rapide et un projet quant sérieux.
+**Context:** Guardrail, dependency, and structure needs diverge significantly
+between a quick side-project and a serious quant project.
 
-**Décision :** 4 profils — `minimal`, `app`, `data`, `quant`.
+**Decision:** 4 profiles — `minimal`, `app`, `data`, `quant`.
 
-| Profil | Cas d'usage | Garde-fous | Dépendances |
-|---|---|---|---|
-| `minimal` | Side project, expérimentation | ruff only | stdlib + pytest |
+| Profile | Use case | Guardrails | Dependencies |
+|---------|----------|-----------|--------------|
+| `minimal` | Side project, experimentation | ruff only | stdlib + pytest |
 | `app` | API, backend, web | ruff + pyright + tests | fastapi, pydantic, httpx |
-| `data` | ETL, pipelines | ruff + data validation | polars, dbt, great-expectations |
-| `quant` | Backtesting, modélisation | ruff + shape checks | numpy, pandas, vectorbt |
+| `data` | ETL, pipelines | ruff + data validation | polars, duckdb |
+| `quant` | Backtesting, modeling | ruff + shape checks | numpy, pandas, matplotlib |
 
-**Règle :** Le profil `minimal` ne reçoit **jamais** de dépendances lourdes.
-Si un side-project grandit, on migre vers le bon profil — on n'alourdit pas le minimal.
-
----
-
-## ADR-005 : `uv` exclusivement
-
-**Statut :** Accepté  
-**Date :** 2026-04-01
-
-**Décision :** `uv` comme unique gestionnaire de packages et d'environnements.
-Pas de pip direct, pas de poetry, pas de conda.
-
-**Raisonnement :** Vitesse (Rust), lockfile natif (`uv.lock`), remplace pip + venv + virtualenv
-en une seule commande, conforme au standard `pyproject.toml` PEP 517/518.
+**Rule:** The `minimal` profile never receives heavy dependencies.
+If a side-project grows, migrate to the right profile — don't bloat minimal.
 
 ---
 
-## Ce qui est explicitement hors scope
+## ADR-005: `uv` exclusively
 
-- **CI/CD** sur ce repo template : overhead non justifié tant que le repo ne sert qu'au solo
-- **Tests automatisés du template** : `copier copy . /tmp/test --defaults` en local est suffisant
-- **Multi-language** : ce template est Python-only, intentionnellement
-- **Docker** dans le profil minimal : ne pas over-engineer les petits projets
+**Status:** Accepted
+**Date:** 2026-04-01
+
+**Decision:** `uv` as the sole package and environment manager.
+No direct pip, no poetry, no conda.
+
+**Reasoning:** Speed (Rust), native lockfile (`uv.lock`), replaces pip + venv + virtualenv
+in a single command, conforms to `pyproject.toml` PEP 517/518 standard.
+`uv_build` as build backend for generated projects (pure Python).
+
+---
+
+## ADR-006: Skills T1 — workflow automation
+
+**Status:** Accepted
+**Date:** 2026-04-02
+
+**Decision:** 5 skills shipped with every generated project.
+
+| Skill | Purpose | Output |
+|-------|---------|--------|
+| `/brainstorm` | Socratic exploration, one question at a time, 2-3 alternatives, YAGNI | `.meta/scratch/brainstorm.md` |
+| `/plan` | Task decomposition with file mapping and verification steps | `.meta/scratch/plan.md` |
+| `/ship` | Pre-commit checklist + PILOT.md update + SESSION-CONTEXT.md rewrite | Updated `.meta/` files |
+| `/lint` | `ruff check --fix` + `ruff format` on the whole project | Terminal report |
+| `/test` | `pytest` runner with optional arguments | Terminal report |
+
+**Principle:** Skills are the right place for dev workflow. Not CLAUDE.md (too short, always loaded), not hooks (too rigid). Skills are loaded on demand, shared via git, composable.
+
+---
+
+## Explicitly out of scope
+
+- **CI/CD** on this template repo: unjustified overhead for solo development
+- **Automated template tests**: `copier copy . /tmp/test --defaults` locally is sufficient
+- **Multi-language**: this template is Python-only, intentionally
+- **Docker** in minimal profile: don't over-engineer small projects
+- **Multi-LLM support**: Claude Code only for MVP (.cursorrules later)
