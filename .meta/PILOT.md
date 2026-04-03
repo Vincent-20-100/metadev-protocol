@@ -1,7 +1,7 @@
 # PILOT.md — metadev-protocol
 
-**Date:** 2026-04-01
-**Phase:** Strategic brainstorm done — ready for MVP implementation
+**Date:** 2026-04-02
+**Phase:** MVP Phase A complete — ready for dogfooding
 
 ---
 
@@ -9,7 +9,7 @@
 
 ### Infrastructure (DONE)
 - pyproject.toml, .pre-commit-config.yaml, copier.yml ✅
-- Template generates successfully (minimal + app tested) ✅
+- Template generates successfully (all 4 profiles tested) ✅
 - Pre-commit installed ✅
 
 ### Research (DONE)
@@ -25,22 +25,22 @@
 - Versioning: one-shot for now ✅
 - All decisions in ADR-006 ✅
 
-### MVP scope (NEXT — 1 session)
+### MVP Phase A (DONE)
 
 | # | Action | Status |
 |---|--------|--------|
-| 1 | Rewrite all templates to English | ❌ |
-| 2 | Add src/{{project_slug}}/__init__.py | ❌ |
-| 3 | Switch build backend to uv_build | ❌ |
-| 4 | Add ruff + pytest config in pyproject.toml.jinja | ❌ |
-| 5 | Enrich pre-commit (trailing-whitespace, check-yaml, no-commit-to-branch) | ❌ |
-| 6 | Add no-co-author-llm hook (pre-commit + settings.json) | ❌ |
-| 7 | Create skill /brainstorm (prescriptive, Superpowers-inspired) | ❌ |
-| 8 | Create skill /plan (writes to .meta/scratch/plan.md) | ❌ |
-| 9 | Create skill /ship (checklist + PILOT update + SESSION-CONTEXT rewrite) | ❌ |
-| 10 | Create skill /lint (ruff check + format) | ❌ |
-| 11 | Update CLAUDE.md.jinja (English, first-session detection, skill shortlist) | ❌ |
-| 12 | Test full generation (all profiles) | ❌ |
+| 1 | Rewrite all templates to English | ✅ |
+| 2 | Add src/{{project_slug}}/__init__.py | ✅ |
+| 3 | Switch build backend to uv_build | ✅ |
+| 4 | Add ruff + pytest config in pyproject.toml.jinja | ✅ |
+| 5 | Enrich pre-commit (trailing-whitespace, check-yaml, no-commit-to-branch) | ✅ |
+| 6 | Update settings.json (add .meta/ permissions, remove compact hook) | ✅ |
+| 7 | Create skill /brainstorm (prescriptive, Superpowers-inspired) | ✅ |
+| 8 | Create skill /plan (writes to .meta/scratch/plan.md) | ✅ |
+| 9 | Create skill /ship (checklist + PILOT update + SESSION-CONTEXT rewrite) | ✅ |
+| 10 | Create skill /lint (ruff check + format) | ✅ |
+| 11 | Create CLAUDE.md.jinja v2 (English, automatisms, rules, skills, GUIDELINES.md) | ✅ |
+| 12 | Test full generation (all profiles) | ✅ |
 
 ### Post-MVP (vision C)
 - Skills T2: /spec, /tdd, /review, /debug, /consolidate
