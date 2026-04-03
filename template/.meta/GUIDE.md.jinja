@@ -1,0 +1,170 @@
+# Guide — {{ project_name }}
+
+> Practical guide to working with this project. Read once, refer back when needed.
+> This file is part of your project — update it as the project evolves.
+
+---
+
+## How a session works
+
+Every session follows the same cycle. The LLM does this automatically — you don't need to remind it.
+
+```
+┌─ Session start ─────────────────────────────────┐
+│  LLM reads PILOT.md + SESSION-CONTEXT.md        │
+│  (If first session: offers an intro)            │
+└─────────────────────────────────────────────────┘
+           │
+           ▼
+┌─ Work ──────────────────────────────────────────┐
+│  You describe what you want                     │
+│  LLM proposes a plan → you approve → it codes   │
+│  After each milestone: PILOT.md gets updated    │
+└─────────────────────────────────────────────────┘
+           │
+           ▼
+┌─ Session end ───────────────────────────────────┐
+│  Run /ship (or LLM does it when you signal end) │
+│  SESSION-CONTEXT.md gets rewritten              │
+│  Commit your work                               │
+└─────────────────────────────────────────────────┘
+```
+
+## Your files
+
+| File | What it is | Who maintains it |
+|------|-----------|-----------------|
+| `CLAUDE.md` | The rules. The LLM follows them. | You (edit to customize) |
+| `.meta/PILOT.md` | Project dashboard — objectives, status, next steps | LLM updates it, you review |
+| `.meta/SESSION-CONTEXT.md` | Living context — architecture, decisions, traps | LLM rewrites each session |
+| `.meta/GUIDELINES.md` | Best practices — advisory, not rules | You (add project-specific advice) |
+| `.meta/ARCHITECTURE.md` | Architecture reference (created when architecture is defined) | LLM creates and maintains it |
+| `.meta/decisions/` | ADRs — one file per structural decision | You and LLM together |
+| `.meta/scratch/` | Drafts — gitignored, throw anything here | Temporary, not committed |
+
+## Skills
+
+Type these commands in Claude Code to activate a workflow:
+
+### /brainstorm — when you have an idea but no clear plan
+
+The LLM asks you questions **one at a time**, proposes alternatives, and cuts scope aggressively (YAGNI). No code gets written during brainstorm.
+
+Output: `.meta/scratch/brainstorm.md`
+
+**Use when:** "I want to add X but I'm not sure how" / "I have a vague idea" / scope is unclear.
+
+### /plan — when you know what to build
+
+The LLM maps all files involved, breaks work into small tasks (2-5 min each), and writes a plan with verification steps. It reads brainstorm.md if it exists.
+
+Output: `.meta/scratch/plan.md`
+
+**Use when:** scope is clear, you're ready to start implementing.
+
+### /ship — when work is done
+
+Runs a checklist (tests pass? lint clean? no stray files?), then updates PILOT.md and rewrites SESSION-CONTEXT.md. Does NOT commit — that's your call.
+
+**Use when:** you're done for the session or hit a milestone worth saving.
+
+### /lint — anytime
+
+Runs `uv run ruff check . --fix` and `uv run ruff format .` on the whole project. Reports what changed.
+
+**Use when:** you want a full project lint (individual files are linted automatically by hooks).
+
+### /test — anytime
+
+Runs `uv run pytest` with optional arguments (e.g., `/test -k test_auth -v`).
+
+**Use when:** you want to run the test suite.
+
+## Common workflows
+
+### Starting a new feature
+
+```
+You: "I want to add user authentication"
+LLM: (proposes a plan or suggests /brainstorm if scope is unclear)
+You: (approve the plan)
+LLM: (implements step by step, updates PILOT.md)
+You: "looks good, let's wrap up"
+LLM: (runs /ship checklist, updates context, reports ready to commit)
+```
+
+### Resuming after a break
+
+```
+LLM: (automatically reads PILOT.md + SESSION-CONTEXT.md)
+LLM: "Last session you were working on X. Status: Y is done, Z is next.
+      Open question: [something]. Want to continue with Z?"
+```
+
+### Exploring before building
+
+```
+You: /brainstorm
+LLM: "What are you trying to build?" (one question)
+You: "A caching layer for API responses"
+LLM: "What's the primary goal?" (one question)
+... (several rounds of Q&A)
+LLM: (writes brainstorm.md with decisions + alternatives)
+You: /plan
+LLM: (reads brainstorm.md, maps files, writes plan.md)
+You: "go"
+LLM: (executes the plan)
+```
+
+## Customizing the system
+
+### Adding project-specific rules
+
+Edit `CLAUDE.md` — add rules to the Rules section. Keep it under 10 rules total (beyond that, the LLM starts ignoring them).
+
+### Adding project-specific guidelines
+
+Edit `.meta/GUIDELINES.md` — add advice relevant to your domain. Use the advisory tone: "Prefer X over Y because Z."
+
+### Adding custom skills
+
+Create a new file in `.claude/skills/<name>/SKILL.md`:
+
+```markdown
+---
+name: my-skill
+description: What it does in one line
+allowed-tools: Bash(uv *), Read
+---
+
+Instructions for the LLM when this skill is invoked.
+```
+
+Then type `/my-skill` in Claude Code to use it.
+
+### Changing permissions
+
+Edit `.claude/settings.json` to allow or deny specific tool patterns.
+
+## What the LLM does automatically
+
+You don't need to ask for these — they're hard-wired in CLAUDE.md:
+
+- Reads context at session start
+- Proposes a plan before coding
+- Uses conventional commits
+- Updates PILOT.md after milestones
+- Rewrites SESSION-CONTEXT.md at session end
+- Creates ARCHITECTURE.md when architecture is defined
+- Applies rules and draws from guidelines
+
+## Quick reference
+
+```bash
+uv sync                     # Install dependencies
+uv run ruff check .         # Lint
+uv run ruff format .        # Format
+uv run pytest               # Test
+```
+
+Skills: `/brainstorm` → `/plan` → implement → `/test` → `/ship`
