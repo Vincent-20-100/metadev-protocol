@@ -1,79 +1,89 @@
 # CLAUDE.md — metadev-protocol
 
-> Fichier lu automatiquement par Claude Code à chaque session. Pas besoin de le mentionner.
+> Read automatically by Claude Code at every session.
 
-## Ce repo est récursif
+## This repo is recursive
 
-`metadev-protocol` est un **système de templates** pour bootstrapper des projets Python assistés par IA.
-Il applique la méthode pour créer la méthode. Ce que tu travailles ici deviendra le standard
-de tous les projets futurs.
+`metadev-protocol` is a **template system** for bootstrapping AI-assisted Python projects.
+It applies the method to build the method. What you work on here becomes the standard
+for all future projects.
 
-## Deux sphères, deux règles
+## First action
 
-| Sphère | Contenu | Règle |
-|---|---|---|
-| `template/` | Ce qui sera copié dans les nouveaux projets | Stable, testé, intentionnel |
-| `.meta/` | Cockpit de développement de CE repo | Éphémère, brouillon, OK |
+Read `.meta/PILOT.md` then `.meta/ARCHITECTURE.md`. Do nothing before.
 
-## Première action à chaque session
+## Two spheres, two rules
 
-**Lis `.meta/PILOT.md`** — il contient l'objectif courant, l'état du projet, et les bloquants.
-Ne code rien avant de l'avoir lu.
+| Sphere | Content | Rule |
+|--------|---------|------|
+| `template/` | What gets copied into new projects | Stable, tested, intentional |
+| `.meta/` | Development cockpit for THIS repo | Ephemeral, draft, OK |
 
-## Architecture du repo
+## Architecture
 
 ```
 metadev-protocol/
-├── template/                    # Ce qui est injecté dans les nouveaux projets
-│   ├── CLAUDE.md.jinja          # Instructions Claude Code du projet généré
-│   ├── pyproject.toml.jinja     # Dépendances par profil
+├── template/                    # Injected into new projects
+│   ├── CLAUDE.md.jinja          # Session contract for generated projects
+│   ├── pyproject.toml.jinja     # Dependencies per profile
 │   ├── .gitignore.jinja
-│   ├── .pre-commit-config.yaml  # Config pre-commit (copié tel quel)
-│   └── .meta/
-│       ├── PILOT.md.jinja       # Cockpit de session du projet généré
-│       ├── scratch/.gitkeep
-│       ├── sessions/.gitkeep
-│       └── decisions/.gitkeep
-├── .meta/                       # Cockpit de CE repo (développement du template)
-│   ├── PILOT.md                 # État de session courant → LIS EN PREMIER
-│   ├── ARCHITECTURE.md          # Décisions architecturales validées
-│   ├── DECISIONS.md             # Journal des ADRs
-│   ├── sessions/                # Historique des sessions passées
-│   ├── decisions/               # ADRs en cours de maturation
-│   └── scratch/                 # Brouillons — jamais committés (.gitignored)
-├── CLAUDE.md                    # Ce fichier
-├── .pre-commit-config.yaml      # Config pre-commit du meta-repo
-├── copier.yml                   # Moteur de templating (questions d'init)
-└── pyproject.toml               # Dépendances du meta-repo lui-même
+│   ├── .pre-commit-config.yaml  # Pre-commit config (copied as-is)
+│   ├── .meta/
+│   │   ├── PILOT.md.jinja       # Project dashboard
+│   │   ├── SESSION-CONTEXT.md.jinja  # Living context
+│   │   ├── GUIDELINES.md.jinja  # Advisory best practices
+│   │   ├── scratch/.gitkeep
+│   │   ├── sessions/.gitkeep
+│   │   └── decisions/.gitkeep
+│   ├── .claude/
+│   │   ├── settings.json.jinja  # Permissions + hooks
+│   │   └── skills/              # brainstorm, plan, ship, lint, test
+│   ├── src/{{ project_slug }}/  # Package source
+│   └── tests/                   # Test suite
+├── .meta/                       # Development cockpit for THIS repo
+│   ├── PILOT.md                 # Current state → READ FIRST
+│   ├── ARCHITECTURE.md          # Validated architectural decisions
+│   ├── DECISIONS.md             # ADR journal
+│   ├── decisions/               # Individual ADRs
+│   ├── gold/                    # Synthesized research (source of truth)
+│   ├── references/              # Raw research sources (bronze)
+│   ├── sessions/                # Past session archives
+│   └── scratch/                 # Drafts — never committed (.gitignored)
+├── CLAUDE.md                    # This file
+├── copier.yml                   # Template engine (init questions)
+├── pyproject.toml               # Meta-repo dependencies
+└── .pre-commit-config.yaml      # Meta-repo pre-commit config
 ```
 
-## Règles absolues
+## Rules
 
-1. **Jamais de fichiers temporaires à la racine** — tout va dans `.meta/scratch/`
-2. **`template/` ne reçoit du code que s'il est validé** — tester avec `copier copy . /tmp/test-proj` avant commit
-3. **Conventional Commits** — format obligatoire : `feat:`, `fix:`, `docs:`, `chore:`
-4. **Modifier le template = tester le template** — tout changement dans `template/` déclenche un test local
+1. **No temp files at root** — everything goes in `.meta/scratch/`
+2. **`template/` only receives validated work** — test with `copier copy . /tmp/test-proj --defaults` before committing
+3. **Modify template = test template** — any change in `template/` triggers a local generation test
+4. **Conventional commits** — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
+5. **All template output in English** — code, docs, skills, comments
+6. **YAGNI** — no over-engineering, complexity must be justified
 
 ## Stack
 
-- Python >= 3.12
-- `uv` exclusivement (pas pip, pas poetry, pas conda)
-- `ruff` pour lint + format
-- `copier` pour la génération de templates
-- `pre-commit` pour les git hooks
+- Python >= 3.13
+- `uv` exclusively (no pip, no poetry, no conda)
+- `ruff` for lint + format
+- `copier` for template generation
+- `pre-commit` for git hooks
 
-## Commandes
+## Commands
 
 ```bash
-uv sync                              # Installer les dépendances
-uv run ruff check .                  # Linter
-uv run ruff format .                 # Formatter
-uv run pytest                        # Tests
-copier copy . /tmp/test-proj --defaults   # Tester le template localement
+uv sync                                    # Install dependencies
+uv run ruff check .                        # Linter
+uv run ruff format .                       # Formatter
+copier copy . /tmp/test-proj --defaults    # Test template locally
 ```
 
-## Ce que tu NE fais pas ici
+## What you do NOT do here
 
-- Pas de code applicatif — ce repo est de la configuration et des templates
-- Pas de notebooks — mauvais signal dans un repo de standards
-- Pas d'installation globale de packages — tout passe par `uv run`
+- No application code — this repo is configuration and templates only
+- No notebooks — wrong signal in a standards repo
+- No global package installs — everything goes through `uv run`
+- No changes to `template/` without testing the generation output
