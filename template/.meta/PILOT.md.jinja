@@ -1,47 +1,37 @@
 # PILOT.md — {{ project_name }}
 
-**Date :** YYYY-MM-DD
-**Phase :** Initialisation
+**Date:** YYYY-MM-DD
+**Phase:** Initialization
+**first_session:** true
 
 ---
 
-## Objectif de cette session
+## Current objectives
 
-Definir l'objectif de ta premiere session ici.
-
----
-
-## Etat du projet
-
-| Composant | Statut | Notes |
-|---|---|---|
-| Repo cree | ✅ | Via metadev-protocol |
-| `uv sync` | ⏳ | |
-| Pre-commit installe | ⏳ | |
-| Premier module dans `src/` | ❌ | |
+Define your first session objective here.
 
 ---
 
-## Workflow de session
+## Project state
 
-1. **Research** — lire PILOT.md + SESSION-CONTEXT.md, comprendre le contexte
-2. **Plan** — definir l'approche, valider avant de coder
-3. **Implement** — coder, tester au fur et a mesure
-4. **Test** — `uv run pytest`, verifier que rien ne casse
-5. **Ship** — commit, mettre a jour PILOT.md et SESSION-CONTEXT.md
-
----
-
-## Prochaines etapes
-
-1. `uv sync`
-2. `uv run pre-commit install`
-3. Definir l'architecture dans `.meta/decisions/`
-4. Commencer le premier module
+| Component | Status | Notes |
+|-----------|--------|-------|
+| Repo created | ✅ | Via metadev-protocol |
+| Dependencies installed | ✅ | `uv sync` ran at generation |
+| Pre-commit installed | ✅ | `pre-commit install` ran at generation |
+| First module in `src/` | ❌ | |
 
 ---
 
-## Notes de session
+## Next steps
 
-- Projet genere avec metadev-protocol (profil : {{ project_type }})
-- Stack : Python {{ python_version }} | uv | ruff
+1. Define the project goal
+2. Sketch the initial architecture in `.meta/decisions/`
+3. Start the first module
+
+---
+
+## Session notes
+
+- Project generated with metadev-protocol (profile: {{ project_type }})
+- Stack: Python {{ python_version }} | uv | ruff
