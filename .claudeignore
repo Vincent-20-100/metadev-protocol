@@ -1,8 +1,0 @@
-# Ignorer les artefacts de build et cache
-__pycache__/
-.venv/
-.uv/
-.git/
-
-# Ignorer les brouillons trop volumineux si nécessaire
-# .meta/scratch/temp_*
