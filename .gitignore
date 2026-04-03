@@ -1,4 +1,4 @@
-# Ignorer les artefacts de build et cache
+# Build artifacts and cache
 .venv/
 .env
 __pycache__/
