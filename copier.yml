@@ -1,42 +1,42 @@
 # copier.yml — The Meta Protocol
-# Moteur de génération de projets
-# Usage : copier copy gh:TON_USER/metadev-protocol mon-nouveau-projet
+# Project generator
+# Usage: copier copy gh:Vincent-20-100/metadev-protocol my-new-project
 
 # ─────────────────────────────────────────
-# Questions d'initialisation
+# Init questions
 # ─────────────────────────────────────────
 
 project_name:
   type: str
-  help: "Nom du projet (ex: egovault, price-tracker)"
+  help: "Project name (e.g., egovault, price-tracker)"
 
 project_slug:
   type: str
-  help: "Slug Python du projet (snake_case, pas de tirets)"
+  help: "Python package slug (snake_case, no hyphens)"
   default: "{{ project_name | lower | replace('-', '_') | replace(' ', '_') }}"
 
 project_type:
   type: str
-  help: "Type de projet — détermine les garde-fous et les dépendances"
+  help: "Project type — determines guardrails and dependencies"
   choices:
-    "Side project / Expérimentation rapide": minimal
-    "Application Web / API / Backend": app
+    "Side project / Quick experiment": minimal
+    "Web App / API / Backend": app
     "Data Engineering / ETL / Pipelines": data
-    "Analyse Quantitative / Backtesting": quant
+    "Quantitative Analysis / Backtesting": quant
   default: minimal
 
 author_name:
   type: str
-  help: "Ton prénom (pour pyproject.toml)"
+  help: "Your first name (for pyproject.toml)"
   default: "Vincent"
 
 python_version:
   type: str
-  help: "Version Python minimale"
-  default: "3.12"
+  help: "Minimum Python version"
+  default: "3.13"
 
 # ─────────────────────────────────────────
-# Configuration copier
+# Copier configuration
 # ─────────────────────────────────────────
 
 _subdirectory: template
@@ -49,15 +49,23 @@ _exclude:
 
 _tasks:
   - "git init"
+  - >
+    command -v uv >/dev/null 2>&1 && {
+      uv sync && uv run pre-commit install &&
+      echo '✅ Dependencies installed, pre-commit activated.';
+    } || {
+      echo '';
+      echo '⚠️  uv not found.';
+      echo 'Install it: curl -LsSf https://astral.sh/uv/install.sh | sh';
+      echo 'Then run: uv sync && uv run pre-commit install';
+    }
 
 _message_after_copy: |
-  ✅ Projet {{ project_name }} créé avec The Meta Protocol.
+  ✅ Project {{ project_name }} created with The Meta Protocol.
 
-  Prochaines étapes :
+  Next steps:
     1. cd {{ project_slug }}
-    2. uv sync
-    3. uv run pre-commit install
-    4. Ouvre .meta/PILOT.md et définis l'objectif de ta première session
-    5. Lance Claude Code : claude
+    2. Open .meta/PILOT.md and define your first session goal
+    3. Launch Claude Code: claude
 
-  Stack : Python {{ python_version }} | uv | ruff | profil : {{ project_type }}
+  Stack: Python {{ python_version }} | uv | ruff | profile: {{ project_type }}
