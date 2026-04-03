@@ -1,7 +1,7 @@
 [project]
 name = "metadev-protocol"
 version = "0.1.0"
-description = "Systeme de templates pour bootstrapper des projets Python assistes par IA"
+description = "Template system for bootstrapping AI-assisted Python projects"
 readme = "README.md"
 authors = [
     { name = "Vincent", email = "vincent.lamy.33@gmail.com" }
