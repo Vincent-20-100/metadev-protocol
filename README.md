@@ -1,102 +1,108 @@
 # metadev-protocol
 
-Systeme de templates pour bootstrapper des projets Python assistes par IA.
+A pre-configured workshop for AI-assisted Python projects. One command, you're ready to build.
 
-## Ce que ca fait
-
-Une commande, un projet pret pour Claude Code :
+## What it does
 
 ```bash
-copier copy gh:vincent-20-100/metadev-protocol mon-projet --trust
+copier copy gh:Vincent-20-100/metadev-protocol my-project --trust
 ```
 
-Tu reponds a 5 questions (nom, type, auteur, python version) et tu obtiens :
+Answer 5 questions (name, type, author, Python version) and get:
 
-- **CLAUDE.md** — instructions IA calibrees (<60 lignes, regles anti-LLM)
-- **`.meta/`** — cockpit de session (PILOT.md + SESSION-CONTEXT.md)
-- **`.claude/`** — hooks auto-ruff, permissions, skill `/test`
-- **pyproject.toml** — dependances par profil, pret pour `uv sync`
-- **pre-commit** — ruff check + format automatique
-- **tests/** — conftest.py avec fixtures de base
+- **CLAUDE.md** — session contract with hard-wired automatisms (context management, architecture sync, conventional commits)
+- **GUIDELINES.md** — advisory best practices the LLM draws from naturally
+- **`.meta/`** — session cockpit (PILOT.md dashboard + SESSION-CONTEXT.md living context)
+- **`.claude/`** — auto-ruff hooks, permissions, 5 skills (/brainstorm, /plan, /ship, /lint, /test)
+- **pyproject.toml** — profile-specific dependencies, ready for `uv sync`
+- **pre-commit** — ruff + trailing-whitespace + check-yaml + no-commit-to-branch
+- **src/ + tests/** — proper package layout with placeholder test
 
-## Profils disponibles
+## Profiles
 
-| Profil | Dependances | Regles specifiques |
-|--------|------------|-------------------|
-| **minimal** | pytest, ruff, pre-commit | Regles universelles uniquement |
-| **app** | + fastapi, uvicorn, pyright | Routing mince, injection de dependances |
-| **data** | + polars, duckdb | Pipelines idempotents, raw data immutable |
-| **quant** | + numpy, pandas, matplotlib | Vectorisation, documenter les hypotheses math |
+| Profile | Dependencies | Guardrails |
+|---------|-------------|------------|
+| **minimal** | pytest, ruff, pre-commit | Universal rules only |
+| **app** | + fastapi, uvicorn, pyright | Thin routing, dependency injection |
+| **data** | + polars, duckdb | Idempotent pipelines, immutable raw data |
+| **quant** | + numpy, pandas, matplotlib | Vectorization, document math assumptions |
 
-## Installation
+## Quick start
 
 ```bash
-# Installer uv (si pas deja fait)
+# Install uv (if not already installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Generer un projet
-copier copy gh:vincent-20-100/metadev-protocol mon-projet --trust
+# Generate a project
+copier copy gh:Vincent-20-100/metadev-protocol my-project --trust
 
-# Setup
-cd mon-projet
-uv sync
-uv run pre-commit install
-
-# Lancer Claude Code
+# Launch Claude Code
+cd my-project
 claude
 ```
 
-## Ce qui est genere
+Dependencies install automatically at generation. If `uv` is not in PATH, the generator tells you how to install it.
+
+## What gets generated
 
 ```
-mon-projet/
-├── CLAUDE.md                  # Instructions IA (<60 lignes)
-├── pyproject.toml             # Deps par profil
-├── .pre-commit-config.yaml    # ruff check + format
+my-project/
+├── CLAUDE.md                       # Session contract (automatisms + rules)
+├── pyproject.toml                  # Deps per profile, ruff + pytest config
+├── .pre-commit-config.yaml         # ruff + pre-commit-hooks
 ├── .gitignore
+├── src/my_project/__init__.py      # Package entry point
 ├── tests/
 │   ├── __init__.py
-│   └── conftest.py            # Fixtures partagees
+│   ├── conftest.py                 # Shared fixtures
+│   └── test_placeholder.py        # Starter test
 ├── .claude/
-│   ├── settings.json          # Permissions + hooks
-│   └── skills/test/SKILL.md   # Skill /test (pytest)
+│   ├── settings.json               # Permissions + auto-ruff hook
+│   └── skills/                     # brainstorm, plan, ship, lint, test
 └── .meta/
-    ├── PILOT.md               # Etat du projet
-    ├── SESSION-CONTEXT.md     # Contexte decisionnel (reecrit chaque session)
-    ├── decisions/             # ADRs
-    ├── sessions/              # Historique
-    └── scratch/               # Brouillons (gitignored)
+    ├── PILOT.md                    # Project dashboard (read first)
+    ├── SESSION-CONTEXT.md          # Living context (rewritten each session)
+    ├── GUIDELINES.md               # Recommended practices (advisory)
+    ├── decisions/                   # ADRs
+    ├── sessions/                    # Session archives
+    └── scratch/                     # Drafts (gitignored)
 ```
 
-## Philosophie
+## Philosophy
 
-**Separer le produit du process.** Le code (src/, tests/) est le livrable. Le cockpit (.meta/) est l'espace de travail IA. Les deux ne se melangent jamais.
+**The LLM follows the workflow without being told.** CLAUDE.md encodes automatisms (read context first, plan before coding, update context at end of session). The user doesn't remind — the system does.
 
-**Hooks > instructions.** Les regles critiques (formatting, lint) sont des hooks automatiques, pas des lignes dans CLAUDE.md que l'IA peut ignorer.
+**Separate product from process.** Code (`src/`, `tests/`) is the deliverable. The cockpit (`.meta/`) is the AI workspace. They never mix.
 
-**Progressive disclosure.** CLAUDE.md est court et toujours charge. Les skills sont chargees a la demande. Le contexte est preserve apres compaction.
+**Hooks over instructions.** Critical rules (formatting, lint) are automatic hooks, not lines in CLAUDE.md the AI can ignore.
+
+**Law and mentor.** CLAUDE.md is the law (few rules, non-negotiable). GUIDELINES.md is the mentor (best practices, proposed not imposed).
 
 ## Stack
 
-- Python >= 3.12
-- [uv](https://github.com/astral-sh/uv) — gestion deps et venv
+- Python >= 3.13
+- [uv](https://github.com/astral-sh/uv) — dependency management and venv
 - [ruff](https://github.com/astral-sh/ruff) — lint + format
-- [copier](https://github.com/copier-org/copier) — generation de templates
-- [pre-commit](https://pre-commit.com/) — hooks git
-- [Claude Code](https://claude.ai/code) — assistant IA
+- [copier](https://github.com/copier-org/copier) — template generation
+- [pre-commit](https://pre-commit.com/) — git hooks
+- [Claude Code](https://claude.ai/code) — AI assistant
 
-## Decisions architecturales
+## Architectural decisions
 
-Les ADRs sont dans `.meta/decisions/` :
-- **ADR-001** — Patterns selectionnes depuis EgoVault + etat de l'art
-- **ADR-002** — Configuration .claude/ (permissions, hooks, skills)
-- **ADR-003** — CLAUDE.md sizing, regles anti-LLM, cockpit 2 fichiers
+ADRs are in `.meta/decisions/`:
+- **ADR-001** — Patterns selected from EgoVault + state of the art
+- **ADR-002** — `.claude/` directory config (permissions, hooks, skills)
+- **ADR-003** — CLAUDE.md sizing, anti-LLM rules, 2-file cockpit
+- **ADR-004** — Tiered pattern matrix (T1-T4 x vanilla/profile/user)
+- **ADR-005** — Knowledge hierarchy brainstorm
+- **ADR-006** — Strategic brainstorm: project direction and identity
+- **ADR-007** — MVP Phase A specification
 
-## Developpement de ce repo
+## Development
 
 ```bash
-uv sync                                          # Installer les deps
-uv run ruff check .                              # Lint
-uv run ruff format .                             # Format
-copier copy . /tmp/test --defaults --trust -d project_name="test"  # Tester le template
+uv sync                                            # Install deps
+uv run ruff check .                                # Lint
+uv run ruff format .                               # Format
+copier copy . /tmp/test --defaults --trust          # Test template
 ```
