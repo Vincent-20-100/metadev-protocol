@@ -13,7 +13,7 @@ Answer 5 questions (name, type, author, Python version) and get:
 - **CLAUDE.md** — session contract with hard-wired automatisms (context management, architecture sync, conventional commits)
 - **GUIDELINES.md** — advisory best practices the LLM draws from naturally
 - **`.meta/`** — session cockpit (PILOT.md dashboard + SESSION-CONTEXT.md living context)
-- **`.claude/`** — auto-ruff hooks, permissions, 5 skills (/brainstorm, /plan, /ship, /lint, /test)
+- **`.claude/`** — auto-ruff hooks, permissions, 5 skills (/brainstorm, /plan, /save-progress, /lint, /test)
 - **pyproject.toml** — profile-specific dependencies, ready for `uv sync`
 - **pre-commit** — ruff + trailing-whitespace + check-yaml + no-commit-to-branch
 - **src/ + tests/** — proper package layout with placeholder test
@@ -27,21 +27,24 @@ Answer 5 questions (name, type, author, Python version) and get:
 | **data** | + polars, duckdb | Idempotent pipelines, immutable raw data |
 | **quant** | + numpy, pandas, matplotlib | Vectorization, document math assumptions |
 
-## Quick start
+## Quick start (30 seconds)
 
 ```bash
-# Install uv (if not already installed)
-curl -LsSf https://astral.sh/uv/install.sh | sh
+# 1. Install uv if needed
+curl -LsSf https://astral.sh/uv/install.sh | sh   # macOS/Linux
+# or: powershell -c "irm https://astral.sh/uv/install.ps1 | iex"  # Windows
 
-# Generate a project
+# 2. Install copier
+uv tool install copier
+
+# 3. Generate your project
 copier copy gh:Vincent-20-100/metadev-protocol my-project --trust
 
-# Launch Claude Code
-cd my-project
-claude
+# 4. Code with AI
+cd my-project && claude
 ```
 
-Dependencies install automatically at generation. If `uv` is not in PATH, the generator tells you how to install it.
+That's it. Dependencies, hooks, and git init happen automatically.
 
 ## What gets generated
 
@@ -58,7 +61,7 @@ my-project/
 │   └── test_placeholder.py        # Starter test
 ├── .claude/
 │   ├── settings.json               # Permissions + auto-ruff hook
-│   └── skills/                     # brainstorm, plan, ship, lint, test
+│   └── skills/                     # brainstorm, plan, save-progress, lint, test
 └── .meta/
     ├── PILOT.md                    # Project dashboard (read first)
     ├── SESSION-CONTEXT.md          # Living context (rewritten each session)
