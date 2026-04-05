@@ -47,3 +47,52 @@
 - Propose 2-3 approaches for non-trivial decisions
 - Explain trade-offs, let the user decide
 - After completing work, suggest what to verify
+
+## Advanced Claude Code configuration
+
+These are optional settings you can add to `.claude/settings.json` or
+`.claude/settings.local.json` for advanced use cases.
+
+### Force Superpowers plugin for all contributors
+
+```json
+"enabledPlugins": {
+  "superpowers@claude-plugins-official": true
+}
+```
+
+### Background memory consolidation (autoDream)
+
+Automatically summarize session learnings into memory files.
+Use with caution — may conflict with SESSION-CONTEXT.md.
+
+```json
+"autoDreamEnabled": true
+```
+
+### Redirect memory to .meta/
+
+Keep all AI-generated memory alongside project context.
+
+```json
+"autoMemoryEnabled": true,
+"autoMemoryDirectory": ".meta/memory"
+```
+
+### Plan mode
+
+For maximum control, use plan mode (`Shift+Tab` or `--permission-mode plan`).
+Claude proposes changes, you approve each one. Recommended for architectural work.
+
+### Status line
+
+Show context usage in your terminal:
+
+```json
+"statusLine": true
+```
+
+### Subagent persistent memory
+
+In agent frontmatter (AGENTS.md), use `memory: user` to persist context
+across subagent invocations.

@@ -13,7 +13,7 @@ These behaviors are mandatory. Apply them without being asked.
 1. **Session start** — read PILOT.md + SESSION-CONTEXT.md before any action
 2. **First session** — if `first_session: true` in PILOT.md, offer a conversational intro: project structure, available skills, how a session works. Then set the flag to `false`
 3. **Superpowers plugin** — if superpowers skills are not available, recommend installing the plugin: `/install-plugin obra/superpowers`. It provides advanced workflows (brainstorming, debugging, code review, TDD). If the user agrees, run the install command
-4. **Before coding** — propose a plan before implementing. If scope is unclear, suggest `/brainstorm` first
+4. **Before any Edit or Write** — you must have proposed a plan and received user approval. If no plan exists, propose one. If scope is unclear, suggest `/brainstorm` first. Never implement without explicit user go-ahead
 5. **Milestone completed** — update PILOT.md (status table, objectives, next steps)
 6. **End of session** — rewrite SESSION-CONTEXT.md: architecture snapshot, active decisions, traps, open questions
 7. **Every commit** — conventional commits: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`

@@ -1,12 +1,11 @@
 {
+  "attribution": {
+    "commit": ""
+  },
   "permissions": {
     "allow": [
       "Bash(uv *)",
-      "Bash(git status *)",
-      "Bash(git diff *)",
-      "Bash(git log *)",
-      "Bash(git add *)",
-      "Bash(git commit *)",
+      "Bash(git *)",
       "Read",
       "Edit(src/**)",
       "Edit(tests/**)",
@@ -15,8 +14,15 @@
     "deny": [
       "Bash(rm -rf *)",
       "Bash(sudo *)",
+      "Bash(dd *)",
       "Edit(.env)",
-      "Edit(.git/**)"
+      "Edit(.git/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.pypirc)"
+    ],
+    "ask": [
+      "Bash(git push --force *)"
     ]
   },
   "hooks": {
@@ -27,6 +33,17 @@
           {
             "type": "command",
             "command": "jq -r '.tool_input.file_path // empty' | xargs -I {} sh -c 'case \"{}\" in *.py) uv run ruff format \"{}\" 2>/dev/null && uv run ruff check \"{}\" --fix 2>/dev/null;; esac; exit 0'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "grep -q 'first_session: true' .meta/PILOT.md 2>/dev/null && echo '>>> FIRST SESSION DETECTED — Welcome! Read PILOT.md for project overview and available skills.' || cat .meta/PILOT.md 2>/dev/null | head -30 || true"
           }
         ]
       }
