@@ -108,3 +108,41 @@ Skills are the right layer for workflow — loaded on demand, shared via git.
 
 **Why these 5:** They cover the full session lifecycle (explore → plan → implement → verify → ship).
 T2 skills (/spec, /tdd, /review, /debug) deferred to post-MVP.
+
+---
+
+## 2026-04-06 — ADR-008: Settings v2 improvements
+
+**Decision:** Implement 7 improvements to settings.json and template configuration.
+
+**Context:** After auditing Claude Code docs and ecosystem (trailofbits security config,
+official feature docs), identified gaps in settings.json and template guidance.
+
+**Changes adopted:**
+- `attribution.commit: ""` — suppress Co-authored-by trailer natively (replaces planned pre-commit hook)
+- Security deny rules: credentials reads (~/.ssh, ~/.aws, ~/.pypirc), dd blocked. Force push → ask
+- SessionStart hook: detect `first_session: true` flag in PILOT.md
+- `.claude/rules/` starter files: testing.md + code-style.md (lazy-loaded, reduces CLAUDE.md size)
+- Automatism #4 strengthened: "must have proposed a plan and received user approval"
+- GUIDELINES.md: documented deferred options (Superpowers, autoDream, memory, plan mode)
+- Pre-commit: added check-toml
+
+**Deferred:** enabledPlugins, autoDream, autoMemory, plansDirectory, language setting, AGENTS.md.
+
+---
+
+## 2026-04-06 — ADR-009 direction: universal architecture (brainstorm)
+
+**Decision (draft):** Replace 4 profiles (minimal/app/data/quant) with a single universal
+Python template. Optional folders use underscore prefix (`_notebooks/`, `_docs/`, `_config/`).
+
+**Context:** Current profiles mix stack (Python) and purpose (app/data/quant) — two orthogonal axes.
+One template per language with universal folders is more flexible and maintainable.
+
+**Key directions:**
+- Data tiers: `raw / interim / processed` (not bronze/silver/gold — too Databricks-specific)
+- Dormant folders with `_` prefix — visible but clearly inactive, renamed when first used
+- Clear .meta vs project separation: ships → project, helps build → .meta
+- Temporary generation scripts → always .meta/scratch, never scripts/
+
+**Status:** Brainstorm started, full session needed to finalize. See `.meta/scratch/adr-009-brainstorm.md`.
