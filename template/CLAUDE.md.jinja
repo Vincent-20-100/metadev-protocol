@@ -38,8 +38,14 @@ Non-negotiable. These apply to every action.
 
 ```
 {{ project_slug }}/
-├── src/{{ project_slug }}/    # Validated source code
-├── tests/                     # Mirror of src/ — one test per module
+├── src/{{ project_slug }}/    # Package source code
+├── tests/                     # Tests — mirror src/ structure
+├── scripts/                   # Utility scripts, automation, glue
+├── data/
+│   ├── raw/                   # Raw data — never modified
+│   ├── interim/               # Intermediate transformations
+│   └── processed/             # Final outputs, ready to use
+├── docs/                      # Project documentation
 ├── .meta/
 │   ├── PILOT.md               # Project dashboard (READ FIRST)
 │   ├── SESSION-CONTEXT.md     # Living context (rewritten each session)
@@ -47,13 +53,17 @@ Non-negotiable. These apply to every action.
 │   ├── decisions/             # ADRs
 │   ├── sessions/              # Session archives
 │   └── scratch/               # Drafts (gitignored)
-{% if project_type == "app" %}├── config/
-│   ├── system.yaml            # App config (versioned)
-│   ├── user.yaml.example      # User prefs (gitignored)
-│   └── install.yaml.example   # Secrets and paths (gitignored)
-{% endif %}├── CLAUDE.md
+├── CLAUDE.md
 └── pyproject.toml
 ```
+
+## Structure guidance
+
+The project layout above covers most Python projects. Place files in
+existing directories first. Consult `.meta/GUIDELINES.md` for expansion
+paths when the project grows beyond the base structure.
+
+Do not create top-level directories without checking GUIDELINES.md first.
 
 ## Skills
 
@@ -65,6 +75,7 @@ Project skills (always available):
 /test            — run pytest
 /brainstorm      — structured exploration (basic — use superpowers:brainstorming if available)
 /plan            — task decomposition (basic — use superpowers:writing-plans if available)
+/debate          — multi-agent adversarial debate (3 agents, structured phases, debate record)
 ```
 
 Recommended plugin (install with `/install-plugin obra/superpowers`):

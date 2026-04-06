@@ -1,7 +1,7 @@
 # ADR-009 Brainstorm — Universal Python project architecture
 
 **Date:** 2026-04-06
-**Status:** BRAINSTORM — needs full session to finalize
+**Status:** RESOLVED — all decisions finalized and implemented (2026-04-06)
 **Trigger:** Rethinking profile system (minimal/app/data/quant → single universal template)
 
 ---

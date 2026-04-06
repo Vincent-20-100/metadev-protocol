@@ -1,7 +1,7 @@
 # PILOT.md — metadev-protocol
 
 **Date:** 2026-04-06
-**Phase:** ADR-008 DONE — ADR-009 brainstorm started (universal architecture)
+**Phase:** ADR-009 DONE — universal architecture implemented
 
 ---
 
@@ -30,15 +30,15 @@
 - Pre-commit check-toml added ✅
 - All 4 profiles tested ✅
 
-### ADR-009 — Universal architecture (BRAINSTORM STARTED)
-- Research done: folder structures, data tiers, .meta separation ✅
-- gstack skill pack analyzed (reference added) ✅
-- Key decisions drafted:
-  - Data tiers: raw / interim / processed (not bronze/silver/gold)
-  - Underscore prefix for dormant folders (_notebooks/, _docs/, _config/)
-  - Clear .meta vs project separation rules
-  - Single profile per language (drop minimal/app/data/quant)
-- **NEXT:** Full brainstorm session to finalize and implement
+### ADR-009 — Universal architecture (DONE)
+- Single Python template — project_type profiles removed ✅
+- Underscore prefix rejected — direct folders + expansion paths ✅
+- Universal structure: src/, tests/, scripts/, data/{raw,interim,processed}/, docs/ ✅
+- Data versioned by default, gitignore documented in GUIDELINES ✅
+- Expansion paths in GUIDELINES: notebooks/, app/, api/, config/, models/, infra/ ✅
+- CLAUDE.md structure guidance (encourage, not forbid) ✅
+- pyproject.toml: empty dependencies, dev-only deps kept ✅
+- ADR written: .meta/decisions/adr-009-universal-architecture.md ✅
 
 ### v2 Phase C — Roadmap
 

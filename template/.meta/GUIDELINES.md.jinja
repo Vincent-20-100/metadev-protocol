@@ -96,3 +96,30 @@ Show context usage in your terminal:
 
 In agent frontmatter (AGENTS.md), use `memory: user` to persist context
 across subagent invocations.
+
+## Expansion paths
+
+When your project outgrows the base structure, use these standard layouts:
+
+- **Notebooks**: `notebooks/` — Jupyter notebooks for exploration and analysis
+- **Web app**: `app/` or `api/` — Web application or API layer
+- **ML models**: `models/` — Trained models, weights, serialized pipelines
+- **Configuration**: `config/` — YAML/TOML config files (system, user, secrets)
+- **Infrastructure**: `infra/` — Docker, Terraform, deployment configs
+
+Create these at the project root when needed. Prefer these names over custom alternatives.
+
+## Data versioning
+
+Data directories (`data/raw/`, `data/interim/`, `data/processed/`) are
+tracked by default so the project structure is visible from day one.
+
+If datasets grow large, add them to `.gitignore`:
+```
+data/raw/*.csv
+data/raw/*.parquet
+data/processed/*.pkl
+```
+
+When excluding data from git, document the data source and access
+instructions in `data/README.md` or `.meta/PILOT.md`.

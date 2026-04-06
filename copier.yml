@@ -15,16 +15,6 @@ project_slug:
   help: "Python package slug (snake_case, no hyphens)"
   default: "{{ project_name | lower | replace('-', '_') | replace(' ', '_') }}"
 
-project_type:
-  type: str
-  help: "Project type — determines guardrails and dependencies"
-  choices:
-    "Side project / Quick experiment": minimal
-    "Web App / API / Backend": app
-    "Data Engineering / ETL / Pipelines": data
-    "Quantitative Analysis / Backtesting": quant
-  default: minimal
-
 author_name:
   type: str
   help: "Your first name (for pyproject.toml)"
@@ -62,4 +52,4 @@ _message_after_copy: |
     2. Open .meta/PILOT.md and define your first session goal
     3. Launch Claude Code: claude
 
-  Stack: Python {{ python_version }} | uv | ruff | profile: {{ project_type }}
+  Stack: Python {{ python_version }} | uv | ruff
