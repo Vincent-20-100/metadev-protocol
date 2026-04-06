@@ -183,4 +183,22 @@ uv run ruff format .        # Format
 uv run pytest               # Test
 ```
 
-Skills: `/brainstorm` → `/plan` → implement → `/test` → `/save-progress`
+Skills: `/brainstorm` → `/debate` → `/plan` → implement → `/test` → `/save-progress`
+
+## Updating from the template
+
+When the template gets new skills, improvements, or fixes, update your project:
+
+```bash
+copier update
+```
+
+Copier will show you what changed and let you accept or reject each diff.
+Your custom code in `src/` and `tests/` is never touched — only template-managed
+files (.claude/, .meta/ structure, pyproject.toml boilerplate) get updated.
+
+To check which template version your project was generated from:
+
+```bash
+cat .copier-answers.yml
+```

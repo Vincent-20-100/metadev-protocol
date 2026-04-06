@@ -29,6 +29,8 @@ python_version:
 # Copier configuration
 # ─────────────────────────────────────────
 
+_min_copier_version: "9.0.0"
+
 _subdirectory: template
 
 _exclude:
