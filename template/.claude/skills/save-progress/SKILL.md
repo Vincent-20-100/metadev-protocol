@@ -37,3 +37,20 @@ Run these in order:
    - Open questions (what still needs answers)
 
 3. **Report:** "Ready to commit. Run `git add` and `git commit` or ask me to commit."
+
+## Verification
+
+Before reporting ready:
+- [ ] All 5 checklist items passed (no skipped checks)
+- [ ] PILOT.md status table reflects actual state (not aspirational)
+- [ ] SESSION-CONTEXT.md captures traps and open questions (not just successes)
+- [ ] No stray files at project root
+
+## Rationalizations (why you must NOT skip steps)
+
+| Excuse | Why it's wrong |
+|--------|---------------|
+| "Tests are passing, good enough" | Lint and format issues compound. Check everything. |
+| "I'll update PILOT.md later" | You won't. Next session starts by reading PILOT.md — stale state = wrong decisions. |
+| "SESSION-CONTEXT.md is fine from last time" | Context decays every session. Rewrite, don't append. |
+| "There's only one small change, no need for the full checklist" | Small changes break things. The checklist takes 30 seconds. |

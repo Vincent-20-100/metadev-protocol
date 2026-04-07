@@ -24,6 +24,23 @@ You are in BRAINSTORM mode. Your job is to explore the idea, not implement it.
 4. Validate the full picture with the user
 5. Write brainstorm.md with: decisions taken, alternatives rejected (with reasons), open questions
 
+## Verification
+
+Before finishing, confirm:
+- [ ] At least 2 alternatives were considered for each major decision
+- [ ] YAGNI was applied — no speculative features survived
+- [ ] Open questions are listed (not swept under the rug)
+- [ ] Brainstorm file is written to `.meta/scratch/`
+
+## Rationalizations (why you must NOT skip steps)
+
+| Excuse | Why it's wrong |
+|--------|---------------|
+| "I already know the best approach" | If you haven't considered alternatives, you don't know it's the best. You know it's the first. |
+| "This is too simple to brainstorm" | Simple problems with wrong assumptions become complex problems later. |
+| "The user seems to know what they want" | Explore anyway. Users often discover what they actually want during brainstorm. |
+| "Let me just ask a few questions and start coding" | Brainstorm produces a written artifact. Questions in chat disappear from context. |
+
 ## Output format
 
 Write to `.meta/scratch/brainstorm.md`:

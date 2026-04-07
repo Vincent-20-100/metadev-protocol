@@ -52,6 +52,24 @@ Write to `.meta/scratch/plan.md`:
 ...
 ```
 
+## Verification
+
+Before finishing, confirm:
+- [ ] All files involved are listed (no surprise edits during implementation)
+- [ ] Each task has a concrete "Verify" step (not just "check it works")
+- [ ] Tasks are ordered by dependency (no task references a later task's output)
+- [ ] Plan is written to `.meta/scratch/`
+- [ ] User has validated the plan
+
+## Rationalizations (why you must NOT skip steps)
+
+| Excuse | Why it's wrong |
+|--------|---------------|
+| "I can figure it out as I go" | Plans catch dependency issues BEFORE you hit them mid-implementation. |
+| "The tasks are too small to plan" | Small tasks still have ordering. Wrong order = rework. |
+| "Let me just map the files mentally" | Write them down. Your context window is finite. The user needs to see them too. |
+| "Verification steps are obvious" | If they're obvious, writing them takes 10 seconds. If they're not, you just prevented a silent failure. |
+
 ## Execution
 
 When the user approves the plan, create a Task per item and execute in order.

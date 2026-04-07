@@ -70,13 +70,20 @@ Do not create top-level directories without checking GUIDELINES.md first.
 Project skills (always available):
 
 ```
-/save-progress  — checklist + context update (does NOT commit)
-/lint            — ruff check + format on the whole project
-/test            — run pytest
 /brainstorm      — structured exploration (basic — use superpowers:brainstorming if available)
-/plan            — task decomposition (basic — use superpowers:writing-plans if available)
+/spec            — formalize requirements into a structured spec (MoSCoW priorities)
 /debate          — multi-agent adversarial debate (3 agents, structured phases, debate record)
+/plan            — task decomposition (basic — use superpowers:writing-plans if available)
 /orchestrate     — session orchestrator: decomposes objectives into debates, plans, implementation
+/test            — run pytest
+/lint            — ruff check + format on the whole project
+/save-progress   — checklist + context update (does NOT commit)
+
+Agent personas (see AGENTS.md):
+- code-reviewer  — 5-axis review (correctness, readability, architecture, security, performance)
+- test-engineer  — test strategy, coverage, reliability
+- security-auditor — OWASP, threat modeling, secrets management
+- data-analyst   — data integrity, methodology, pipeline robustness
 ```
 
 Recommended plugin (install with `/install-plugin obra/superpowers`):
