@@ -63,6 +63,7 @@ metadev-protocol/
 4. **Conventional commits** — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`
 5. **All template output in English** — code, docs, skills, comments
 6. **YAGNI** — no over-engineering, complexity must be justified
+7. **Semver tags are immutable** — never rewrite or move a tag, always bump the version
 
 ## Stack
 
