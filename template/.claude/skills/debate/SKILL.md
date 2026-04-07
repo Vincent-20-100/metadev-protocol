@@ -1,6 +1,6 @@
 ---
 name: debate
-description: "Multi-agent adversarial debate — 3 agents, structured phases, debate record. Usage: /debate <subject> [--preset X] [--deep]"
+description: "Multi-agent adversarial debate — 3 fresh agents, structured phases, debate record. Usage: /debate <subject> [--preset X] [--deep] [--with-context]"
 ---
 
 # /debate — Structured adversarial debate
@@ -11,9 +11,10 @@ Your role: define angles, dispatch agents, synthesize, produce a Debate Record.
 ## Usage
 
 ```
-/debate <subject>                          # default preset, standard mode
+/debate <subject>                          # fresh agents, default preset
 /debate <subject> --preset architecture    # domain-specific preset
 /debate <subject> --deep                   # adds feedback loop on divergence
+/debate <subject> --with-context           # agents receive project context (CLAUDE.md, GUIDELINES.md)
 /debate <subject> --preset data --deep     # combined
 ```
 
@@ -21,24 +22,40 @@ Your role: define angles, dispatch agents, synthesize, produce a Debate Record.
 
 - You are NEUTRAL — do not argue for any side
 - Each agent must have a GENUINELY DIFFERENT perspective — avoid strawmen
+- **Agents are FRESH by default** — they receive ONLY the subject and their angle.
+  No CLAUDE.md, no GUIDELINES.md, no project history. This prevents project bias
+  and forces first-principles reasoning. Use `--with-context` only when the debate
+  requires deep project-specific knowledge (e.g., "should we refactor module X?")
 - Agents in Phase 1 must NOT see each other's arguments (context isolation)
 - Agents in Phase 2 see arguments only, NOT internal reasoning
 - The Debate Record goes to `.meta/debates/` — create the directory if needed
 - Final decision is ALWAYS left to the user unless they explicitly delegate
 - DO NOT write any code or make any edit outside the debate record
 
+## Rationalizations (why you must NOT skip steps)
+
+| Excuse | Why it's wrong |
+|--------|---------------|
+| "The answer is obvious, no need to debate" | If it were obvious, you wouldn't be debating it. Obvious answers are often just status quo bias. |
+| "I'll skip Phase 2, the arguments are clear" | Cross-critique is where weak arguments die. Skipping it means shipping untested reasoning. |
+| "Fresh agents won't understand the project" | That's the point. Project context creates blind spots. First-principles reasoning catches what insiders miss. |
+| "Let me give agents a little context" | A little context is still bias. Either full fresh or explicit --with-context. No middle ground. |
+| "Three agents is overkill for this" | Two agents create false dichotomies. Three forces non-obvious angles. |
+
 ---
 
 ## Phase 0 — Setup
 
 1. Parse the subject and detect or use the specified `--preset`
-2. Define 3 angles with strong, genuine opposition
-3. Announce the setup to the user:
+2. Determine context mode: **fresh** (default) or **with-context** (if `--with-context` flag)
+3. Define 3 angles with strong, genuine opposition
+4. Announce the setup to the user:
 
 ```
 Debate: {subject}
 Preset: {preset}
 Mode: {standard|deep}
+Context: fresh (first-principles) | project-aware
 
 Angles:
   A — {name}: {one-line perspective}
@@ -47,6 +64,17 @@ Angles:
 
 Launching Phase 1...
 ```
+
+### Context modes
+
+**Fresh (default):** Agents receive ONLY the subject, their angle, and the preset
+attack taxonomy. No project files, no CLAUDE.md, no history. They reason from
+first principles like an outside expert consulted for the first time.
+
+**With-context (`--with-context`):** Agents also receive relevant project context
+(CLAUDE.md rules, GUIDELINES.md, PILOT.md state). Use this when the debate is
+tightly coupled to project-specific decisions (e.g., "should we refactor the auth
+module given our current architecture?").
 
 ### Choosing angles
 
@@ -78,6 +106,13 @@ You are Agent {A|B|C} in a structured debate.
 
 ## Domain context
 {preset_attack_taxonomy}
+
+{IF --with-context:}
+## Project context
+{contents of CLAUDE.md rules section}
+{contents of GUIDELINES.md relevant sections}
+{contents of PILOT.md current state}
+{END IF}
 
 ## Instructions
 
@@ -164,14 +199,37 @@ Maximum: 1 feedback loop. Do not iterate further — diminishing returns.
 
 ---
 
-## Phase 3 — Synthesis (ORCHESTRATOR)
+## Phase 3 — Relevance check + Synthesis (ORCHESTRATOR)
 
 You (the orchestrator) now have all Phase 1 and Phase 2 (and 2b) outputs.
+You also have the FULL project context (unlike the fresh agents).
+
+### Step 1: Relevance check (fresh mode only)
+
+Since agents debated without project context, some arguments may be:
+- **Irrelevant**: valid in general but not applicable to this project's constraints
+- **Already decided**: the project has an existing ADR or convention that settles this
+- **Off-scope**: the debate drifted to adjacent topics
+
+For each argument, assess:
+- **Relevant**: applies to this project as-is → keep
+- **Partially relevant**: valid point but needs adaptation to project context → recontextualize
+- **Irrelevant**: doesn't apply given project constraints → dismiss with reason
+
+If >50% of arguments are irrelevant, flag it in the Debate Record:
+```
+⚠️ RECONTEXTUALIZATION NOTE: Fresh agents debated without project context.
+{n} arguments were dismissed as irrelevant to this project's constraints.
+Consider re-running with --with-context if the results feel shallow.
+```
+
+### Step 2: Synthesis
 
 Produce the Debate Record. Be ruthlessly honest:
-- An argument that survived cross-critique IS strong — don't downplay it
+- An argument that survived cross-critique AND relevance check IS strong — don't downplay it
 - An argument that was refuted IS weak — don't rescue it
 - A tension that persists IS real — don't pretend consensus exists
+- An argument dismissed for irrelevance must state WHY it doesn't apply here
 
 ---
 
@@ -185,6 +243,7 @@ Write to `.meta/debates/debate-{slug}.md`:
 **Date:** {date}
 **Preset:** {preset}
 **Mode:** {standard|deep}
+**Context:** {fresh|project-aware}
 **Status:** USER DECISION NEEDED
 
 ---
@@ -212,9 +271,10 @@ Write to `.meta/debates/debate-{slug}.md`:
   - **Why it matters:** {what changes depending on who's right}
 - ...
 
-## Dismissed arguments (refuted)
+## Dismissed arguments (refuted or irrelevant)
 
 - {argument} — raised by {agent}, refuted by {agent}: {reason}
+- {argument} — raised by {agent}, dismissed: irrelevant to project because {reason}
 - ...
 
 ## Convergence points
