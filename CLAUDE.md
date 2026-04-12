@@ -60,7 +60,7 @@ metadev-protocol/
 
 ## Rules
 
-1. **No temp files at root** — WIP goes in `.meta/drafts/` (gitignored). Validated artifacts in `.meta/active/`, implemented in `.meta/archive/`. Filename format: `<type>-<YYYY-MM-DD>-<slug>.md` (types: spec, plan, brainstorm, debate, session) — enforced by `scripts/check_meta_naming.py`
+1. **No temp files at root** — WIP goes in `.meta/drafts/` (gitignored). Validated artifacts in `.meta/active/`, implemented in `.meta/archive/`. Filename format: `<type>-<YYYY-MM-DD>-<slug>.md` (types: spec, plan, brainstorm, debate, session, synthesis) — enforced by `scripts/check_meta_naming.py`
 2. **`template/` only receives validated work** — test with `copier copy . /tmp/test-proj --defaults` before committing
 3. **Modify template = test template** — any change in `template/` triggers a local generation test
 4. **Commit per logical unit** — one feature/fix/decision = one commit (not per file, not per timer). Must be reviewable in <5 minutes and bisectable (tests pass independently). Conventional format: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`. The plan determines granularity — decompose upfront, not in git

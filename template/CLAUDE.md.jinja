@@ -80,9 +80,10 @@ Non-negotiable. These apply to every action.
 3. **Minimize hardcoding** — anything that can change = config or parameter
 4. **No silent errors** — every `except` logs or re-raises
 5. **Commit per logical unit** — one feature/fix/decision = one commit, reviewable in <5 min, bisectable, conventional format (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`). See automatism #7.
-6. **Drafts in `.meta/drafts/`** — WIP only (gitignored). Validated artifacts live in `.meta/active/`, implemented in `.meta/archive/`, named `<type>-<YYYY-MM-DD>-<slug>.md` (types: spec, plan, brainstorm, debate, session). Enforced by `scripts/check_meta_naming.py`. See `.meta/GUIDELINES.md`
+6. **Drafts in `.meta/drafts/`** — WIP only (gitignored). Validated artifacts live in `.meta/active/`, implemented in `.meta/archive/`, named `<type>-<YYYY-MM-DD>-<slug>.md` (types: spec, plan, brainstorm, debate, session, synthesis). Enforced by `scripts/check_meta_naming.py`. See `.meta/GUIDELINES.md`
 7. **Docstrings: WHAT not HOW** — describe purpose, not implementation
 8. **YAGNI** — no over-engineering, complexity must be justified
+9. **Honesty constraint** — never write "verified", "confirmed", "tested", or "reproduced" unless you performed the check and can cite evidence (file, command output, test name). Confidence without evidence is a liability
 
 ## Architecture
 

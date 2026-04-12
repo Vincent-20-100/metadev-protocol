@@ -3,6 +3,30 @@
 > These are recommended practices, not rules. Apply when relevant.
 > Draw from these naturally and suggest them when appropriate.
 
+## Working with AI
+
+**Anti-patterns to watch for:**
+
+- **Over-engineering** — building for hypothetical futures instead of present needs
+- **Knowledge amnesia** — not capturing decisions, repeating the same debates
+- **Perfectionism paralysis** — polishing instead of shipping
+
+If you find yourself correcting AI on the same thing twice, add it to CLAUDE.md.
+Outdated documentation reduces AI effectiveness more than no documentation.
+
+**Practical defaults:**
+
+- **Errors are knowledge** — fix root cause, not symptom
+- **Third occurrence → automate** — the first time is learning, the second is a coincidence, the third is a pattern
+
+**ADR decision template (4 questions):**
+
+When making a technology or architecture decision, answer:
+1. What problem does this solve?
+2. What alternatives were considered?
+3. Why this choice over the alternatives?
+4. What is the exit cost if this choice is wrong?
+
 ## Code structure
 
 - Prefer small, focused functions over long ones
@@ -189,7 +213,17 @@ Every file in `active/` and `archive/` must match:
 
     <type>-<YYYY-MM-DD>-<kebab-slug>.md
 
-Allowed types: `spec`, `plan`, `brainstorm`, `debate`, `session`.
+Allowed types: `spec`, `plan`, `brainstorm`, `debate`, `session`, `synthesis`.
+
+### Slug lineage
+
+When a plan spawns from a spec (or vice versa), both share the same slug
+suffix. This makes lineage visible in `ls`:
+
+    spec-2026-01-15-auth-redesign.md
+    plan-2026-01-15-auth-redesign.md
+
+The naming script does not enforce this — it is a convention, not a rule.
 
 ### Lifecycle
 

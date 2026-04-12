@@ -52,9 +52,22 @@ Write to `.meta/scratch/plan.md`:
 ...
 ```
 
+## Confidence assessment
+
+After writing the plan, rate it before presenting to the user:
+
+| Level | Meaning | Action |
+|-------|---------|--------|
+| **GREEN** | All files identified, no unknowns, clear verification steps | Present plan, ask for go-ahead |
+| **AMBER** | Some unknowns remain (untested dependency, unclear API, missing context) | Present plan with flagged risks, ask user to resolve unknowns before approval |
+| **RED** | Major unknowns (architecture not validated, critical dependency unresolved, scope unclear) | Do NOT present as ready. Recommend /brainstorm or /spec first |
+
+State the confidence level explicitly at the top of the plan. Never present a RED plan as ready to execute.
+
 ## Verification
 
 Before finishing, confirm:
+- [ ] Confidence level is stated (GREEN / AMBER / RED)
 - [ ] All files involved are listed (no surprise edits during implementation)
 - [ ] Each task has a concrete "Verify" step (not just "check it works")
 - [ ] Tasks are ordered by dependency (no task references a later task's output)

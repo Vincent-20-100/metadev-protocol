@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 PATTERN = re.compile(
-    r"^(spec|plan|brainstorm|debate|session)-\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*\.md$"
+    r"^(spec|plan|brainstorm|debate|session|synthesis)-\d{4}-\d{2}-\d{2}-[a-z0-9][a-z0-9-]*\.md$"
 )
 EXEMPT = {".gitkeep"}
 GUARDED_DIRS = ("active", "archive")
