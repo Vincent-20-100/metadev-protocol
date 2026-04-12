@@ -59,10 +59,7 @@ Sleep 3s
 Type "# Safety: 40+ secret patterns caught at every commit"
 Enter
 Sleep 500ms
-Type "python -c \"print('key = \\\"ghp_' + 'a' * 36 + '\\\"')\" > /tmp/test.py"
-Enter
-Sleep 500ms
-Type "python scripts/audit_public_safety.py --mode=quick /tmp/test.py"
+Type "python scripts/audit_public_safety.py --help"
 Sleep 500ms
 Enter
 Sleep 3s
