@@ -1,15 +1,13 @@
 # PILOT.md — metadev-protocol
 
 **Date:** 2026-04-12
-**Phase:** Pre-launch — preparing `v1.0.0` public release
+**Phase:** Pre-launch — v1.0.1 shipped, preparing Phase 4 (launch)
 
 ---
 
 ## Current state
 
-Template is feature-complete for v1.0.0: universal Python scaffold (src/tests/scripts/data/docs), copier-driven generation with `meta_visibility` public/private, workflow gates with explicit approval, `.meta/` taxonomy with filename enforcement, commit-per-logical-unit rule. Remaining work is publication hygiene (CREDITS, CI, git history cleanup) before tagging and outreach.
-
-Historical milestones (MVP Phase A, ADR-008 settings v2, ADR-009 universal architecture, v0.2 skills ecosystem) are preserved in `.meta/archive/` and `.meta/decisions/`.
+v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 adds governance polish from 4-repo audit (honesty constraint, confidence gates, synthesis type, brand guide, demo script, banner). Phase 4 (launch) in progress: outreach spec and post drafts ready, messaging system specified.
 
 ---
 
@@ -59,8 +57,11 @@ Historical milestones (MVP Phase A, ADR-008 settings v2, ADR-009 universal archi
 |---|---|---|
 | 4.1 | Beta outreach (19 contacts + dream targets) | DRAFTED |
 | 4.2 | Draft posts (LinkedIn, X, Reddit, HN) | DRAFTED |
-| 4.3 | Demo GIF / video | TODO |
-| 4.4 | Public launch sequence | TODO |
+| 4.3 | Demo script + VHS tape | DONE |
+| 4.4 | Banner SVG + brand guide | DONE |
+| 4.5 | Outreach messaging spec (lead table, templates, tone) | DONE |
+| 4.6 | Record demo GIF (needs vhs install) | TODO |
+| 4.7 | Public launch sequence | TODO |
 
 ### v1.0.1 — Governance polish (post-debate)
 | # | Task | Status |
