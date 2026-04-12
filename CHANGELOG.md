@@ -6,7 +6,39 @@ This project uses [semantic versioning](https://semver.org/).
 
 ---
 
-## [Unreleased] (v1.0.0 candidate)
+## [v1.1.0] — 2026-04-12 — Skill discoverability + README rework
+
+### Added
+- **Skill discoverability mechanism** — inverted-default trigger table in `CLAUDE.md` (8 skills + 5 agents) with Auto/Propose actions and observable-signal triggers. Propagated to both template and meta-repo. Solves the "LLM under-proposes features" problem by requiring a trigger scan before every response
+- **Automatism #11 — Rule of 3 (anti-consensus bias)** — auto-invokes devil's-advocate agent after 3 consecutive user agreements without friction
+- **README — "The loop you know vs. the loop you want"** — Before/After Mermaid diagram as emotional hook before mechanism
+- **README — "The rails your prompt rides"** — Mermaid pipeline (REMEMBER → PLAN → GUARD → SHIP) showing enforced workflow with session continuity loopback
+- **Banner SVG** — embedded base64 Press Start 2P font for true pixel-art rendering on GitHub (bypasses `@import` block), 3D triple shadow, CRT scanlines + vignette
+
+### Changed
+- **README** — new tagline ("Premium vibe-coding set-up in one command. Automatisms, skills, agents, secrets scanning, session memory — so the AI follows the structure, not your prompts."), full visual rework, rule count bumped 10 → 11
+- **CLAUDE.md (meta-repo)** — new Skills & Agents section with trigger table (dogfoods the same mechanism the template ships)
+- **`.gitignore`** — excludes `.claude/settings.local.json` (local-only, never commit)
+
+---
+
+## [v1.0.1] — 2026-04-09 — Governance polish (4-repo audit)
+
+### Added
+- **Honesty constraint (Rule #9)** — never write "verified/confirmed/tested/reproduced" without cited evidence
+- **Tiered confidence gates** — GREEN/AMBER/RED levels in plan skill
+- **Synthesis type** — new `.meta/` artifact type with slug lineage convention
+- **Working with AI section** — anti-patterns, ADR template, practical defaults in GUIDELINES
+- **Brand guide** — visual identity reference
+- **Demo script + VHS tape** — reproducible terminal demo
+- **Banner SVG** — initial version
+
+### Changed
+- CREDITS.md — added Feynman + Earnings Call Analyst
+
+---
+
+## [v1.0.0] — 2026-04-08 — First public release
 
 ### Added
 - **Execution modes** — `safe` (default) and `full-auto` permission presets via `execution_mode` copier parameter

@@ -95,6 +95,38 @@ git push origin v0.X.0
 
 Every tag is permanent. If a tag is wrong, bump to the next version.
 
+## Skills & Agents
+
+This repo uses the same skills and agents as generated projects (loaded from
+`template/.claude/skills/` via `projectSettings`). Dogfood them here.
+
+**Default rule (inverted detection):** if the user's message does not name a specific
+file, function, or concrete action, at least one tool below applies. Scan the trigger
+table before responding. Over-proposing costs one "no thanks" — under-proposing defeats
+the whole point of dogfooding the template.
+
+| Tool | Type | Trigger (observable signal) | Action |
+|---|---|---|---|
+| `/brainstorm` | skill | goal, idea, concept, problem, or feature described without naming files/functions | **Propose** |
+| `/spec` | skill | scope unclear OR request for a "feature" / "system" / "workflow" across multiple pieces | **Auto** |
+| `/plan` | skill | change would touch >1 file OR a structural change in `template/` | **Auto** |
+| `/debate` | skill | hard trade-off with 2+ defensible options, especially for template conventions | **Propose** |
+| `/orchestrate` | skill | multi-step objective spanning spec + plan + implementation across phases | **Propose** |
+| `/test` | skill | template code or scripts modified and no test run has happened yet | **Auto** (after impl) |
+| `/lint` | skill | before commit OR after touching >1 source file | **Auto** |
+| `/save-progress` | skill | end of session OR user says "stop", "pause", "on arrête" | **Propose** |
+| `code-reviewer` | agent | ≥3 files touched in current plan, or a plan step just completed | **Auto** |
+| `security-auditor` | agent | changes to `.pre-commit`, `audit_public_safety.py`, secrets handling, CI workflows | **Propose** |
+| `devil's-advocate` | agent | 3 consecutive user agreements without friction (Rule of 3) | **Auto** |
+
+**Auto** = invoke without asking (announce it in one line). **Propose** = ask first,
+explaining why this tool applies. Never stay silent when a trigger matches.
+
+**Rule of 3 (anti-consensus bias):** count consecutive user agreements without
+friction. At 3 in a row, invoke the devil's-advocate agent before continuing. The
+signal is countable (agreements, not topics) and the user will never self-request a
+challenge — that's why it must fire automatically.
+
 ## Stack
 
 - Python >= 3.13

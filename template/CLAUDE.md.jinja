@@ -27,11 +27,9 @@ These behaviors are mandatory. Apply them without being asked.
      │   └─ Suggest /debate (optional — /brainstorm is always a valid
      │      alternative; debate costs more tokens)
      │
-     ├─ You agreed with 3+ user positions in a row without friction?
-     │   └─ Invoke devil's-advocate agent (Rule of 3 — anti-consensus bias)
-     │
      ├─ Structural decision and user wants a challenge?
      │   └─ Invoke devil's-advocate agent on demand
+     │      (see automatism #10 for auto-triggered Rule of 3)
      │
      ├─ Requirements need formalization (complex scope)?
      │   └─ Write /spec → then continue to plan
@@ -69,7 +67,8 @@ These behaviors are mandatory. Apply them without being asked.
 7. **Every commit** — one complete logical unit per commit (not per file, not per timer). Must be reviewable in <5 minutes and bisectable (tests pass independently). Conventional format: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`. The plan determines granularity — decompose upfront, not in git. Never commit partial work to satisfy a timer.
 8. **Architecture changes** — if `.meta/ARCHITECTURE.md` doesn't exist and architecture is defined, create it. Keep it in sync with the code. On divergence, ask the user: if intentional, rewrite the file; if not, guide back to the defined architecture
 9. **Context recall** — if you lack context on a past decision, check `.meta/archive/` for session archives and historical plans/specs before asking the user
-10. **Always** — apply the rules below and draw from `.meta/GUIDELINES.md`
+10. **Rule of 3 (anti-consensus bias)** — count consecutive user agreements without friction. At 3 in a row, invoke the devil's-advocate agent before continuing. The signal is countable (agreements, not topics) and the user will never self-request a challenge — that's exactly why it must fire automatically. This catches silent drift where both sides stop challenging each other.
+11. **Always** — apply the rules below and draw from `.meta/GUIDELINES.md`
 
 ## Rules
 
@@ -118,27 +117,32 @@ paths when the project grows beyond the base structure.
 
 Do not create top-level directories without checking GUIDELINES.md first.
 
-## Skills
+## Skills & Agents
 
-Project skills (always available):
+**Default rule (inverted detection):** if the user's message does not name a specific
+file, function, or concrete action, at least one tool below applies. Scan the trigger
+table before responding. Over-proposing costs one "no thanks" — under-proposing costs
+the entire value of the template.
 
-```
-/brainstorm      — structured exploration (basic — use superpowers:brainstorming if available)
-/spec            — formalize requirements into a structured spec (MoSCoW priorities)
-/debate          — multi-agent adversarial debate (3 agents, structured phases, debate record) — optional, /brainstorm is always a valid alternative
-/plan            — task decomposition (basic — use superpowers:writing-plans if available)
-/orchestrate     — session orchestrator: decomposes objectives into debates, plans, implementation
-/test            — run pytest
-/lint            — ruff check + format on the whole project
-/save-progress   — checklist + context update (does NOT commit)
+| Tool | Type | Trigger (observable signal) | Action |
+|---|---|---|---|
+| `/brainstorm` | skill | goal, idea, concept, problem, or feature described without naming files/functions | **Propose** |
+| `/spec` | skill | scope unclear OR user asks for a "feature" / "system" / "workflow" across multiple pieces | **Auto** |
+| `/plan` | skill | implementation would touch >1 file OR involves a structural change | **Auto** |
+| `/debate` | skill | hard trade-off with 2+ defensible options, or user asks to challenge an idea | **Propose** |
+| `/orchestrate` | skill | multi-step objective spanning spec + plan + implementation across phases | **Propose** |
+| `/test` | skill | code was just written or modified and no test run has happened yet | **Auto** (after impl) |
+| `/lint` | skill | before commit OR after touching >1 source file | **Auto** |
+| `/save-progress` | skill | end of session OR user says "stop", "pause", "on arrête" | **Propose** |
+| `code-reviewer` | agent | ≥3 files touched in current plan, or a plan step just completed | **Auto** |
+| `test-engineer` | agent | new module, new public API, or missing coverage on touched code | **Propose** |
+| `security-auditor` | agent | auth, secrets, input validation, crypto, network boundaries, file uploads | **Propose** |
+| `data-analyst` | agent | pipeline, ETL, metric computation, statistical claim, or dataset quality question | **Propose** |
+| `devil's-advocate` | agent | 3 consecutive user agreements without friction (see automatism #10) | **Auto** |
 
-Agent personas (see AGENTS.md):
-- code-reviewer  — 5-axis review (correctness, readability, architecture, security, performance)
-- test-engineer  — test strategy, coverage, reliability
-- security-auditor — OWASP, threat modeling, secrets management
-- data-analyst   — data integrity, methodology, pipeline robustness
-- devil's-advocate — anti-consensus challenger (Rule of 3, steelmanning, claim classification)
-```
+**Auto** = invoke without asking (announce it in one line). **Propose** = ask the user
+first, explaining why this tool applies. Never stay silent when a trigger matches — the
+user can always decline, but a missed proposal is a lost feature.
 
 Recommended plugin (install with `/install-plugin obra/superpowers`):
 
