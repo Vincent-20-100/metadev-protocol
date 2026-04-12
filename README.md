@@ -12,7 +12,8 @@
 
 # metadev-protocol
 
-> One command, your AI-ready Python project: automatisms, conventions, skills, agents, secrets scanning, and session context. Premium vibe-coding out of the box.
+> **Premium vibe-coding set-up in one command.**
+> Automatisms, skills, agents, secrets scanning, session memory — so the AI follows the structure, not your prompts.
 
 ```bash
 copier copy gh:Vincent-20-100/metadev-protocol my-project --trust
@@ -39,40 +40,67 @@ metadev-protocol generates a **fully wired Python project** where the AI follows
 
 The core principle: **separate what ships from how you build it.**
 
+### The loop you know vs. the loop you want
+
 ```mermaid
-flowchart TB
-    classDef product fill:#313244,stroke:#89b4fa,stroke-width:2px,color:#cdd6f4
-    classDef process fill:#313244,stroke:#b4befe,stroke-width:2px,color:#cdd6f4
-    classDef ai      fill:#1e1e2e,stroke:#74c7ec,stroke-width:1px,color:#74c7ec
-    classDef rule    fill:#1e1e2e,stroke:#6c7086,stroke-width:1px,color:#6c7086
+flowchart LR
+    classDef pain  fill:#3a2230,stroke:#f38ba8,stroke-width:2px,color:#f2cdcd
+    classDef cure  fill:#1e3a2e,stroke:#a6e3a1,stroke-width:2px,color:#d9f7d0
+    classDef jump  fill:#2d2a52,stroke:#cba6f7,stroke-width:2px,color:#e0c8ff
 
-    subgraph PRODUCT["Product — ships to users"]
+    subgraph BEFORE["❌ Raw Claude Code"]
         direction TB
-        SRC["src/ · tests/"]:::product
-        SCRIPTS["scripts/ · data/"]:::product
-        CFG["pyproject.toml · .pre-commit"]:::product
+        B1["Re-explain the project"]:::pain
+        B2["AI invents a new file layout"]:::pain
+        B3["Drafts pile up at repo root"]:::pain
+        B4["Tomorrow: start from zero"]:::pain
+        B1 --> B2 --> B3 --> B4 --> B1
     end
 
-    subgraph PROCESS[".meta/ — AI workspace"]
+    subgraph AFTER["✅ metadev-protocol"]
         direction TB
-        PILOT["PILOT.md — project dashboard"]:::process
-        SESSION["SESSION-CONTEXT.md — living memory"]:::process
-        ACTIVE["active/ — validated specs & plans"]:::process
-        ARCHIVE["archive/ — implemented artifacts"]:::process
-        DRAFTS["drafts/ — WIP (gitignored)"]:::rule
-        DECISIONS["decisions/ — ADRs"]:::process
+        A1["AI reads where you stopped"]:::cure
+        A2["Plans before touching code"]:::cure
+        A3["Drafts auto-quarantined"]:::cure
+        A4["Session saved for tomorrow"]:::cure
+        A1 --> A2 --> A3 --> A4 --> A1
     end
 
-    AI(["Claude Code"]):::ai
+    JUMP["copier copy"]:::jump
+    BEFORE ==> JUMP ==> AFTER
 
-    AI -->|"reads context"| PILOT
-    AI -->|"writes code"| SRC
-    AI -->|"saves progress"| SESSION
-    DRAFTS -.->|"validated"| ACTIVE
-    ACTIVE -.->|"implemented"| ARCHIVE
+    style BEFORE fill:#1e2a52,stroke:#f38ba8,stroke-width:2px,color:#f2cdcd
+    style AFTER  fill:#1e2a52,stroke:#a6e3a1,stroke-width:2px,color:#d9f7d0
+```
 
-    style PRODUCT fill:#1e1e2e,stroke:#89b4fa,stroke-width:2px,color:#89b4fa
-    style PROCESS fill:#1e1e2e,stroke:#b4befe,stroke-width:2px,color:#b4befe
+### How it works — the rails your prompt rides
+
+One prompt enters, but it doesn't go straight to the model. It passes through four enforced stages before any file is touched — and session memory closes the loop.
+
+```mermaid
+flowchart LR
+    classDef io    fill:#a6e3a1,stroke:#40a02b,stroke-width:3px,color:#1e1e2e
+    classDef stage fill:#89dceb,stroke:#74c7ec,stroke-width:2px,color:#1e2a52
+    classDef out   fill:#f5c2e7,stroke:#ea76cb,stroke-width:3px,color:#1e1e2e
+
+    PROMPT(["one prompt"]):::io
+
+    subgraph RAILS["the rails"]
+        direction LR
+        REMEMBER["<b>REMEMBER</b><br/>PILOT.md · SESSION-CONTEXT<br/>active plans · decisions"]:::stage
+        PLAN["<b>PLAN</b><br/>/brainstorm /spec /plan<br/>/debate /orchestrate"]:::stage
+        GUARD["<b>GUARD</b><br/>11 automatisms · 9 rules<br/>reviewer · security · devil"]:::stage
+        SHIP["<b>SHIP</b><br/>hooks: lint · secrets · tests<br/>/save-progress"]:::stage
+        REMEMBER ==> PLAN ==> GUARD ==> SHIP
+    end
+
+    CODE(["shipped code<br/>+ updated memory"]):::out
+
+    PROMPT ==> REMEMBER
+    SHIP ==> CODE
+    CODE -.->|"next session"| REMEMBER
+
+    style RAILS fill:#1e2a52,stroke:#cba6f7,stroke-width:2px,color:#cdd6f4
 ```
 
 Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) are committed. Context is preserved — every session picks up where the last one ended.
@@ -81,7 +109,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 
 ## What You Get
 
-- **10 automatisms** — context loading at session start, mandatory plan before any edit, architecture sync, session handoff at the end. Hard-wired in `CLAUDE.md`, they fire without prompting.
+- **11 automatisms** — context loading at session start, mandatory plan before any edit, architecture sync, session handoff, Rule of 3 anti-consensus challenge. Hard-wired in `CLAUDE.md`, they fire without prompting.
 - **9 rules** — the non-negotiable contract between you and the AI. Few hard rules that are always followed beat many soft rules that are sometimes ignored.
 - **8 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/test`, `/lint`, `/save-progress`. Reusable across every project you generate.
 - **5 agent personas** — code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate. Defined in `AGENTS.md`, invoked on demand.
@@ -98,7 +126,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 
 ```
 my-project/
-├── CLAUDE.md                       # Session contract (10 automatisms + 9 rules)
+├── CLAUDE.md                       # Session contract (11 automatisms + 9 rules)
 ├── AGENTS.md                       # Agent personas (5 specialists)
 ├── pyproject.toml                  # uv, ruff, pytest
 ├── .pre-commit-config.yaml         # Lint + hooks + secret scan
@@ -138,14 +166,14 @@ my-project/
 
 | File | Authority | Role |
 |------|-----------|------|
-| `CLAUDE.md` | **Law** | 10 automatisms + 9 rules. Non-negotiable. |
+| `CLAUDE.md` | **Law** | 11 automatisms + 9 rules. Non-negotiable. |
 | `GUIDELINES.md` | **Mentor** | Best practices, anti-patterns, ADR templates. Proposed, not imposed. |
 
 ### Session lifecycle
 
 Each session follows the same enforced sequence: read context → propose plan → get approval → implement (auto-lint on every edit) → test → conventional commit → rewrite context for the next session. If scope is unclear, the AI reaches for `/brainstorm → /spec → /debate` before writing any code.
 
-This isn't a suggestion — it's what the 10 automatisms enforce. The AI does this because the structure tells it to, not because you asked.
+This isn't a suggestion — it's what the 11 automatisms enforce. The AI does this because the structure tells it to, not because you asked.
 
 ---
 

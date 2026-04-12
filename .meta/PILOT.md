@@ -1,13 +1,13 @@
 # PILOT.md — metadev-protocol
 
 **Date:** 2026-04-12
-**Phase:** Pre-launch — v1.0.1 shipped, preparing Phase 4 (launch)
+**Phase:** Pre-launch — v1.1.0 shipped, preparing Phase 4 (launch)
 
 ---
 
 ## Current state
 
-v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 adds governance polish from 4-repo audit (honesty constraint, confidence gates, synthesis type, brand guide, demo script, banner). Phase 4 (launch) in progress: outreach spec and post drafts ready, messaging system specified.
+v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 added governance polish from 4-repo audit (honesty constraint, confidence gates, synthesis type, brand guide, demo script, banner). v1.1.0 adds skill discoverability mechanism (automatism #11 Rule of 3 + inverted-default trigger table) and full README rework (pixel-art banner, Before/After + Rails diagrams). Phase 4 (launch) in progress: outreach spec and post drafts ready, messaging system specified.
 
 ---
 
@@ -82,6 +82,8 @@ v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 adds governance polish from
 | PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | PENDING |
 | PM.4 | Multi-agent synthesis run — cross-pollinate ALL reference sources for emergent structural innovations (not feature-picking) | debate-2026-04-12 | PENDING |
 | PM.5 | Provenance sidecar convention (deferred from T1.7) | synthesis-2026-04-12 | PENDING |
+| PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Brainstorm + debate needed before spec. Source: Agent-Reach audit session | session-2026-04-12 | PENDING |
+| PM.7 | Skill/agent discoverability problem — the LLM doesn't proactively propose skills and agents enough. New users who don't know features exist won't get full value. Need to improve CLAUDE.md automatisms, onboarding, and/or skill suggestion triggers | session-2026-04-12 | DONE (v1.1.0 — automatism #11 + trigger table) |
 
 ---
 

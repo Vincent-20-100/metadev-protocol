@@ -28,3 +28,6 @@ node_modules/
 # Meta protocol — ephemeral drafts
 .meta/drafts/*
 !.meta/drafts/.gitkeep
+
+# Claude Code — local settings (never commit)
+.claude/settings.local.json
