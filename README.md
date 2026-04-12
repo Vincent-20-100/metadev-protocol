@@ -6,147 +6,166 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
   <a href="https://www.python.org"><img src="https://img.shields.io/badge/Python-3.13+-blue.svg" alt="Python 3.13+"></a>
   <a href="https://github.com/astral-sh/uv"><img src="https://img.shields.io/badge/uv-package%20manager-blueviolet" alt="uv"></a>
-  <a href="https://github.com/copier-org/copier"><img src="https://img.shields.io/badge/Copier-template%20engine-green" alt="Copier"></a>
+  <a href="https://copier.readthedocs.io"><img src="https://img.shields.io/badge/Copier-template%20engine-green" alt="Copier"></a>
   <a href="https://claude.ai/code"><img src="https://img.shields.io/badge/Claude%20Code-AI%20assistant-orange" alt="Claude Code"></a>
 </p>
 
 # metadev-protocol
 
-> A high-performance Vibe Coding protocol based on the strict separation between **Project Deliverables** and **Development Context**.
-
----
-
-## The Problem
-
-Every AI-assisted project starts the same way — and hits the same walls:
-
-- **Zero memory.** Each session starts from scratch. You re-explain the architecture, the decisions, the current state. Every. Single. Time.
-- **Context soup.** Drafts, scratch files, brainstorm notes pile up next to production code. The LLM can't tell what ships and what doesn't.
-- **Skills don't transfer.** You build great prompts, workflows, and guidelines for one project — then start from zero on the next one.
-- **Instructions decay.** You write rules in CLAUDE.md. The LLM follows them for a while, then drifts. No enforcement, no hooks, just hope.
-- **No structure, no discipline.** The LLM creates files anywhere, skips tests, forgets to update docs. You spend more time supervising than building.
-
-The result: you're prompting the same things over and over instead of coding.
-
-## The Solution
-
-One command. Ready to build.
+> One command, your AI-ready Python project: automatisms, conventions, skills, agents, secrets scanning, and session context. Premium vibe-coding out of the box.
 
 ```bash
 copier copy gh:Vincent-20-100/metadev-protocol my-project --trust
 cd my-project && claude
 ```
 
-metadev-protocol generates a **fully wired Python project** where the LLM follows the workflow without being told — because the rules are encoded in the structure, not in your prompts.
+---
 
-```mermaid
-flowchart TB
-    subgraph Product ["Product (ships to users)"]
-        direction TB
-        SRC["src/ — Package code"]
-        TESTS["tests/ — Test suite"]
-        SCRIPTS["scripts/ — Utilities"]
-        DATA["data/ — raw → interim → processed"]
-    end
+## The Problem
 
-    subgraph Process ["Process (AI workspace)"]
-        direction TB
-        PILOT[".meta/PILOT.md — Dashboard"]
-        SESSION[".meta/SESSION-CONTEXT.md — Living context"]
-        DECISIONS[".meta/decisions/ — ADRs"]
-        DRAFTS[".meta/drafts/ — WIP (gitignored)"]
-    end
+Every AI-assisted project starts the same way, and hits the same walls:
 
-    Product ~~~ Process
-
-    style Product fill:#e8f5e9,stroke:#2e7d32
-    style Process fill:#e3f2fd,stroke:#1565c0
-```
-
-**Product and process never mix.** `src/` and `tests/` are the deliverable. `.meta/` is the AI workspace. Drafts are gitignored, validated artifacts (`active/`) and history (`archive/`) are committed. Context is preserved. Every session picks up where the last one ended.
+- **You already lost that context.** Each session starts from scratch. You re-explain the architecture, the decisions, the current state. Every. Single. Time.
+- **Your codebase is a mess.** Drafts, scratch files, brainstorm notes pile up next to production code. The AI can't tell what ships and what doesn't.
+- **Your best prompts stay behind.** You build great workflows and guidelines for one project — then start from zero on the next one.
+- **Your rules stopped working.** You wrote instructions in CLAUDE.md. The AI followed them for a while, then drifted. No enforcement, no hooks, just hope.
+- **You spend more time supervising than building.** The AI creates files anywhere, skips tests, forgets to update docs. You're prompting the same things over and over instead of coding.
 
 ---
 
-## How It Works
+## The Solution
 
-### Session Lifecycle
+metadev-protocol generates a **fully wired Python project** where the AI follows the workflow without being told — because the rules are encoded in the structure, not in your prompts.
+
+The core principle: **separate what ships from how you build it.**
 
 ```mermaid
-flowchart TD
-    START(["Session Start"]) --> READ["Reads PILOT.md +<br/>SESSION-CONTEXT.md"]
-    READ --> PLAN["Proposes plan<br/>(mandatory before any code)"]
-    PLAN -->|"User approves"| CODE["Implements<br/>(auto-ruff on every edit)"]
-    CODE --> TEST["Tests + lints"]
-    TEST --> COMMIT["Conventional commit"]
-    COMMIT --> SAVE["/save-progress<br/>Rewrites context for next session"]
-    SAVE --> END(["Session End"])
+flowchart TB
+    classDef product fill:#313244,stroke:#89b4fa,stroke-width:2px,color:#cdd6f4
+    classDef process fill:#313244,stroke:#b4befe,stroke-width:2px,color:#cdd6f4
+    classDef ai      fill:#1e1e2e,stroke:#74c7ec,stroke-width:1px,color:#74c7ec
+    classDef rule    fill:#1e1e2e,stroke:#6c7086,stroke-width:1px,color:#6c7086
 
-    CODE -->|"Scope unclear"| EXPLORE["/brainstorm → /spec → /debate"]
-    EXPLORE --> PLAN
+    subgraph PRODUCT["Product — ships to users"]
+        direction TB
+        SRC["src/ · tests/"]:::product
+        SCRIPTS["scripts/ · data/"]:::product
+        CFG["pyproject.toml · .pre-commit"]:::product
+    end
 
-    style START fill:#4caf50,color:#fff
-    style END fill:#f44336,color:#fff
-    style EXPLORE fill:#ff9800,color:#fff
+    subgraph PROCESS[".meta/ — AI workspace"]
+        direction TB
+        PILOT["PILOT.md — project dashboard"]:::process
+        SESSION["SESSION-CONTEXT.md — living memory"]:::process
+        ACTIVE["active/ — validated specs & plans"]:::process
+        ARCHIVE["archive/ — implemented artifacts"]:::process
+        DRAFTS["drafts/ — WIP (gitignored)"]:::rule
+        DECISIONS["decisions/ — ADRs"]:::process
+    end
+
+    AI(["Claude Code"]):::ai
+
+    AI -->|"reads context"| PILOT
+    AI -->|"writes code"| SRC
+    AI -->|"saves progress"| SESSION
+    DRAFTS -.->|"validated"| ACTIVE
+    ACTIVE -.->|"implemented"| ARCHIVE
+
+    style PRODUCT fill:#1e1e2e,stroke:#89b4fa,stroke-width:2px,color:#89b4fa
+    style PROCESS fill:#1e1e2e,stroke:#b4befe,stroke-width:2px,color:#b4befe
 ```
 
-This isn't a suggestion — it's **10 automatisms hard-wired in CLAUDE.md** that fire without prompting: context loading at session start, mandatory plan before any edit, architecture sync on changes, context rewrite at session end.
-
-### Law and Mentor
-
-| File | Authority | What it does |
-|------|-----------|--------------|
-| **CLAUDE.md** | Law | 10 automatisms + 8 rules. Non-negotiable. |
-| **GUIDELINES.md** | Mentor | Best practices. Proposed, not imposed. |
-
-Few hard rules that are always followed beat many soft rules that are sometimes ignored.
-
-### Hooks Over Instructions
-
-Critical behaviors are **automatic hooks**, not instructions the AI can ignore:
-
-- Every Python file is auto-formatted and linted on save (ruff PostToolUse hook)
-- First session is detected automatically (SessionStart hook)
-- Dangerous operations are blocked or require confirmation (security deny/ask rules)
-- Co-authored-by trailers suppressed natively (`attribution.commit: ""`)
+Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) are committed. Context is preserved — every session picks up where the last one ended.
 
 ---
 
 ## What You Get
 
-| Category | Details |
-|----------|---------|
-| **10 automatisms** | Context loading, plan-before-code, architecture sync, session handoff |
-| **8 skills** | /brainstorm, /spec, /debate, /plan, /orchestrate, /test, /lint, /save-progress |
-| **5 agent personas** | code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate (AGENTS.md) |
-| **Data pipeline** | `data/raw/` → `data/interim/` → `data/processed/` — ready from day one |
-| **Security** | Credential reads blocked, destructive commands denied, force-push asks confirmation |
-| **Context continuity** | PILOT.md + SESSION-CONTEXT.md — zero context loss between sessions |
-| **`.meta/` taxonomy** | `active/` · `archive/` · `drafts/` · `decisions/` · `references/` — filename convention enforced by pre-commit |
-| **Visibility modes** | `meta_visibility=public` (default, commits `.meta/` except drafts) or `private` (gitignores entire `.meta/`) |
-| **Execution modes** | `execution_mode=safe` (default, asks before touching repo structure) or `full-auto` (unsupervised runs, safety-net deny only) |
-| **Public safety audit** | Stdlib script + pre-commit hook + 2 GitHub workflows, propagated to every generated project |
-| **Versioned updates** | `copier update` propagates template improvements to existing projects |
+- **10 automatisms** — context loading at session start, mandatory plan before any edit, architecture sync, session handoff at the end. Hard-wired in `CLAUDE.md`, they fire without prompting.
+- **9 rules** — the non-negotiable contract between you and the AI. Few hard rules that are always followed beat many soft rules that are sometimes ignored.
+- **8 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/test`, `/lint`, `/save-progress`. Reusable across every project you generate.
+- **5 agent personas** — code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate. Defined in `AGENTS.md`, invoked on demand.
+- **Hooks over instructions** — every Python file is auto-linted on save (ruff PostToolUse hook), dangerous operations are blocked or require confirmation, co-authored-by trailers suppressed natively.
+- **Session continuity** — `PILOT.md` (project dashboard) + `SESSION-CONTEXT.md` (living context rewritten each session). Claude remembers what you decided three weeks ago.
+- **`.meta/` taxonomy** — `active/` · `archive/` · `drafts/` · `decisions/` · `references/`. Filename convention enforced by pre-commit hook.
+- **Secret scanning** — 40+ regex patterns, local audit script, pre-commit hook, 2 GitHub Actions (push gate + publicization alert). [Details](docs/public-safety.md)
+- **Two execution modes** — `safe` (default, asks before touching repo structure) or `full-auto` (unsupervised runs, safety-net deny only). [Details](docs/execution-modes.md)
+- **Versioned updates** — `copier update` propagates template improvements to existing projects. Review the diff, resolve conflicts, done.
+
+---
+
+## Generated Structure
+
+```
+my-project/
+├── CLAUDE.md                       # Session contract (10 automatisms + 9 rules)
+├── AGENTS.md                       # Agent personas (5 specialists)
+├── pyproject.toml                  # uv, ruff, pytest
+├── .pre-commit-config.yaml         # Lint + hooks + secret scan
+│
+├── src/my_project/                 # Package source
+├── tests/                          # Test suite
+├── scripts/
+│   ├── check_meta_naming.py        # .meta/ filename convention
+│   ├── check_git_author.py         # Block AI authorship
+│   └── audit_public_safety.py      # Secret + sensitive file scanner
+├── data/                           # raw/ → interim/ → processed/
+│
+├── .github/workflows/
+│   ├── public-safety.yml           # Audit on push/PR to main
+│   └── public-alert.yml            # Alert on repo publicization
+│
+├── .claude/
+│   ├── settings.json               # Permissions, hooks, security
+│   └── skills/                     # 8 built-in skills
+│
+└── .meta/
+    ├── PILOT.md                    # Project dashboard (AI reads first)
+    ├── SESSION-CONTEXT.md          # Living context (rewritten each session)
+    ├── GUIDELINES.md               # Best practices (advisory)
+    ├── active/                     # Validated plans/specs in flight
+    ├── archive/                    # Implemented artifacts
+    ├── drafts/                     # WIP (gitignored)
+    ├── decisions/                  # Architecture Decision Records
+    └── references/                 # raw/ → interim/ → synthesis/
+```
+
+---
+
+## How It Works
+
+### Law and Mentor
+
+| File | Authority | Role |
+|------|-----------|------|
+| `CLAUDE.md` | **Law** | 10 automatisms + 9 rules. Non-negotiable. |
+| `GUIDELINES.md` | **Mentor** | Best practices, anti-patterns, ADR templates. Proposed, not imposed. |
+
+### Session lifecycle
+
+Each session follows the same enforced sequence: read context → propose plan → get approval → implement (auto-lint on every edit) → test → conventional commit → rewrite context for the next session. If scope is unclear, the AI reaches for `/brainstorm → /spec → /debate` before writing any code.
+
+This isn't a suggestion — it's what the 10 automatisms enforce. The AI does this because the structure tells it to, not because you asked.
 
 ---
 
 ## Quick Start
 
 ```bash
-# 1. Install uv (if needed)
+# 1. Install prerequisites
 curl -LsSf https://astral.sh/uv/install.sh | sh        # macOS/Linux
 # powershell -c "irm https://astral.sh/uv/install.ps1 | iex"  # Windows
-
-# 2. Install copier
 uv tool install copier
 
-# 3. Generate your project
+# 2. Generate your project
 copier copy gh:Vincent-20-100/metadev-protocol my-project --trust
 
-# 4. Start coding with AI
+# 3. Start building
 cd my-project && claude
 ```
 
-Dependencies, hooks, and git init happen automatically.
+> [!NOTE]
+> Requires [uv](https://github.com/astral-sh/uv), [copier](https://copier.readthedocs.io), and a [Claude Code](https://claude.ai/code) subscription.
 
 ### Update an existing project
 
@@ -158,114 +177,6 @@ Template improvements are propagated via semver tags. Review the diff, resolve c
 
 ---
 
-## Generated Structure
-
-```
-my-project/
-├── CLAUDE.md                       # Session contract (10 automatisms + 8 rules)
-├── AGENTS.md                       # Agent personas (5 specialists)
-├── pyproject.toml                  # uv build, ruff, pytest
-├── .pre-commit-config.yaml         # ruff + hooks + secret scan
-│
-├── src/my_project/                 # Package source
-├── tests/                          # Test suite (mirrors src/)
-├── scripts/
-│   ├── check_meta_naming.py        # .meta/ filename convention
-│   ├── check_git_author.py         # Block AI authorship
-│   └── audit_public_safety.py      # Secret + sensitive file scanner
-├── data/                           # raw/ → interim/ → processed/
-├── docs/                           # Documentation
-│
-├── .github/workflows/
-│   ├── public-safety.yml           # Audit on push/PR to main
-│   └── public-alert.yml            # Alert on repo publicization
-│
-├── .claude/
-│   ├── settings.json               # Permissions, hooks, attribution, security
-│   ├── rules/                      # testing.md, code-style.md
-│   └── skills/                     # 8 built-in skills
-│
-└── .meta/
-    ├── PILOT.md                    # Project dashboard (read first)
-    ├── SESSION-CONTEXT.md          # Living context (rewritten each session)
-    ├── GUIDELINES.md               # Best practices (advisory)
-    ├── active/                     # Validated plans/specs in flight
-    ├── archive/                    # Implemented / historical artifacts
-    ├── drafts/                     # WIP (gitignored)
-    ├── decisions/                  # Architecture Decision Records
-    └── references/                 # raw/ → interim/ → synthesis/
-```
-
----
-
-## Execution modes
-
-At `copier copy` time you pick one of two Claude Code permission presets
-via the `execution_mode` parameter:
-
-| Mode | Use case | `permissions.allow` | `permissions.ask` |
-|------|----------|---------------------|-------------------|
-| **`safe`** (default) | Interactive dev, public forks, new users | `src/`, `tests/`, `.meta/`, `docs/` writes; `uv`, `git` (read/commit), `pytest`, `ruff`, `pre-commit`, `copier` | Touches to `pyproject.toml`, `CLAUDE.md`, `README.md`, `.claude/`, `.github/`, `git push`, `rm`, `mv`, `mkdir` |
-| **`full-auto`** | Unsupervised runs (VPS, overnight spec execution) | Everything | Empty |
-
-The `permissions.deny` safety net is **identical** in both modes and
-covers the non-negotiable catastrophes: `rm -rf`, `sudo`, `dd`, `mkfs`,
-`chmod -R 777`, `curl|sh`, `wget|sh`, `.env*`, `.git/**`, `~/.ssh`,
-`~/.aws`, `~/.gnupg`, `~/.pypirc`, `~/.netrc`.
-
-> ⚠️ **Full-auto warning.** Use `full-auto` only on environments where
-> you accept that the AI can modify any file in the project without
-> prompting. Never use it on a machine that holds production credentials
-> outside the deny list, and never on a shared workstation.
-
-**Switching modes after generation.** Two options:
-
-1. Edit `.claude/settings.json` directly — it is plain JSON, nothing
-   stops you from moving entries between `allow`, `ask`, and `deny`.
-2. Re-run `copier update` with a different answer — copier will surface
-   the diff; accept or reject it as you would any other template update.
-
-Pair this with the `CLAUDE.md` rule *"Plan validated = all actions
-validated"* (automatism #4) and a validated plan runs end-to-end
-without mid-execution friction.
-
----
-
-## Before going public
-
-Four contact points defend against accidental secret leaks when transitioning a repo from private to public:
-
-1. **Local manual run** — full audit on demand:
-   ```bash
-   uv run python scripts/audit_public_safety.py --mode=full
-   ```
-2. **Pre-commit hook** — quick secret scan on every commit (staged files only, automatic)
-3. **GitHub Action on push/PR to `main`** — full audit gates merges via branch protection
-4. **GitHub Action on `public` event** — reactive audit opens a critical issue if violations are detected
-
-All four are propagated to every generated project.
-
-### Enable branch protection on `main`
-
-```bash
-gh api -X PUT repos/OWNER/REPO/branches/main/protection \
-  -f required_status_checks[strict]=true \
-  -f required_status_checks[contexts][]=audit \
-  -f enforce_admins=false \
-  -f required_pull_request_reviews=null \
-  -f restrictions=null
-```
-
-### Enable GitHub Secret Scanning
-
-Go to **Settings > Code security and analysis** and enable:
-- **Secret scanning** (detects known token formats from 200+ providers)
-- **Push protection** (blocks pushes containing detected secrets)
-
-These complement the local audit script, which catches custom patterns and structural issues.
-
----
-
 ## Stack
 
 | Tool | Role |
@@ -273,7 +184,7 @@ These complement the local audit script, which catches custom patterns and struc
 | [Python 3.13+](https://www.python.org) | Language |
 | [uv](https://github.com/astral-sh/uv) | Package manager + venv |
 | [ruff](https://github.com/astral-sh/ruff) | Lint + format |
-| [copier](https://github.com/copier-org/copier) | Template generation + updates |
+| [copier](https://copier.readthedocs.io) | Template generation + updates |
 | [pre-commit](https://pre-commit.com/) | Git hooks |
 | [Claude Code](https://claude.ai/code) | AI assistant |
 
@@ -288,11 +199,7 @@ git clone https://github.com/Vincent-20-100/metadev-protocol.git
 cd metadev-protocol && uv sync
 ```
 
-Read [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow. See [CREDITS.md](CREDITS.md) for inspirations and attributions, [CHANGELOG.md](CHANGELOG.md) for version history.
-
-Current state and roadmap: `.meta/PILOT.md`. Past decisions: `.meta/decisions/`.
-
----
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow, [CREDITS.md](CREDITS.md) for inspirations, [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ## License
 

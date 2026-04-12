@@ -1,80 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="480" viewBox="0 0 900 480">
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="260" viewBox="0 0 900 260">
   <defs>
     <style>
       @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap');
-      .title { font-family: 'Press Start 2P', 'Courier New', monospace; font-size: 32px; fill: #89b4fa; }
-      .subtitle { font-family: 'Courier New', monospace; font-size: 14px; fill: #74c7ec; }
-      .version { font-family: 'Courier New', monospace; font-size: 12px; fill: #585b70; }
-      .label { font-family: 'Courier New', monospace; font-size: 13px; fill: #6c7086; }
-      .value { font-family: 'Courier New', monospace; font-size: 13px; fill: #cdd6f4; }
-      .dim { font-family: 'Courier New', monospace; font-size: 11px; fill: #585b70; }
-      .separator { stroke: #313244; stroke-width: 1; }
-      .box { stroke: #313244; stroke-width: 1; fill: none; rx: 8; }
+      .title { font-family: 'Press Start 2P', 'Courier New', monospace; font-size: 42px; fill: #89b4fa; }
+      .subtitle { font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 16px; fill: #6c7086; }
     </style>
   </defs>
 
   <!-- Background -->
-  <rect width="900" height="480" rx="12" fill="#1e1e2e"/>
+  <rect width="900" height="260" rx="12" fill="#1e1e2e"/>
 
-  <!-- Scanline effect (subtle) -->
+  <!-- Scanline effect -->
   <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
     <rect width="4" height="2" fill="rgba(0,0,0,0.08)"/>
   </pattern>
-  <rect width="900" height="480" rx="12" fill="url(#scanlines)"/>
+  <rect width="900" height="260" rx="12" fill="url(#scanlines)"/>
 
-  <!-- Title block -->
-  <text x="50" y="75" class="title">metadev</text>
-  <text x="50" y="115" class="title">  protocol</text>
-  <text x="720" y="75" class="version">v1.0.1</text>
+  <!-- Title — centered -->
+  <text x="450" y="110" text-anchor="middle" class="title">metadev-protocol</text>
 
-  <text x="50" y="148" class="subtitle">AI-assisted Python project template</text>
-
-  <!-- Separator -->
-  <line x1="50" y1="170" x2="850" y2="170" class="separator"/>
-
-  <!-- Left column: Project info -->
-  <text x="50" y="205" class="label">engine</text>
-  <text x="200" y="205" class="value">copier · jinja2 · semver tags</text>
-
-  <text x="50" y="230" class="label">stack</text>
-  <text x="200" y="230" class="value">python 3.13+ · uv · ruff · pre-commit</text>
-
-  <text x="50" y="255" class="label">taxonomy</text>
-  <text x="200" y="255" class="value">.meta/ active · archive · decisions · drafts</text>
-
-  <text x="50" y="280" class="label">modes</text>
-  <text x="200" y="280" class="value">safe (default) · full-auto</text>
-
-  <text x="50" y="305" class="label">agents</text>
-  <text x="200" y="305" class="value">code-reviewer · test-engineer · security</text>
-  <text x="200" y="322" class="value">data-analyst · devil's-advocate</text>
-
-  <!-- Separator -->
-  <line x1="50" y1="345" x2="850" y2="345" class="separator"/>
-
-  <!-- Right side: Skills -->
-  <text x="500" y="205" class="label">Skills</text>
-
-  <text x="500" y="230" class="value">/brainstorm</text>
-  <text x="650" y="230" class="dim">structured exploration</text>
-
-  <text x="500" y="253" class="value">/plan</text>
-  <text x="650" y="253" class="dim">task decomposition + confidence gates</text>
-
-  <text x="500" y="276" class="value">/debate</text>
-  <text x="650" y="276" class="dim">3-agent adversarial · devil's advocate</text>
-
-  <text x="500" y="299" class="value">/spec</text>
-  <text x="650" y="299" class="dim">MoSCoW requirements</text>
-
-  <text x="500" y="322" class="value">/orchestrate</text>
-  <text x="650" y="322" class="dim">session orchestrator</text>
-
-  <!-- Bottom: Command -->
-  <rect x="50" y="365" width="800" height="40" rx="6" fill="#181825"/>
-  <text x="70" y="391" class="value">$ copier copy gh:Vincent-20-100/metadev-protocol my-project</text>
-
-  <!-- Footer -->
-  <text x="50" y="440" class="dim">workflow gates · secret scanning (40+ patterns) · persistent AI context</text>
-  <text x="50" y="460" class="dim">MIT license · github.com/Vincent-20-100/metadev-protocol</text>
+  <!-- Tagline — centered -->
+  <text x="450" y="155" text-anchor="middle" class="subtitle">One command, your AI-ready Python project: automatisms, conventions, skills,</text>
+  <text x="450" y="178" text-anchor="middle" class="subtitle">agents, secrets scanning, and session context. Premium vibe-coding out of the box.</text>
 </svg>
