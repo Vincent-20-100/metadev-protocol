@@ -22,17 +22,19 @@
 
 ## Style
 
-- Dark terminal aesthetic
-- Scanline effect (subtle, `rgba(0,0,0,0.08)`)
-- Blue-cold tones, no green, no warm colors
+- Dark terminal aesthetic — navy background (`#1e2a52`), not pure black
+- Scanline effect (subtle, `rgba(0,0,0,0.13)`) + radial vignette
+- 3D triple-shadow title (all-blue stack) + soft CRT glow filter
+- Blinking cursor (1s cycle) as terminal signature
+- Blue-cold tones, no green (except prompt `>` accent), no warm colors
 - Hacker/technical feel, never corporate
-- Rounded corners (`rx: 12` on containers)
+- Rounded corners (`rx: 14` on the banner frame)
 
 ## Assets
 
 | Asset | Path | Format |
 |-------|------|--------|
-| Banner | `docs/banner.svg` | SVG (900x480) |
+| Banner | `docs/banner.svg` | SVG 900×230 — Press Start 2P embedded as base64 woff2 (GitHub blocks `@import`), ~8.4KB |
 | Demo script | `scripts/demo.sh` | Bash |
 | Demo tape | `scripts/demo.tape` | VHS (generates GIF) |
 
