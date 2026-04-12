@@ -57,17 +57,30 @@ Historical milestones (MVP Phase A, ADR-008 settings v2, ADR-009 universal archi
 ### Phase 4 — Launch
 | # | Task | Status |
 |---|---|---|
-| 4.1 | Beta outreach (19 contacts + dream targets) | TODO |
-| 4.2 | Draft posts (LinkedIn, X, Reddit, HN) | TODO |
+| 4.1 | Beta outreach (19 contacts + dream targets) | DRAFTED |
+| 4.2 | Draft posts (LinkedIn, X, Reddit, HN) | DRAFTED |
 | 4.3 | Demo GIF / video | TODO |
 | 4.4 | Public launch sequence | TODO |
+
+### v1.0.1 — Governance polish (post-debate)
+| # | Task | Status |
+|---|---|---|
+| T1.1 | Honesty constraint (Rule #9 in CLAUDE.md.jinja) | DONE |
+| T1.2 | Tiered confidence gates (GREEN/AMBER/RED in plan skill) | DONE |
+| T1.3 | Synthesis type + slug lineage convention | DONE |
+| T1.4 | Working with AI section (anti-patterns, ADR template, practical defaults) | DONE |
+| T1.5 | CREDITS.md — add Feynman + Earnings Call Analyst | DONE |
+| T1.6 | Philosophy batch (3 pillars, trunk-based, stdlib-first) | DEFERRED (trimmed by debate — manifesto, not scaffold) |
+| T1.7 | Provenance sidecar convention | DEFERRED (useful at week 3+, not day 1) |
 
 ### Post-merge backlog (v1.0.x → v1.1.0)
 | # | Task | Source | Status |
 |---|---|---|---|
-| PM.1 | Turn `active/brainstorm-2026-04-12-claude-ai-project-starter.md` into spec(s) — decide scope of C1 (vision scaffolding), C2 (wiki tier), C3 (/research skill); execute doc-only batch §4.1 | brainstorm-2026-04-12 | PENDING (post-merge) |
-| PM.2 | Add Guillaume Desforges to launch outreach list with hook from §6 | brainstorm-2026-04-12 | PENDING (post-merge) |
-| PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | PENDING (post-merge) |
+| PM.1 | Turn `active/brainstorm-2026-04-12-claude-ai-project-starter.md` into spec(s) — decide scope of C1 (vision scaffolding), C2 (wiki tier), C3 (/research skill) | brainstorm-2026-04-12 | PENDING |
+| PM.2 | Add Guillaume Desforges to launch outreach list with hook from §6 | brainstorm-2026-04-12 | PENDING |
+| PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | PENDING |
+| PM.4 | Multi-agent synthesis run — cross-pollinate ALL reference sources for emergent structural innovations (not feature-picking) | debate-2026-04-12 | PENDING |
+| PM.5 | Provenance sidecar convention (deferred from T1.7) | synthesis-2026-04-12 | PENDING |
 
 ---
 
