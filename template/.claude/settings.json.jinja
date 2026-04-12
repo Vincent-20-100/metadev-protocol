@@ -1,0 +1,109 @@
+{
+  "attribution": {
+    "commit": ""
+  },
+  "permissions": {
+{%- if execution_mode == 'safe' %}
+    "allow": [
+      "Bash(uv *)",
+      "Bash(git status)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git branch *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git pull)",
+      "Bash(git fetch *)",
+      "Bash(git stash *)",
+      "Bash(ls *)",
+      "Bash(pwd)",
+      "Bash(pytest *)",
+      "Bash(ruff *)",
+      "Bash(pre-commit *)",
+      "Bash(copier *)",
+      "Read",
+      "Glob",
+      "Grep",
+      "TodoWrite",
+      "Edit(src/**)",
+      "Edit(tests/**)",
+      "Edit(.meta/**)",
+      "Edit(docs/**)",
+      "Write(src/**)",
+      "Write(tests/**)",
+      "Write(.meta/**)",
+      "Write(docs/**)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(rm *)",
+      "Bash(mv *)",
+      "Bash(mkdir *)",
+      "Edit(pyproject.toml)",
+      "Edit(.gitignore)",
+      "Edit(.pre-commit-config.yaml)",
+      "Edit(CLAUDE.md)",
+      "Edit(README.md)",
+      "Edit(.claude/**)",
+      "Edit(.github/**)",
+      "Write(*)"
+    ],
+{%- else %}
+    "allow": [
+      "Bash(*)",
+      "Read",
+      "Glob",
+      "Grep",
+      "TodoWrite",
+      "Edit(*)",
+      "Write(*)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "ask": [],
+{%- endif %}
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(sudo *)",
+      "Bash(dd *)",
+      "Bash(mkfs *)",
+      "Bash(chmod -R 777 *)",
+      "Bash(curl * | sh)",
+      "Bash(wget * | sh)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(.git/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.pypirc)",
+      "Read(~/.netrc)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | xargs -I {} sh -c 'case \"{}\" in *.py) uv run ruff format \"{}\" 2>/dev/null && uv run ruff check \"{}\" --fix 2>/dev/null;; esac; exit 0'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "grep -q 'first_session: true' .meta/PILOT.md 2>/dev/null && echo '>>> FIRST SESSION DETECTED — Welcome! Read PILOT.md for project overview and available skills.' || cat .meta/PILOT.md 2>/dev/null | head -30 || true"
+          }
+        ]
+      }
+    ]
+  }
+}

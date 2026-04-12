@@ -1,0 +1,171 @@
+# CLAUDE.md — {{ project_name }}
+
+> Read automatically by Claude Code at every session.
+
+## First action
+
+Read `.meta/PILOT.md` then `.meta/SESSION-CONTEXT.md`. Do nothing before.
+
+## Automatisms
+
+These behaviors are mandatory. Apply them without being asked.
+
+1. **Session start** — read PILOT.md + SESSION-CONTEXT.md before any action. Check the "Pending plans" section of SESSION-CONTEXT.md and flag any conflict with the current user request before starting work
+2. **First session** — if `first_session: true` in PILOT.md, offer a conversational intro: project structure, available skills, how a session works. Then set the flag to `false`
+3. **Superpowers plugin** — if superpowers skills are not available, recommend installing the plugin: `/install-plugin obra/superpowers`. It provides advanced workflows (brainstorming, debugging, code review, TDD). If the user agrees, run the install command
+4. **Before any Edit or Write** — follow the decision tree below. You MUST have explicit user approval before modifying any code or config. "Explicit" means you asked a direct question and received an affirmative answer. Silence, "sounds good", or the user reading your plan is NOT approval.
+
+   **Decision tree:**
+
+   ```
+   User request arrives
+     │
+     ├─ Idea is vague/undefined?
+     │   └─ Suggest /brainstorm → clarify → re-enter tree
+     │
+     ├─ Hard decision with trade-offs?
+     │   └─ Suggest /debate (optional — /brainstorm is always a valid
+     │      alternative; debate costs more tokens)
+     │
+     ├─ You agreed with 3+ user positions in a row without friction?
+     │   └─ Invoke devil's-advocate agent (Rule of 3 — anti-consensus bias)
+     │
+     ├─ Structural decision and user wants a challenge?
+     │   └─ Invoke devil's-advocate agent on demand
+     │
+     ├─ Requirements need formalization (complex scope)?
+     │   └─ Write /spec → then continue to plan
+     │
+     ├─ 1 file, localized change (TRIVIAL)
+     │   └─ "I'll do X in file Y. OK to proceed?" → wait → execute
+     │
+     ├─ >1 file OR structural change in 1 file (STANDARD)
+     │   └─ Write brief plan → ask for approval → wait → execute
+     │
+     └─ New pattern / architecture / large scope (COMPLEX)
+         └─ Write spec → write plan → ask for approval → execute
+             (use /orchestrate if multi-step)
+   ```
+
+   "Structural change in 1 file" = new module, API change, public interface
+   refactor — anything that changes the contract of the code.
+
+   **During execution:** if you discover something that deviates from the
+   approved plan (unexpected dependency, conflict, design question), STOP
+   and ask. If execution follows the plan without surprises, no checkpoint
+   needed.
+
+   **Plan validated = all actions validated.** Once the user has explicitly
+   approved a plan, execute it end-to-end without asking for confirmation
+   at each step. The plan's approval covers every action it lists. Interrupt
+   only if (a) the plan itself requires an explicit checkpoint, (b) you
+   encounter a situation genuinely not anticipated by the plan, or (c)
+   Claude Code blocks you materially via `permissions.ask`. This rule
+   applies in both `safe` and `full-auto` execution modes — the mode only
+   controls what Claude Code permits at the tool-call level, not whether
+   the AI re-asks semantic questions mid-plan.
+5. **Milestone completed** — update PILOT.md (status table, objectives, next steps)
+6. **End of session** — rewrite SESSION-CONTEXT.md: architecture snapshot, active decisions, traps, open questions
+7. **Every commit** — one complete logical unit per commit (not per file, not per timer). Must be reviewable in <5 minutes and bisectable (tests pass independently). Conventional format: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`. The plan determines granularity — decompose upfront, not in git. Never commit partial work to satisfy a timer.
+8. **Architecture changes** — if `.meta/ARCHITECTURE.md` doesn't exist and architecture is defined, create it. Keep it in sync with the code. On divergence, ask the user: if intentional, rewrite the file; if not, guide back to the defined architecture
+9. **Context recall** — if you lack context on a past decision, check `.meta/archive/` for session archives and historical plans/specs before asking the user
+10. **Always** — apply the rules below and draw from `.meta/GUIDELINES.md`
+
+## Rules
+
+Non-negotiable. These apply to every action.
+
+1. **Single responsibility** — one function, one purpose
+2. **Config over hardcode** — prefer yaml/toml config files over scattered variables
+3. **Minimize hardcoding** — anything that can change = config or parameter
+4. **No silent errors** — every `except` logs or re-raises
+5. **Commit per logical unit** — one feature/fix/decision = one commit, reviewable in <5 min, bisectable, conventional format (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`). See automatism #7.
+6. **Drafts in `.meta/drafts/`** — WIP only (gitignored). Validated artifacts live in `.meta/active/`, implemented in `.meta/archive/`, named `<type>-<YYYY-MM-DD>-<slug>.md` (types: spec, plan, brainstorm, debate, session). Enforced by `scripts/check_meta_naming.py`. See `.meta/GUIDELINES.md`
+7. **Docstrings: WHAT not HOW** — describe purpose, not implementation
+8. **YAGNI** — no over-engineering, complexity must be justified
+
+## Architecture
+
+```
+{{ project_slug }}/
+├── src/{{ project_slug }}/    # Package source code
+├── tests/                     # Tests — mirror src/ structure
+├── scripts/                   # Utility scripts, automation, glue
+├── data/
+│   ├── raw/                   # Raw data — never modified
+│   ├── interim/               # Intermediate transformations
+│   └── processed/             # Final outputs, ready to use
+├── docs/                      # Project documentation
+├── .meta/
+│   ├── PILOT.md               # Project dashboard (READ FIRST)
+│   ├── SESSION-CONTEXT.md     # Living context (rewritten each session)
+│   ├── GUIDELINES.md          # Recommended practices (advisory)
+│   ├── decisions/             # ADRs
+│   ├── active/                # Validated artifacts
+│   ├── archive/               # Implemented/superseded artifacts
+│   ├── references/            # Research (raw/interim/synthesis)
+│   └── drafts/                # WIP (gitignored)
+├── CLAUDE.md
+└── pyproject.toml
+```
+
+## Structure guidance
+
+The project layout above covers most Python projects. Place files in
+existing directories first. Consult `.meta/GUIDELINES.md` for expansion
+paths when the project grows beyond the base structure.
+
+Do not create top-level directories without checking GUIDELINES.md first.
+
+## Skills
+
+Project skills (always available):
+
+```
+/brainstorm      — structured exploration (basic — use superpowers:brainstorming if available)
+/spec            — formalize requirements into a structured spec (MoSCoW priorities)
+/debate          — multi-agent adversarial debate (3 agents, structured phases, debate record) — optional, /brainstorm is always a valid alternative
+/plan            — task decomposition (basic — use superpowers:writing-plans if available)
+/orchestrate     — session orchestrator: decomposes objectives into debates, plans, implementation
+/test            — run pytest
+/lint            — ruff check + format on the whole project
+/save-progress   — checklist + context update (does NOT commit)
+
+Agent personas (see AGENTS.md):
+- code-reviewer  — 5-axis review (correctness, readability, architecture, security, performance)
+- test-engineer  — test strategy, coverage, reliability
+- security-auditor — OWASP, threat modeling, secrets management
+- data-analyst   — data integrity, methodology, pipeline robustness
+- devil's-advocate — anti-consensus challenger (Rule of 3, steelmanning, claim classification)
+```
+
+Recommended plugin (install with `/install-plugin obra/superpowers`):
+
+```
+superpowers:brainstorming          — full design process with spec writing
+superpowers:writing-plans          — detailed implementation plans
+superpowers:executing-plans        — guided plan execution with checkpoints
+superpowers:systematic-debugging   — evidence-first debugging (4 phases)
+superpowers:requesting-code-review — two-stage code review
+superpowers:test-driven-development — red-green-refactor cycle
+```
+
+## Superpowers output paths
+
+Specs and plans go in `.meta/drafts/` while WIP, then promote to `.meta/active/` once validated:
+- Specs → `.meta/drafts/spec-<topic>.md` → `.meta/active/spec-<date>-<topic>.md`
+- Plans → `.meta/drafts/plan-<topic>.md` → `.meta/active/plan-<date>-<topic>.md`
+
+## Commands
+
+```bash
+uv sync                     # Install dependencies
+uv run ruff check .         # Linter
+uv run ruff format .        # Formatter
+uv run pytest               # Tests
+```
+
+## Guidelines
+
+Read `.meta/GUIDELINES.md` — it contains recommended practices.
+Apply them when relevant. They are suggestions, not rules.

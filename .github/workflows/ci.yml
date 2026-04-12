@@ -1,0 +1,56 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+
+  pre-commit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - run: uv run pre-commit run --all-files
+
+  template-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        meta_visibility: [public, private]
+        execution_mode: [safe, full-auto]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv sync
+      - name: Generate project (${{ matrix.meta_visibility }} / ${{ matrix.execution_mode }})
+        run: |
+          uv run copier copy . /tmp/test-project \
+            --trust \
+            --vcs-ref=HEAD \
+            --defaults \
+            -d meta_visibility=${{ matrix.meta_visibility }} \
+            -d execution_mode=${{ matrix.execution_mode }}
+      - name: Verify generated structure
+        run: |
+          test -f /tmp/test-project/CLAUDE.md
+          test -f /tmp/test-project/pyproject.toml
+          test -f /tmp/test-project/.pre-commit-config.yaml
+          test -f /tmp/test-project/scripts/audit_public_safety.py
+          test -d /tmp/test-project/src
+          test -d /tmp/test-project/tests
+      - name: Lint generated project
+        working-directory: /tmp/test-project
+        run: |
+          uv sync
+          uv run ruff check .
+          uv run ruff format --check .

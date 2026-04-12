@@ -1,0 +1,74 @@
+# copier.yml — The Meta Protocol
+# Project generator
+# Usage: copier copy gh:Vincent-20-100/metadev-protocol my-new-project
+
+# ─────────────────────────────────────────
+# Init questions
+# ─────────────────────────────────────────
+
+project_name:
+  type: str
+  help: "Project name (e.g., egovault, price-tracker)"
+  default: "my-project"
+
+project_slug:
+  type: str
+  help: "Python package slug (snake_case, no hyphens)"
+  default: "{{ project_name | lower | replace('-', '_') | replace(' ', '_') }}"
+
+author_name:
+  type: str
+  help: "Your first name (for pyproject.toml)"
+  default: "User"
+
+python_version:
+  type: str
+  help: "Minimum Python version"
+  default: "3.13"
+
+meta_visibility:
+  type: str
+  help: "How visible should .meta/ be in git? (public = commit everything except drafts; private = gitignore entire .meta/)"
+  choices:
+    - public
+    - private
+  default: public
+
+execution_mode:
+  type: str
+  help: "Claude Code permission preset. 'safe' asks before touching repo structure or running destructive commands (recommended default). 'full-auto' allows everything except a hard safety net — use only for unsupervised runs (VPS, overnight spec execution)."
+  choices:
+    - safe
+    - full-auto
+  default: safe
+
+# ─────────────────────────────────────────
+# Copier configuration
+# ─────────────────────────────────────────
+
+_min_copier_version: "9.0.0"
+
+_subdirectory: template
+
+_exclude:
+  - "*.pyc"
+  - "__pycache__"
+  - ".meta/drafts/*"
+  - "!.meta/drafts/.gitkeep"
+
+_tasks:
+  - "git init"
+  - >
+    uv sync && uv run pre-commit install &&
+    echo 'Dependencies installed, pre-commit activated.' ||
+    echo 'uv not found or sync failed. Install uv then run: uv sync && uv run pre-commit install'
+
+_message_after_copy: |
+  ✅ Project {{ project_name }} created with The Meta Protocol.
+
+  Next steps:
+    1. cd {{ project_slug }}
+    2. Open .meta/PILOT.md and define your first session goal
+    3. Launch Claude Code: claude
+
+  Stack: Python {{ python_version }} | uv | ruff

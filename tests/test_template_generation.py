@@ -1,0 +1,203 @@
+"""Tests for template generation across all copier parameter combinations."""
+
+from __future__ import annotations
+
+import json
+import subprocess
+from pathlib import Path
+
+import pytest
+import yaml
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+@pytest.fixture(params=["public", "private"])
+def meta_visibility(request: pytest.FixtureRequest) -> str:
+    return request.param
+
+
+@pytest.fixture(params=["safe", "full-auto"])
+def execution_mode(request: pytest.FixtureRequest) -> str:
+    return request.param
+
+
+@pytest.fixture
+def generated_project(
+    tmp_path: Path, meta_visibility: str, execution_mode: str
+) -> Path:
+    """Generate a project with the given parameters."""
+    dest = tmp_path / "test-project"
+    subprocess.run(
+        [
+            "copier",
+            "copy",
+            str(ROOT),
+            str(dest),
+            "--trust",
+            "--vcs-ref=HEAD",
+            "--defaults",
+            "-d",
+            f"meta_visibility={meta_visibility}",
+            "-d",
+            f"execution_mode={execution_mode}",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return dest
+
+
+class TestCoreFiles:
+    """Verify that essential files are always generated."""
+
+    def test_claude_md_exists(self, generated_project: Path) -> None:
+        assert (generated_project / "CLAUDE.md").is_file()
+
+    def test_agents_md_exists(self, generated_project: Path) -> None:
+        assert (generated_project / "AGENTS.md").is_file()
+
+    def test_pyproject_toml_exists(self, generated_project: Path) -> None:
+        assert (generated_project / "pyproject.toml").is_file()
+
+    def test_pre_commit_config_exists(self, generated_project: Path) -> None:
+        assert (generated_project / ".pre-commit-config.yaml").is_file()
+
+    def test_gitignore_exists(self, generated_project: Path) -> None:
+        assert (generated_project / ".gitignore").is_file()
+
+
+class TestDirectoryStructure:
+    """Verify that the generated directory tree is correct."""
+
+    def test_src_package(self, generated_project: Path) -> None:
+        src_dirs = list((generated_project / "src").iterdir())
+        assert len(src_dirs) == 1
+        assert (src_dirs[0] / "__init__.py").is_file()
+
+    def test_tests_dir(self, generated_project: Path) -> None:
+        assert (generated_project / "tests").is_dir()
+
+    def test_scripts_dir(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts").is_dir()
+
+    def test_data_pipeline(self, generated_project: Path) -> None:
+        for subdir in ("raw", "interim", "processed"):
+            assert (generated_project / "data" / subdir).is_dir()
+
+    def test_docs_dir(self, generated_project: Path) -> None:
+        assert (generated_project / "docs").is_dir()
+
+
+class TestScripts:
+    """Verify that utility scripts are propagated."""
+
+    def test_audit_script(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "audit_public_safety.py").is_file()
+
+    def test_meta_naming_script(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "check_meta_naming.py").is_file()
+
+    def test_git_author_script(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "check_git_author.py").is_file()
+
+
+class TestGitHubWorkflows:
+    """Verify that GitHub Actions workflows are generated."""
+
+    def test_public_safety_workflow(self, generated_project: Path) -> None:
+        wf = generated_project / ".github" / "workflows" / "public-safety.yml"
+        assert wf.is_file()
+        data = yaml.safe_load(wf.read_text())
+        # PyYAML parses "on:" as True (boolean), not "on" (string)
+        assert True in data or "on" in data
+        assert "jobs" in data
+
+    def test_public_alert_workflow(self, generated_project: Path) -> None:
+        wf = generated_project / ".github" / "workflows" / "public-alert.yml"
+        assert wf.is_file()
+        data = yaml.safe_load(wf.read_text())
+        assert True in data or "on" in data
+
+
+class TestClaudeSettings:
+    """Verify that .claude/settings.json matches the execution mode."""
+
+    def test_settings_json_valid(self, generated_project: Path) -> None:
+        settings_file = generated_project / ".claude" / "settings.json"
+        assert settings_file.is_file()
+        data = json.loads(settings_file.read_text())
+        assert "permissions" in data
+        assert "deny" in data["permissions"]
+
+    def test_safe_mode_has_ask(
+        self, generated_project: Path, execution_mode: str
+    ) -> None:
+        if execution_mode != "safe":
+            pytest.skip("only for safe mode")
+        settings = json.loads(
+            (generated_project / ".claude" / "settings.json").read_text()
+        )
+        assert len(settings["permissions"].get("ask", [])) > 0
+
+    def test_full_auto_has_empty_ask(
+        self, generated_project: Path, execution_mode: str
+    ) -> None:
+        if execution_mode != "full-auto":
+            pytest.skip("only for full-auto mode")
+        settings = json.loads(
+            (generated_project / ".claude" / "settings.json").read_text()
+        )
+        assert settings["permissions"].get("ask", []) == []
+
+
+class TestMetaVisibility:
+    """Verify that .meta/ visibility follows the parameter."""
+
+    def test_public_meta_not_ignored(
+        self, generated_project: Path, meta_visibility: str
+    ) -> None:
+        if meta_visibility != "public":
+            pytest.skip("only for public visibility")
+        gitignore = (generated_project / ".gitignore").read_text()
+        assert ".meta/" not in gitignore.splitlines()
+
+    def test_private_meta_ignored(
+        self, generated_project: Path, meta_visibility: str
+    ) -> None:
+        if meta_visibility != "private":
+            pytest.skip("only for private visibility")
+        gitignore = (generated_project / ".gitignore").read_text()
+        assert any(".meta/" in line for line in gitignore.splitlines())
+
+    def test_pilot_always_exists(self, generated_project: Path) -> None:
+        assert (generated_project / ".meta" / "PILOT.md").is_file()
+
+
+class TestPreCommitConfig:
+    """Verify that pre-commit hooks are properly configured."""
+
+    def test_valid_yaml(self, generated_project: Path) -> None:
+        config = yaml.safe_load(
+            (generated_project / ".pre-commit-config.yaml").read_text()
+        )
+        assert "repos" in config
+
+    def test_audit_hook_registered(self, generated_project: Path) -> None:
+        config = yaml.safe_load(
+            (generated_project / ".pre-commit-config.yaml").read_text()
+        )
+        hook_ids = [
+            hook["id"] for repo in config["repos"] for hook in repo.get("hooks", [])
+        ]
+        assert "audit-public-safety-quick" in hook_ids
+
+    def test_meta_naming_hook_registered(self, generated_project: Path) -> None:
+        config = yaml.safe_load(
+            (generated_project / ".pre-commit-config.yaml").read_text()
+        )
+        hook_ids = [
+            hook["id"] for repo in config["repos"] for hook in repo.get("hooks", [])
+        ]
+        assert "check-meta-naming" in hook_ids

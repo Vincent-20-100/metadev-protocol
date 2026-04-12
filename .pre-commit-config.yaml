@@ -1,0 +1,25 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: check-meta-naming
+        name: Check .meta/ filename taxonomy
+        entry: python scripts/check_meta_naming.py
+        language: system
+        files: ^\.meta/(active|archive)/
+      - id: check-git-author
+        name: Reject commits authored by Claude/Anthropic
+        entry: python scripts/check_git_author.py
+        language: system
+        always_run: true
+        pass_filenames: false
+      - id: audit-public-safety-quick
+        name: Quick secret scan on staged files
+        entry: python scripts/audit_public_safety.py --mode=quick
+        language: system
+        pass_filenames: true

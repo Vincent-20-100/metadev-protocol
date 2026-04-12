@@ -1,0 +1,25 @@
+[project]
+name = "metadev-protocol"
+version = "0.1.0"
+description = "Template system for bootstrapping AI-assisted Python projects"
+readme = "README.md"
+authors = [
+    { name = "Vincent", email = "vincent.lamy.33@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "copier>=9.14.1",
+    "pre-commit>=4.2.0",
+    "pyyaml>=6.0",
+    "ruff>=0.11.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[build-system]
+requires = ["uv_build>=0.11.2,<0.12.0"]
+build-backend = "uv_build"

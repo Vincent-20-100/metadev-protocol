@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Environment
+.venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# Meta protocol — controlled by meta_visibility copier parameter
+{%- if meta_visibility == "private" %}
+.meta/
+{%- else %}
+.meta/drafts/*
+!.meta/drafts/.gitkeep
+{%- endif %}
+
+# OS
+.DS_Store
+Thumbs.db

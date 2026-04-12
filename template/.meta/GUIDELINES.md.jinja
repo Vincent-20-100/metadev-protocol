@@ -1,0 +1,207 @@
+# Guidelines — {{ project_name }}
+
+> These are recommended practices, not rules. Apply when relevant.
+> Draw from these naturally and suggest them when appropriate.
+
+## Code structure
+
+- Prefer small, focused functions over long ones
+- Group related logic in modules, not mega-files
+- Keep entry points thin — route to logic, don't contain it
+- When a function grows beyond ~30 lines, consider splitting
+
+## Configuration
+
+- Centralize config in files (yaml/toml), not scattered constants
+- Separate concerns: system config vs user preferences vs secrets
+- Use environment variables for deployment-specific values only
+
+## Naming and clarity
+
+- Names should reveal intent — avoid abbreviations
+- A good name removes the need for a comment
+- Consistent vocabulary: pick one term per concept, stick to it
+
+## Error handling
+
+- Handle errors at the right level — not too early, not too late
+- Prefer explicit error types over generic exceptions
+- Log context: what was attempted, what failed, what was the input
+
+## Testing
+
+- Test behavior, not implementation
+- One assertion per test when possible
+- Name tests as sentences: `test_should_reject_negative_amounts`
+
+## Commit strategy
+
+One commit = one complete logical unit. Not one file, not one timer tick.
+
+- **Granularity** — a commit is a feature, a fix, or a decision. A `feat:` touching 5 files is one commit, not five
+- **Review test** — a reviewer should understand the commit in under 5 minutes
+- **Bisectable** — each commit must pass tests independently so `git bisect` works
+- **Decomposition upfront** — the plan determines commit granularity, not git rebase after the fact
+- **No timer commits** — never commit partial work to satisfy a hook or timer; stash or branch instead
+- **Conventional format** — `feat:`, `fix:`, `docs:`, `chore:`, `refactor:` describe the *type* of change, not its size
+- **History as documentation** — git log is an artifact reviewers read, not a personal journal
+
+Anti-patterns: "wip", "more changes", "fix typo" chains, commits that break tests, commits that mix unrelated changes.
+
+## Refactoring signals
+
+- When you copy-paste: extract
+- When a file exceeds ~200 lines: consider splitting
+- When you add a parameter to avoid changing logic: reconsider the design
+- Ask the user before large refactors — propose, don't impose
+
+## Working with the user
+
+- When the request is vague, ask a clarifying question before coding
+- Propose 2-3 approaches for non-trivial decisions
+- Explain trade-offs, let the user decide
+- After completing work, suggest what to verify
+
+### Approval tiers (see CLAUDE.md decision tree)
+
+- **Trivial** (1 file, localized): state the change, ask "OK to proceed?", wait
+- **Standard** (>1 file or structural): write a brief plan, ask for approval, wait
+- **Complex** (new pattern / architecture): spec → plan → approval → execute
+
+Silence is not approval. Reading your plan is not approval. Only an
+affirmative answer to a direct question counts.
+
+### Rule of 3 — anti-consensus bias
+
+If you find yourself agreeing with the user on 3 positions in a row
+without genuine friction, pause and invoke the devil's-advocate agent.
+Consensus is often a smell — actively look for what's missing, wrong,
+or oversimplified before continuing.
+
+## Advanced Claude Code configuration
+
+These are optional settings you can add to `.claude/settings.json` or
+`.claude/settings.local.json` for advanced use cases.
+
+### Force Superpowers plugin for all contributors
+
+```json
+"enabledPlugins": {
+  "superpowers@claude-plugins-official": true
+}
+```
+
+### Background memory consolidation (autoDream)
+
+Automatically summarize session learnings into memory files.
+Use with caution — may conflict with SESSION-CONTEXT.md.
+
+```json
+"autoDreamEnabled": true
+```
+
+### Redirect memory to .meta/
+
+Keep all AI-generated memory alongside project context.
+
+```json
+"autoMemoryEnabled": true,
+"autoMemoryDirectory": ".meta/memory"
+```
+
+### Plan mode
+
+For maximum control, use plan mode (`Shift+Tab` or `--permission-mode plan`).
+Claude proposes changes, you approve each one. Recommended for architectural work.
+
+### Status line
+
+Show context usage in your terminal:
+
+```json
+"statusLine": true
+```
+
+### Subagent persistent memory
+
+In agent frontmatter (AGENTS.md), use `memory: user` to persist context
+across subagent invocations.
+
+## Expansion paths
+
+These directories do NOT exist yet. Create them only when the first real file
+needs to land there. When proposing a plan that introduces a new area of the
+project, include the relevant expansion path — always faithful to this
+reference architecture. The user validates the plan before execution.
+
+| Directory | Purpose | When to create |
+|-----------|---------|----------------|
+| `notebooks/` | Jupyter notebooks — exploration, analysis, prototyping | First notebook |
+| `app/` | Web application layer (FastAPI, Flask, Streamlit…) | First endpoint or page |
+| `api/` | Standalone API layer when separate from app | First route definition |
+| `models/` | Trained models, weights, serialized pipelines | First model artifact |
+| `config/` | YAML/TOML config files (system, user, profiles) | When config outgrows pyproject.toml |
+| `infra/` | Docker, Terraform, CI/CD, deployment configs | First Dockerfile or IaC file |
+| `chore/` | Maintenance scripts — DB migrations, data backfills, one-off fixes | First maintenance script |
+| `cli/` | CLI entry points and command definitions | First CLI command beyond `__main__` |
+| `integrations/` | Third-party connectors — APIs, webhooks, SDKs | First external service adapter |
+| `pipelines/` | Data or ML pipelines — ETL, DAGs, orchestration flows | First pipeline definition |
+| `outputs/` | Final results — generated reports, exports, deliverables | First export or deliverable |
+| `static/` | Static assets — images, CSS, fonts, templates | First static file served |
+| `docs/` | Project documentation beyond inline docstrings | Already created by default |
+
+All directories live at project root. Prefer these names over custom alternatives.
+
+## Data versioning
+
+Data directories (`data/raw/`, `data/interim/`, `data/processed/`) are
+tracked by default so the project structure is visible from day one.
+
+If datasets grow large, add them to `.gitignore`:
+```
+data/raw/*.csv
+data/raw/*.parquet
+data/processed/*.pkl
+```
+
+When excluding data from git, document the data source and access
+instructions in `data/README.md` or `.meta/PILOT.md`.
+
+## .meta/ taxonomy
+
+This project was generated with `meta_visibility={{ meta_visibility }}`.
+
+### Directories
+
+| Dir | Purpose |
+|-----|---------|
+| `active/` | Validated artifacts, not yet implemented or still referenced |
+| `archive/` | Implemented or superseded artifacts — chronological memory |
+| `drafts/` | Work-in-progress — **gitignored**, safe to throw away |
+| `decisions/` | ADRs (`adr-NNN-slug.md`) |
+| `references/raw/` | Untriaged external research |
+| `references/interim/` | Partial notes and digests |
+| `references/synthesis/` | Canonical, citable syntheses |
+
+### Filename convention (enforced by pre-commit)
+
+Every file in `active/` and `archive/` must match:
+
+    <type>-<YYYY-MM-DD>-<kebab-slug>.md
+
+Allowed types: `spec`, `plan`, `brainstorm`, `debate`, `session`.
+
+### Lifecycle
+
+- New WIP → `drafts/<anything>.md` (not tracked)
+- Validated → `git mv drafts/X active/<type>-<date>-<slug>.md`
+- Implemented/superseded → `git mv active/X archive/X` (keep the filename)
+
+### Visibility modes
+
+| Mode | Committed |
+|------|-----------|
+| `public` (default) | Everything except `drafts/` |
+| `private` | Nothing — entire `.meta/` gitignored |
+
+Change later with `copier update --data meta_visibility=<mode>`.
