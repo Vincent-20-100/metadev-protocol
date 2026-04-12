@@ -22,12 +22,14 @@ cp -r skills-pack/skills/plan .claude/skills/
 
 | Skill | Description |
 |-------|-------------|
-| `/debate` | Multi-agent adversarial debate — 3 agents, structured phases, 6 domain presets, debate record |
-| `/brainstorm` | Structured exploration before coding — one question at a time |
-| `/plan` | Task decomposition from a brainstorm or spec |
-| `/lint` | Run ruff check + format on the whole project |
+| `/brainstorm` | Structured exploration before coding — one question at a time, 2–3 alternatives per decision |
+| `/spec` | MoSCoW requirements formalization with acceptance criteria and verification checklist |
+| `/debate` | Multi-agent adversarial debate — 3 agents (2 insiders + 1 lone wolf), 6 domain presets, debate record |
+| `/plan` | Task decomposition with file mapping and tiered confidence gates (GREEN/AMBER/RED) |
+| `/orchestrate` | Multi-step session orchestrator with dependency tracking across phases |
 | `/test` | Run pytest and report results |
-| `/save-progress` | Pre-commit checklist and context update |
+| `/lint` | Run ruff check + format on the whole project |
+| `/save-progress` | Pre-commit checklist and context update (PILOT.md + SESSION-CONTEXT.md) |
 
 ## Recommended companion
 

@@ -44,9 +44,9 @@ The core principle: **separate what ships from how you build it.**
 
 ```mermaid
 flowchart LR
-    classDef pain  fill:#3a2230,stroke:#f38ba8,stroke-width:2px,color:#f2cdcd
-    classDef cure  fill:#1e3a2e,stroke:#a6e3a1,stroke-width:2px,color:#d9f7d0
-    classDef jump  fill:#2d2a52,stroke:#cba6f7,stroke-width:2px,color:#e0c8ff
+    classDef pain  fill: #3a2230,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
+    classDef cure  fill: #1e3a2e,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+    classDef jump  fill: #2d2a52,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
 
     subgraph BEFORE["❌ Raw Claude Code"]
         direction TB
@@ -69,8 +69,8 @@ flowchart LR
     JUMP["copier copy"]:::jump
     BEFORE ==> JUMP ==> AFTER
 
-    style BEFORE fill:#1e2a52,stroke:#f38ba8,stroke-width:2px,color:#f2cdcd
-    style AFTER  fill:#1e2a52,stroke:#a6e3a1,stroke-width:2px,color:#d9f7d0
+    style BEFORE fill: #2b3a6d ,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
+    style AFTER  fill: #2b3a6d,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
 ```
 
 ### How it works — the rails your prompt rides
@@ -79,9 +79,9 @@ One prompt enters, but it doesn't go straight to the model. It passes through fo
 
 ```mermaid
 flowchart LR
-    classDef io    fill:#a6e3a1,stroke:#40a02b,stroke-width:3px,color:#1e1e2e
-    classDef stage fill:#89dceb,stroke:#74c7ec,stroke-width:2px,color:#1e2a52
-    classDef out   fill:#f5c2e7,stroke:#ea76cb,stroke-width:3px,color:#1e1e2e
+    classDef io    fill: #a6e3a1,stroke: #40a02b,stroke-width:3px,color:#1e1e2e
+    classDef stage fill: #89bceb,stroke: #749aec,stroke-width:3px,color: #1e2a52
+    classDef out   fill: #f5c2e7,stroke: #ea76cb,stroke-width:3px,color: #2b3a6d
 
     PROMPT(["one prompt"]):::io
 
@@ -98,9 +98,9 @@ flowchart LR
 
     PROMPT ==> REMEMBER
     SHIP ==> CODE
-    CODE -.->|"next session"| REMEMBER
+    CODE -->|"next session"| REMEMBER
 
-    style RAILS fill:#1e2a52,stroke:#cba6f7,stroke-width:2px,color:#cdd6f4
+    style RAILS fill: #1e2a52,stroke: #cba6f7,stroke-width:3px,color: #cdd6f4
 ```
 
 Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) are committed. Context is preserved — every session picks up where the last one ended.
@@ -119,6 +119,54 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 - **Secret scanning** — 40+ regex patterns, local audit script, pre-commit hook, 2 GitHub Actions (push gate + publicization alert). [Details](docs/public-safety.md)
 - **Two execution modes** — `safe` (default, asks before touching repo structure) or `full-auto` (unsupervised runs, safety-net deny only). [Details](docs/execution-modes.md)
 - **Versioned updates** — `copier update` propagates template improvements to existing projects. Review the diff, resolve conflicts, done.
+
+---
+
+## The Toolkit
+
+Every generated project ships with 8 skills, 5 agent personas, and 3 guardrail scripts. Skills and agents are invoked by name; scripts run as pre-commit hooks and CI steps.
+
+### Skills — `/command` in Claude Code
+
+| Skill | When to reach for it | What it does |
+|-------|---------------------|--------------|
+| `/brainstorm` | Idea is vague, scope fuzzy | One question at a time, 2–3 alternatives per decision, YAGNI pressure, artifact in `.meta/` |
+| `/spec` | Feature needs formalization | MoSCoW requirements with acceptance criteria and verification checklist |
+| `/debate` | Hard trade-off with 2+ defensible options | 3-agent adversarial debate (2 insiders + 1 lone wolf), 6 domain presets, debate record |
+| `/plan` | Scope is clear, need task breakdown | Tasks mapped to files, tiered confidence gates (GREEN/AMBER/RED), verification checklist |
+| `/orchestrate` | Multi-step objective across phases | Session orchestrator with dependency tracking and phase transitions |
+| `/test` | After implementation | Runs `pytest` with optional arguments, reports failures |
+| `/lint` | Before commit or after touching >1 file | `ruff check` + `format` on the whole project |
+| `/save-progress` | End of session | Pre-commit checklist, updates `PILOT.md`, rewrites `SESSION-CONTEXT.md` |
+
+### Agent personas — invoked on demand via `Task` tool
+
+| Agent | When it fires | What it does |
+|-------|--------------|--------------|
+| `code-reviewer` | ≥3 files touched or plan step completed | Reviews diff for bugs, style drift, convention breaks |
+| `test-engineer` | New module, new public API, missing coverage | Designs test cases, asserts on edge cases, proposes fixtures |
+| `security-auditor` | Auth, secrets, input validation, crypto, network boundaries | Threat-models the change, flags OWASP categories |
+| `data-analyst` | Pipeline, ETL, metric computation, statistical claim | Validates methodology, challenges sampling, checks reproducibility |
+| `devil's-advocate` | Auto-triggered by Rule of 3 (3 user agreements without friction) | Adversarial challenge to surface blind spots |
+
+### Guardrail scripts — pre-commit + CI
+
+| Script | Trigger | What it blocks |
+|--------|---------|----------------|
+| `audit_public_safety.py` | pre-commit hook + 2 GitHub Actions | 40+ secret regex patterns, sensitive files (`.env`, `id_rsa`, etc.), `.gitignore` coverage gaps |
+| `check_git_author.py` | pre-commit hook | Commits authored as `Claude` / `Anthropic` / co-authored-by trailers |
+| `check_meta_naming.py` | pre-commit hook | `.meta/active/` and `.meta/archive/` files that violate the `<type>-<YYYY-MM-DD>-<slug>.md` convention |
+
+### Just the skills, no template
+
+Want the skills in an existing project without regenerating? The [`skills-pack/`](skills-pack/) directory ships all 8 skills as drop-ins:
+
+```bash
+git clone https://github.com/Vincent-20-100/metadev-protocol.git
+cp -r metadev-protocol/skills-pack/skills/* your-project/.claude/skills/
+```
+
+No `.meta/` taxonomy, no hooks, no CLAUDE.md contract — just the skills.
 
 ---
 
