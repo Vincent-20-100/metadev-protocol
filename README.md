@@ -1,10 +1,16 @@
-# metadev-protocol
+<p align="center">
+  <img src="docs/banner.svg" alt="metadev-protocol banner" width="900">
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.13+](https://img.shields.io/badge/Python-3.13+-blue.svg)](https://www.python.org)
-[![uv](https://img.shields.io/badge/uv-package%20manager-blueviolet)](https://github.com/astral-sh/uv)
-[![Copier](https://img.shields.io/badge/Copier-template%20engine-green)](https://github.com/copier-org/copier)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-AI%20assistant-orange)](https://claude.ai/code)
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="MIT License"></a>
+  <a href="https://www.python.org"><img src="https://img.shields.io/badge/Python-3.13+-blue.svg" alt="Python 3.13+"></a>
+  <a href="https://github.com/astral-sh/uv"><img src="https://img.shields.io/badge/uv-package%20manager-blueviolet" alt="uv"></a>
+  <a href="https://github.com/copier-org/copier"><img src="https://img.shields.io/badge/Copier-template%20engine-green" alt="Copier"></a>
+  <a href="https://claude.ai/code"><img src="https://img.shields.io/badge/Claude%20Code-AI%20assistant-orange" alt="Claude Code"></a>
+</p>
+
+# metadev-protocol
 
 > A high-performance Vibe Coding protocol based on the strict separation between **Project Deliverables** and **Development Context**.
 
