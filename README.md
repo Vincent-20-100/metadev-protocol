@@ -129,7 +129,7 @@ flowchart LR
     subgraph RAILS["the rails"]
         direction LR
         REMEMBER["<b>REMEMBER</b><br/>PILOT.md · SESSION-CONTEXT<br/>active plans · decisions"]:::stage
-        PLAN["<b>PLAN</b><br/>/brainstorm /spec /plan<br/>/debate /orchestrate"]:::stage
+        PLAN["<b>PLAN</b><br/>/brainstorm /spec /plan<br/>/debate /orchestrate /research /vision"]:::stage
         GUARD["<b>GUARD</b><br/>11 automatisms · 9 rules<br/>reviewer · security · devil"]:::stage
         SHIP["<b>SHIP</b><br/>hooks: lint · secrets · tests<br/>/save-progress"]:::stage
         REMEMBER ==> PLAN ==> GUARD ==> SHIP
@@ -238,7 +238,7 @@ my-project/
 │
 ├── .claude/
 │   ├── settings.json               # Permissions, hooks, security
-│   └── skills/                     # 8 built-in skills
+│   └── skills/                     # 10 built-in skills
 │
 └── .meta/
     ├── PILOT.md                    # Project dashboard (AI reads first)

@@ -39,7 +39,7 @@ metadev-protocol/
 │   │   └── references/{raw,interim,synthesis}/
 │   ├── .claude/
 │   │   ├── settings.json.jinja  # Permissions + hooks
-│   │   └── skills/              # brainstorm, plan, ship, lint, test
+│   │   └── skills/              # brainstorm, spec, debate, plan, orchestrate, research, vision, test, lint, save-progress
 │   ├── src/{{ project_slug }}/  # Package source
 │   └── tests/                   # Test suite
 ├── .meta/                       # Development cockpit for THIS repo
