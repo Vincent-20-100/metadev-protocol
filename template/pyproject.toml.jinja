@@ -8,6 +8,12 @@ authors = [
 requires-python = ">={{ python_version }}"
 dependencies = []
 
+[project.optional-dependencies]
+radar = [
+    "feedparser>=6.0",
+    "huggingface_hub>=0.20",
+]
+
 [dependency-groups]
 dev = [
     "pytest>=8.3.0",
@@ -31,4 +37,4 @@ quote-style = "double"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = ["src", "."]

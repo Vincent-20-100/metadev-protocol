@@ -203,6 +203,7 @@ class TestSkills:
         "test",
         "lint",
         "save-progress",
+        "radar",
     ]
 
     def test_all_skills_present(self, generated_project: Path) -> None:
@@ -217,6 +218,39 @@ class TestSkills:
         for skill in self.EXPECTED_SKILLS:
             skill_file = skills_dir / skill / "SKILL.md"
             assert skill_file.is_file(), f"{skill}/SKILL.md missing"
+
+
+class TestRadarYAGNI:
+    """Verify /radar doesn't pollute generated projects before first run."""
+
+    def test_research_dir_absent_at_generation(self, generated_project: Path) -> None:
+        research_dir = generated_project / ".meta" / "references" / "research"
+        assert not research_dir.exists(), (
+            "research/ must not exist at generation time — "
+            "it is created by /radar at first run only"
+        )
+
+    def test_research_themes_absent_at_generation(
+        self, generated_project: Path
+    ) -> None:
+        themes_file = generated_project / ".meta" / "research-themes.yaml"
+        assert not themes_file.exists(), (
+            "research-themes.yaml must not exist at generation time — "
+            "it is created by /radar at first run only"
+        )
+
+    def test_radar_script_present(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "radar" / "__main__.py").is_file()
+
+    def test_radar_optional_dep_declared(self, generated_project: Path) -> None:
+        import tomllib
+
+        pyproject = tomllib.loads((generated_project / "pyproject.toml").read_text())
+        optional_deps = pyproject.get("project", {}).get("optional-dependencies", {})
+        assert "radar" in optional_deps, "radar optional dep group must be declared"
+        radar_deps = optional_deps["radar"]
+        assert any("feedparser" in d for d in radar_deps)
+        assert any("huggingface_hub" in d for d in radar_deps)
 
 
 class TestPreCommitConfig:

@@ -20,6 +20,12 @@ Built with **Claude** (Anthropic) as AI pair. See [CONTRIBUTORS.md](CONTRIBUTORS
 | [Superpowers](https://github.com/toddgilb/superpowers) | Todd Gilbert | Skills ecosystem — brainstorming, planning, and code review as composable skills |
 | [Everything Claude Code](https://github.com/mrpbennett/everything-claude-code) | Various | Community-driven skill collection — patterns for linting, TDD, security review |
 
+## Vendored code
+
+| Project | Author | License | What was vendored |
+|---------|--------|---------|-------------------|
+| [Agent-Reach](https://github.com/Panniantong/Agent-Reach) | Panniantong | MIT | `Channel` ABC → `Source` ABC (renamed), `channels/github.py` and `channels/rss.py` structure patterns. Vendored into `template/scripts/radar/sources/` with attribution headers. |
+
 ## Tools
 
 | Tool | Role |
