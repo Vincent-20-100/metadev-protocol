@@ -143,6 +143,7 @@ uv sync                                    # Install dependencies
 uv run ruff check .                        # Linter
 uv run ruff format .                       # Formatter
 copier copy . /tmp/test-proj --defaults    # Test template locally
+python scripts/tech_watch.py              # Fetch trending AI-coding repos (needs GITHUB_TOKEN in .env)
 ```
 
 ## What you do NOT do here

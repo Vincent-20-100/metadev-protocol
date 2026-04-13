@@ -10,6 +10,7 @@ build/
 # Environment
 .env
 .env.*
+!.env.example
 
 # Coverage and test caches
 .coverage
@@ -31,3 +32,6 @@ node_modules/
 
 # Claude Code — local settings (never commit)
 .claude/settings.local.json
+
+# Tech watch dedup cache
+.meta/references/raw/.tech-watch-seen.json
