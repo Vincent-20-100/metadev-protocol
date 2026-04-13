@@ -27,6 +27,12 @@ repos:
         language: system
         always_run: true
         pass_filenames: false
+      - id: check-coauthor-trailer
+        name: Reject Co-authored-by Claude/Anthropic trailers
+        entry: python scripts/check_git_author.py
+        language: system
+        stages: [commit-msg]
+        pass_filenames: true
       - id: audit-public-safety-quick
         name: Quick secret scan on staged files
         entry: python scripts/audit_public_safety.py --mode=quick
