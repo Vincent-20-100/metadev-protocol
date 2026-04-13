@@ -69,8 +69,10 @@ flowchart LR
     JUMP["copier copy"]:::jump
     BEFORE ==> JUMP ==> AFTER
 
-    style BEFORE fill: #2b3a6d ,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
-    style AFTER  fill: #2b3a6d,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+    style BEFORE fill: #1f2851 ,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
+    style AFTER  fill: #1f2851,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+
+    linkStyle default stroke:#8b5cf6,stroke-width:3px,color:#cdd6f4
 ```
 
 ### How it works — the rails your prompt rides
@@ -81,7 +83,7 @@ One prompt enters, but it doesn't go straight to the model. It passes through fo
 flowchart LR
     classDef io    fill: #a6e3a1,stroke: #40a02b,stroke-width:3px,color:#1e1e2e
     classDef stage fill: #89bceb,stroke: #749aec,stroke-width:3px,color: #1e2a52
-    classDef out   fill: #f5c2e7,stroke: #ea76cb,stroke-width:3px,color: #2b3a6d
+    classDef out   fill: #f5c2e7,stroke: #ea76cb,stroke-width:3px,color: #1e2a52
 
     PROMPT(["one prompt"]):::io
 
@@ -100,7 +102,9 @@ flowchart LR
     SHIP ==> CODE
     CODE -->|"next session"| REMEMBER
 
-    style RAILS fill: #1e2a52,stroke: #cba6f7,stroke-width:3px,color: #cdd6f4
+    style RAILS fill: #1f2851,stroke: #cba6f7,stroke-width:3px,color: #cdd6f4
+
+    linkStyle default stroke:#8b5cf6,stroke-width:3px,color:#cdd6f4
 ```
 
 Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) are committed. Context is preserved — every session picks up where the last one ended.
