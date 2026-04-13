@@ -42,6 +42,11 @@ execution_mode:
     - full-auto
   default: safe
 
+enable_server_auth_check:
+  type: bool
+  help: "Add a GitHub Actions workflow that blocks PRs containing Claude/Anthropic-authored commits? Recommended if you use cloud AI sandboxes or have external contributors."
+  default: false
+
 # ─────────────────────────────────────────
 # Copier configuration
 # ─────────────────────────────────────────
@@ -55,6 +60,7 @@ _exclude:
   - "__pycache__"
   - ".meta/drafts/*"
   - "!.meta/drafts/.gitkeep"
+  - "{% if not enable_server_auth_check %}.github/workflows/check-commit-authors.yml{% endif %}"
 
 _tasks:
   - "git init"

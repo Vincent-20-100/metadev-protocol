@@ -128,9 +128,18 @@ git config --global user.name "{{ author_name }}"
 git config --global user.email "you@example.com"
 ```
 
-The hook does **not** protect against commits created server-side — cloud AI sandboxes, GitHub web merges, or CI-generated commits never touch your machine and bypass it. If you use those paths and want hard enforcement, enable **Require signed commits** in the GitHub branch protection rule for `main` (Settings → Branches). GitHub then refuses any commit not signed by a verified key attached to your account, regardless of what the author field says.
+The hook does **not** protect against commits created server-side — cloud AI sandboxes, GitHub web merges, or CI-generated commits never touch your machine and bypass it entirely.
 
-For a solo repo with a disciplined local workflow, the hook alone is enough. Add signed commits only if you actually merge from external sources.
+**Two-layer protection:**
+
+| Layer | What it catches | What it misses |
+|-------|-----------------|----------------|
+| Local hook (`check_git_author.py`) | Accidental AI-authored commits from your machine | Cloud sandbox branches, web commits, CI-generated commits |
+| Server-side Action (`.github/workflows/check-commit-authors.yml`) | Any PR whose commit history contains a Claude/Anthropic author name | Nothing — runs on GitHub's infrastructure, always |
+
+The server-side Action (if you generated this project with `enable_server_auth_check: true`) scans every commit in a PR targeting `main` and fails the check if it finds a blocked author name. This is the correct tool — not signed commits (which verify key identity, not author name).
+
+If you only work locally and never merge from cloud AI sandboxes or external contributors, the hook alone is sufficient. Enable the Action as soon as you start using any tool that commits on your behalf outside your machine.
 
 ## Refactoring signals
 
