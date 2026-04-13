@@ -44,107 +44,25 @@ The core principle: **separate what ships from how you build it.**
 
 Everyone wants durable AI memory and reusable skills. **metadev-protocol** gives your project a second space — co-located with your code, versioned with it, but never confused with it.
 
-```mermaid
-flowchart LR
-    classDef prod fill: #1e3a2e,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
-    classDef meta fill: #442f60,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
-
-    subgraph REPO["your repo"]
-        direction TB
-        subgraph PRODUCT["🚀 THE PRODUCT<br/><i>what users see</i>"]
-            direction TB
-            P1["production code"]:::prod
-            P2["tests"]:::prod
-            P3["public docs"]:::prod
-        end
-
-        subgraph METASPACE["🧠 THE COCKPIT<br/><i>your vibe-coding space</i>"]
-            direction TB
-            M1["plans before code"]:::meta
-            M2["decisions &amp; their why"]:::meta
-            M3["brainstorms · drafts"]:::meta
-            M4["session memory"]:::meta
-        end
-
-        METASPACE ==>|"plans · decisions"| PRODUCT
-        PRODUCT ==>|"what shipped"| METASPACE
-    end
-
-    style REPO fill: #1f2851,stroke: #9391ac,stroke-width:3px,color: #9391ac
-    style PRODUCT fill: #1f2851,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
-    style METASPACE fill: #1f2851,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
-
-    linkStyle default stroke: #9391ac,stroke-width:3px,color: #9391ac
-```
+<p align="center">
+  <img src="docs/diagrams/01-two-spaces.svg" alt="One repo, two spaces — product vs cockpit" width="900">
+</p>
 
 > **one repo, two spaces — the product ships, the cockpit thinks**
 
 ### The loop you know vs. the loop you want
 
-```mermaid
-flowchart LR
-    classDef pain  fill: #3a2230,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
-    classDef cure  fill: #1e3a2e,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
-    classDef jump  fill: #2d2a52,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
-
-    subgraph BEFORE["❌ **Raw Claude Code**"]
-        direction TB
-        B1["Re-explain the project"]:::pain
-        B2["AI invents a new file layout"]:::pain
-        B3["Drafts pile up at repo root"]:::pain
-        B4["Tomorrow: start from zero"]:::pain
-        B1 --> B2 --> B3 --> B4 --> B1
-    end
-
-    subgraph AFTER["✅ **metadev-protocol**"]
-        direction TB
-        A1["AI reads where you stopped"]:::cure
-        A2["Plans before touching code"]:::cure
-        A3["Drafts auto-quarantined"]:::cure
-        A4["Session saved for tomorrow"]:::cure
-        A1 --> A2 --> A3 --> A4 --> A1
-    end
-
-    JUMP["copier copy"]:::jump
-    BEFORE ==> JUMP ==> AFTER
-
-    style BEFORE fill: #1f2851 ,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
-    style AFTER  fill: #1f2851,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
-
-    linkStyle default stroke: #9391ac ,stroke-width:3px,color: #9391ac
-```
+<p align="center">
+  <img src="docs/diagrams/02-before-after.svg" alt="Raw Claude Code loop vs metadev-protocol loop" width="900">
+</p>
 
 ### How it works — the rails your prompt rides
 
 One prompt enters, but it doesn't go straight to the model. It passes through four enforced stages before any file is touched — and session memory closes the loop.
 
-```mermaid
-flowchart LR
-    classDef io    fill: #a6e3a1,stroke: #40a02b,stroke-width:3px,color: #1e1e2e
-    classDef stage fill: #8ba8ca,stroke: #4067bc,stroke-width:3px,color: #1e2a52
-    classDef out   fill: #f5c2e7,stroke: #ea76cb,stroke-width:3px,color: #1e2a52
-
-    PROMPT(["one prompt"]):::io
-
-    subgraph RAILS["the rails"]
-        direction LR
-        REMEMBER["<b>REMEMBER</b><br/>PILOT.md · SESSION-CONTEXT<br/>active plans · decisions"]:::stage
-        PLAN["<b>PLAN</b><br/>/brainstorm /spec /plan<br/>/debate /orchestrate /research /vision"]:::stage
-        GUARD["<b>GUARD</b><br/>11 automatisms · 9 rules<br/>reviewer · security · devil"]:::stage
-        SHIP["<b>SHIP</b><br/>hooks: lint · secrets · tests<br/>/save-progress"]:::stage
-        REMEMBER ==> PLAN ==> GUARD ==> SHIP
-    end
-
-    CODE(["shipped code<br/>+ updated memory"]):::out
-
-    PROMPT ==> REMEMBER
-    SHIP ==> CODE
-    CODE -->|"next session"| REMEMBER
-
-    style RAILS fill: #1f2851,stroke: #cba6f7,stroke-width:3px,color: #9391ac
-
-    linkStyle default stroke: #9391ac,stroke-width:3px,color: #1e1e2e
-```
+<p align="center">
+  <img src="docs/diagrams/03-rails.svg" alt="The rails: REMEMBER, PLAN, GUARD, SHIP" width="900">
+</p>
 
 Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) are committed. Context is preserved — every session picks up where the last one ended.
 

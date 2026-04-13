@@ -36,6 +36,7 @@ uv run pre-commit install
 - **`.meta/` filename convention** — `<type>-<YYYY-MM-DD>-<slug>.md` (enforced by pre-commit hook).
 - **Semver tags are immutable** — never rewrite or move a tag, always bump the version.
 - **YAGNI** — no over-engineering, complexity must be justified.
+- **README diagrams** — edit the `.mmd` source in `docs/diagrams/`, then regenerate SVGs with `bash scripts/render-diagrams.sh`. Commit both the `.mmd` and the `.svg`.
 
 ## Two spheres
 

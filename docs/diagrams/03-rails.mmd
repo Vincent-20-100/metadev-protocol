@@ -1,0 +1,25 @@
+flowchart LR
+    classDef io    fill: #a6e3a1,stroke: #40a02b,stroke-width:3px,color: #1e1e2e
+    classDef stage fill: #8ba8ca,stroke: #4067bc,stroke-width:3px,color: #1e2a52
+    classDef out   fill: #f5c2e7,stroke: #ea76cb,stroke-width:3px,color: #1e2a52
+
+    PROMPT(["one prompt"]):::io
+
+    subgraph RAILS["the rails"]
+        direction LR
+        REMEMBER["<b>REMEMBER</b><br/>PILOT.md · SESSION-CONTEXT<br/>active plans · decisions"]:::stage
+        PLAN["<b>PLAN</b><br/>/brainstorm /spec /plan<br/>/debate /orchestrate /research /vision"]:::stage
+        GUARD["<b>GUARD</b><br/>11 automatisms · 9 rules<br/>reviewer · security · devil"]:::stage
+        SHIP["<b>SHIP</b><br/>hooks: lint · secrets · tests<br/>/save-progress"]:::stage
+        REMEMBER ==> PLAN ==> GUARD ==> SHIP
+    end
+
+    CODE(["shipped code<br/>+ updated memory"]):::out
+
+    PROMPT ==> REMEMBER
+    SHIP ==> CODE
+    CODE -->|"next session"| REMEMBER
+
+    style RAILS fill: #1f2851,stroke: #cba6f7,stroke-width:3px,color: #9391ac
+
+    linkStyle default stroke: #9391ac,stroke-width:3px,color: #9391ac

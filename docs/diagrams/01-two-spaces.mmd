@@ -1,0 +1,30 @@
+flowchart LR
+    classDef prod fill: #1e3a2e,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+    classDef meta fill: #442f60,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
+
+    subgraph REPO["your repo"]
+        direction TB
+        subgraph PRODUCT["🚀 THE PRODUCT<br/><i>what users see</i>"]
+            direction TB
+            P1["production code"]:::prod
+            P2["tests"]:::prod
+            P3["public docs"]:::prod
+        end
+
+        subgraph METASPACE["🧠 THE COCKPIT<br/><i>your vibe-coding space</i>"]
+            direction TB
+            M1["plans before code"]:::meta
+            M2["decisions &amp; their why"]:::meta
+            M3["brainstorms · drafts"]:::meta
+            M4["session memory"]:::meta
+        end
+
+        METASPACE ==>|"plans · decisions"| PRODUCT
+        PRODUCT ==>|"what shipped"| METASPACE
+    end
+
+    style REPO fill: #1f2851,stroke: #9391ac,stroke-width:3px,color: #9391ac
+    style PRODUCT fill: #1f2851,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+    style METASPACE fill: #1f2851,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
+
+    linkStyle default stroke: #9391ac,stroke-width:3px,color: #9391ac

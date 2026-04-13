@@ -1,0 +1,30 @@
+flowchart LR
+    classDef pain  fill: #3a2230,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
+    classDef cure  fill: #1e3a2e,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+    classDef jump  fill: #2d2a52,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
+
+    subgraph BEFORE["❌ **Raw Claude Code**"]
+        direction TB
+        B1["Re-explain the project"]:::pain
+        B2["AI invents a new file layout"]:::pain
+        B3["Drafts pile up at repo root"]:::pain
+        B4["Tomorrow: start from zero"]:::pain
+        B1 --> B2 --> B3 --> B4 --> B1
+    end
+
+    subgraph AFTER["✅ **metadev-protocol**"]
+        direction TB
+        A1["AI reads where you stopped"]:::cure
+        A2["Plans before touching code"]:::cure
+        A3["Drafts auto-quarantined"]:::cure
+        A4["Session saved for tomorrow"]:::cure
+        A1 --> A2 --> A3 --> A4 --> A1
+    end
+
+    JUMP["copier copy"]:::jump
+    BEFORE ==> JUMP ==> AFTER
+
+    style BEFORE fill: #1f2851,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
+    style AFTER  fill: #1f2851,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+
+    linkStyle default stroke: #9391ac,stroke-width:3px,color: #9391ac
