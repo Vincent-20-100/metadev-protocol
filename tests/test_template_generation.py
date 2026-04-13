@@ -201,7 +201,6 @@ class TestSkills:
         "research",
         "vision",
         "test",
-        "lint",
         "save-progress",
         "radar",
     ]
