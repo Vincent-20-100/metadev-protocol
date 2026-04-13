@@ -91,6 +91,21 @@ One commit = one complete logical unit. Not one file, not one timer tick.
 
 Anti-patterns: "wip", "more changes", "fix typo" chains, commits that break tests, commits that mix unrelated changes.
 
+## Commit authorship
+
+The `check_git_author.py` pre-commit hook blocks commits authored as `Claude` or `Anthropic` on your machine. That's the local layer — it protects against forgetting to set your git identity before a session with an AI assistant.
+
+Set your identity once, globally:
+
+```bash
+git config --global user.name "{{ author_name }}"
+git config --global user.email "you@example.com"
+```
+
+The hook does **not** protect against commits created server-side — cloud AI sandboxes, GitHub web merges, or CI-generated commits never touch your machine and bypass it. If you use those paths and want hard enforcement, enable **Require signed commits** in the GitHub branch protection rule for `main` (Settings → Branches). GitHub then refuses any commit not signed by a verified key attached to your account, regardless of what the author field says.
+
+For a solo repo with a disciplined local workflow, the hook alone is enough. Add signed commits only if you actually merge from external sources.
+
 ## Refactoring signals
 
 - When you copy-paste: extract
