@@ -180,7 +180,12 @@ class TestMetaVisibility:
 
     def test_pilot_vision_has_four_subsections(self, generated_project: Path) -> None:
         pilot = (generated_project / ".meta" / "PILOT.md").read_text()
-        for subsection in ("### Problem", "### Target user", "### V1 scope", "### North star metric"):
+        for subsection in (
+            "### Problem",
+            "### Target user",
+            "### V1 scope",
+            "### North star metric",
+        ):
             assert subsection in pilot
 
 
