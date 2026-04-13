@@ -36,9 +36,48 @@ Every AI-assisted project starts the same way, and hits the same walls:
 
 ## The Solution
 
-metadev-protocol generates a **fully wired Python project** where the AI follows the workflow without being told — because the rules are encoded in the structure, not in your prompts.
+**metadev-protocol** generates a **fully wired Python project** where the AI follows the workflow without being told — because the rules are encoded in the structure, not in your prompts.
 
 The core principle: **separate what ships from how you build it.**
+
+### One repo, two spaces
+
+Everyone wants durable AI memory and reusable skills. **metadev-protocol** gives your project a second space — co-located with your code, versioned with it, but never confused with it.
+
+```mermaid
+flowchart LR
+    classDef prod fill: #1e3a2e,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+    classDef meta fill: #442f60,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
+
+    subgraph REPO["your repo"]
+        direction TB
+        subgraph PRODUCT["🚀 THE PRODUCT<br/><i>what users see</i>"]
+            direction TB
+            P1["production code"]:::prod
+            P2["tests"]:::prod
+            P3["public docs"]:::prod
+        end
+
+        subgraph METASPACE["🧠 THE COCKPIT<br/><i>your vibe-coding space</i>"]
+            direction TB
+            M1["plans before code"]:::meta
+            M2["decisions &amp; their why"]:::meta
+            M3["brainstorms · drafts"]:::meta
+            M4["session memory"]:::meta
+        end
+
+        METASPACE ==>|"plans · decisions"| PRODUCT
+        PRODUCT ==>|"what shipped"| METASPACE
+    end
+
+    style REPO fill: #1f2851,stroke: #9391ac,stroke-width:3px,color: #9391ac
+    style PRODUCT fill: #1f2851,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
+    style METASPACE fill: #1f2851,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
+
+    linkStyle default stroke: #9391ac,stroke-width:3px,color: #9391ac
+```
+
+> **one repo, two spaces — the product ships, the cockpit thinks**
 
 ### The loop you know vs. the loop you want
 
@@ -48,7 +87,7 @@ flowchart LR
     classDef cure  fill: #1e3a2e,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
     classDef jump  fill: #2d2a52,stroke: #cba6f7,stroke-width:2px,color: #e0c8ff
 
-    subgraph BEFORE["❌ Raw Claude Code"]
+    subgraph BEFORE["❌ **Raw Claude Code**"]
         direction TB
         B1["Re-explain the project"]:::pain
         B2["AI invents a new file layout"]:::pain
@@ -57,7 +96,7 @@ flowchart LR
         B1 --> B2 --> B3 --> B4 --> B1
     end
 
-    subgraph AFTER["✅ metadev-protocol"]
+    subgraph AFTER["✅ **metadev-protocol**"]
         direction TB
         A1["AI reads where you stopped"]:::cure
         A2["Plans before touching code"]:::cure
@@ -72,7 +111,7 @@ flowchart LR
     style BEFORE fill: #1f2851 ,stroke: #f38ba8,stroke-width:2px,color: #f2cdcd
     style AFTER  fill: #1f2851,stroke: #a6e3a1,stroke-width:2px,color: #d9f7d0
 
-    linkStyle default stroke:#8b5cf6,stroke-width:3px,color:#cdd6f4
+    linkStyle default stroke: #9391ac ,stroke-width:3px,color: #9391ac
 ```
 
 ### How it works — the rails your prompt rides
@@ -81,8 +120,8 @@ One prompt enters, but it doesn't go straight to the model. It passes through fo
 
 ```mermaid
 flowchart LR
-    classDef io    fill: #a6e3a1,stroke: #40a02b,stroke-width:3px,color:#1e1e2e
-    classDef stage fill: #89bceb,stroke: #749aec,stroke-width:3px,color: #1e2a52
+    classDef io    fill: #a6e3a1,stroke: #40a02b,stroke-width:3px,color: #1e1e2e
+    classDef stage fill: #8ba8ca,stroke: #4067bc,stroke-width:3px,color: #1e2a52
     classDef out   fill: #f5c2e7,stroke: #ea76cb,stroke-width:3px,color: #1e2a52
 
     PROMPT(["one prompt"]):::io
@@ -102,9 +141,9 @@ flowchart LR
     SHIP ==> CODE
     CODE -->|"next session"| REMEMBER
 
-    style RAILS fill: #1f2851,stroke: #cba6f7,stroke-width:3px,color: #cdd6f4
+    style RAILS fill: #1f2851,stroke: #cba6f7,stroke-width:3px,color: #9391ac
 
-    linkStyle default stroke:#8b5cf6,stroke-width:3px,color:#cdd6f4
+    linkStyle default stroke: #9391ac,stroke-width:3px,color: #1e1e2e
 ```
 
 Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) are committed. Context is preserved — every session picks up where the last one ended.
