@@ -5,6 +5,29 @@
 
 ---
 
+## Vision
+
+_Last updated: 2026-04-13_
+
+### Problem
+Solo developers starting AI-assisted Python projects lose hours to setup friction and structural drift. Without conventions, the LLM reinvents context each session, drafts pollute the repo, and quality erodes silently. Every project starts from zero.
+
+### Target user
+- Solo developers or small teams (1-3) beginning vibe-coding with Claude Code
+- Currently spending 30-60 min per project on boilerplate setup
+- Frustrated by LLM context loss between sessions and lack of structural discipline
+
+### V1 scope
+- Must: `copier copy` generates a fully configured Python project (CLAUDE.md + .meta/ + skills + hooks + pre-commit)
+- Must: versioned semver tags enable `copier update` to propagate improvements to existing projects
+- Should: 8+ skills covering the full dev loop (brainstorm → plan → ship)
+- Won't (v1): multi-language support, IDE plugins, hosted registry
+
+### North star metric
+≥10 external projects using metadev-protocol via `copier copy` within 30 days of public launch.
+
+---
+
 ## Current state
 
 v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 added governance polish from 4-repo audit (honesty constraint, confidence gates, synthesis type, brand guide, demo script, banner). v1.1.0 adds skill discoverability mechanism (automatism #11 Rule of 3 + inverted-default trigger table) and full README rework (pixel-art banner, Before/After + Rails diagrams). Phase 4 (launch) in progress: outreach spec and post drafts ready, messaging system specified.
