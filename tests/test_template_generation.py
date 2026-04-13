@@ -174,6 +174,45 @@ class TestMetaVisibility:
     def test_pilot_always_exists(self, generated_project: Path) -> None:
         assert (generated_project / ".meta" / "PILOT.md").is_file()
 
+    def test_pilot_has_vision_section(self, generated_project: Path) -> None:
+        pilot = (generated_project / ".meta" / "PILOT.md").read_text()
+        assert "## Vision" in pilot
+
+    def test_pilot_vision_has_four_subsections(self, generated_project: Path) -> None:
+        pilot = (generated_project / ".meta" / "PILOT.md").read_text()
+        for subsection in ("### Problem", "### Target user", "### V1 scope", "### North star metric"):
+            assert subsection in pilot
+
+
+class TestSkills:
+    """Verify that expected skills are present in the generated project."""
+
+    EXPECTED_SKILLS = [
+        "brainstorm",
+        "spec",
+        "debate",
+        "plan",
+        "orchestrate",
+        "research",
+        "vision",
+        "test",
+        "lint",
+        "save-progress",
+    ]
+
+    def test_all_skills_present(self, generated_project: Path) -> None:
+        skills_dir = generated_project / ".claude" / "skills"
+        assert skills_dir.is_dir(), "skills directory must exist"
+        present = {p.name for p in skills_dir.iterdir() if p.is_dir()}
+        for skill in self.EXPECTED_SKILLS:
+            assert skill in present, f"skill '{skill}' missing from generated project"
+
+    def test_each_skill_has_skill_md(self, generated_project: Path) -> None:
+        skills_dir = generated_project / ".claude" / "skills"
+        for skill in self.EXPECTED_SKILLS:
+            skill_file = skills_dir / skill / "SKILL.md"
+            assert skill_file.is_file(), f"{skill}/SKILL.md missing"
+
 
 class TestPreCommitConfig:
     """Verify that pre-commit hooks are properly configured."""

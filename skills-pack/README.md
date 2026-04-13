@@ -27,6 +27,8 @@ cp -r skills-pack/skills/plan .claude/skills/
 | `/debate` | Multi-agent adversarial debate — 3 agents (2 insiders + 1 lone wolf), 6 domain presets, debate record |
 | `/plan` | Task decomposition with file mapping and tiered confidence gates (GREEN/AMBER/RED) |
 | `/orchestrate` | Multi-step session orchestrator with dependency tracking across phases |
+| `/research` | External research — WebSearch + WebFetch + MCP, 8-call soft budget, structured output to `.meta/references/raw/`. Assumes a `.meta/references/raw/` directory. |
+| `/vision` | Fill or update the Vision section in PILOT.md (Problem / Target user / V1 scope / North star). Assumes `.meta/PILOT.md` with a `## Vision` section — add it manually if not using the full metadev-protocol template. |
 | `/test` | Run pytest and report results |
 | `/lint` | Run ruff check + format on the whole project |
 | `/save-progress` | Pre-commit checklist and context update (PILOT.md + SESSION-CONTEXT.md) |

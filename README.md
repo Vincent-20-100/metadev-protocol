@@ -154,7 +154,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 
 - **11 automatisms** — context loading at session start, mandatory plan before any edit, architecture sync, session handoff, Rule of 3 anti-consensus challenge. Hard-wired in `CLAUDE.md`, they fire without prompting.
 - **9 rules** — the non-negotiable contract between you and the AI. Few hard rules that are always followed beat many soft rules that are sometimes ignored.
-- **8 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/test`, `/lint`, `/save-progress`. Reusable across every project you generate.
+- **10 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/research`, `/vision`, `/test`, `/lint`, `/save-progress`. Reusable across every project you generate.
 - **5 agent personas** — code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate. Defined in `AGENTS.md`, invoked on demand.
 - **Hooks over instructions** — every Python file is auto-linted on save (ruff PostToolUse hook), dangerous operations are blocked or require confirmation, co-authored-by trailers suppressed natively.
 - **Session continuity** — `PILOT.md` (project dashboard) + `SESSION-CONTEXT.md` (living context rewritten each session). Claude remembers what you decided three weeks ago.
@@ -167,7 +167,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 
 ## The Toolkit
 
-Every generated project ships with 8 skills, 5 agent personas, and 3 guardrail scripts. Skills and agents are invoked by name; scripts run as pre-commit hooks and CI steps.
+Every generated project ships with 10 skills, 5 agent personas, and 3 guardrail scripts. Skills and agents are invoked by name; scripts run as pre-commit hooks and CI steps.
 
 ### Skills — `/command` in Claude Code
 
@@ -178,6 +178,8 @@ Every generated project ships with 8 skills, 5 agent personas, and 3 guardrail s
 | `/debate` | Hard trade-off with 2+ defensible options | 3-agent adversarial debate (2 insiders + 1 lone wolf), 6 domain presets, debate record |
 | `/plan` | Scope is clear, need task breakdown | Tasks mapped to files, tiered confidence gates (GREEN/AMBER/RED), verification checklist |
 | `/orchestrate` | Multi-step objective across phases | Session orchestrator with dependency tracking and phase transitions |
+| `/research` | Question needs external facts or recent state-of-the-art | WebSearch + WebFetch + MCP, 8-call soft budget, structured output to `.meta/references/raw/` |
+| `/vision` | Vision section empty or product framing unclear | Guided 4-question dialogue → fills Problem / Target user / V1 scope / North star in PILOT.md |
 | `/test` | After implementation | Runs `pytest` with optional arguments, reports failures |
 | `/lint` | Before commit or after touching >1 file | `ruff check` + `format` on the whole project |
 | `/save-progress` | End of session | Pre-commit checklist, updates `PILOT.md`, rewrites `SESSION-CONTEXT.md` |
@@ -202,7 +204,7 @@ Every generated project ships with 8 skills, 5 agent personas, and 3 guardrail s
 
 ### Just the skills, no template
 
-Want the skills in an existing project without regenerating? The [`skills-pack/`](skills-pack/) directory ships all 8 skills as drop-ins:
+Want the skills in an existing project without regenerating? The [`skills-pack/`](skills-pack/) directory ships all 10 skills as drop-ins:
 
 ```bash
 git clone https://github.com/Vincent-20-100/metadev-protocol.git

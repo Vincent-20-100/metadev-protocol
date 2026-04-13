@@ -6,6 +6,28 @@ This project uses [semantic versioning](https://semver.org/).
 
 ---
 
+## [v1.2.0] — 2026-04-13 — Research skill, vision skill, audit-repo skill, tech watch, prose absorption
+
+### Added
+- **New skill: `/research`** — external research with WebSearch + WebFetch + MCP. 7-step process with 8-call soft budget. Structured output to `.meta/references/raw/`. Strict orthogonality with `/brainstorm`. Shipped in template + skills-pack.
+- **New skill: `/vision`** — guided 4-question dialogue filling the Vision section in PILOT.md (Problem / Target user / V1 scope / North star). Auto-proposed at first session when section is TBD. Re-invocation mode supports per-field update. Shipped in template + skills-pack.
+- **New skill: `/audit-repo`** — standardized structural analysis of any GitHub repository (meta-repo only). Shallow clone → fingerprint → 5 fixed categories → tiered recommendations (USE AS-IS / EXTRACT PARTS / BORROW CONCEPTS / INSPIRATION / REJECT). Output to `.meta/references/interim/`. Enables PM.4 multi-agent synthesis.
+- **Tech watch script** (`scripts/tech_watch.py`) — stdlib-only GitHub Search API script querying 6 AI-coding topics with SHA256 dedup cache. Output to `.meta/references/raw/`. Requires `GITHUB_TOKEN` in `.env`.
+- **Vision section in PILOT.md template** — 4 subsections with `_TBD_` placeholders, auto-detected by first-session automatism.
+- **Three pillars** in `docs/PHILOSOPHY.md` — product excellence / technical agility / AI intensity.
+- **Engineering defaults** in `template/.meta/GUIDELINES.md.jinja` — working rhythm (5 steps), trunk-based development, modular monolith default, stdlib-first dependencies rule.
+- **ADR template** (`template/.meta/decisions/adr-template.md.jinja`) — 4-question framework: what problem / alternatives / why this choice / exit cost.
+- **Correction-loop callout** in `template/CLAUDE.md.jinja` — "If you find yourself correcting the AI on the same thing twice, add it to CLAUDE.md."
+- `.env.example` documenting `GITHUB_TOKEN` setup.
+
+### Changed
+- Skills count bumped 8 → 10 across README, PHILOSOPHY.md, and skills-pack README.
+- `template/CLAUDE.md.jinja` automatism #2 extended to propose `/vision` when Vision section is all TBD.
+- `/research` and `/vision` rows added to trigger tables in both `template/CLAUDE.md.jinja` and meta-repo `CLAUDE.md`.
+- `CREDITS.md` — added `claude-ai-project-starter` (Guillaume Desforges) with absorbed item inventory.
+
+---
+
 ## [v1.1.0] — 2026-04-12 — Skill discoverability + README rework
 
 ### Added

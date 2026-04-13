@@ -94,7 +94,7 @@ Skills (`.claude/skills/`) and agents (`AGENTS.md`) are the right place for dev 
 - **Not hooks** — too rigid, can't handle interactive workflows
 - **Skills and agents** — loaded on demand, shared via git, composable in pipelines
 
-**8 built-in skills** ship with every project:
+**10 built-in skills** ship with every project:
 
 | Skill | When | What it does |
 |-------|------|-------------|
@@ -103,6 +103,8 @@ Skills (`.claude/skills/`) and agents (`AGENTS.md`) are the right place for dev 
 | `/debate` | Hard trade-off with 2+ defensible options | 3-agent adversarial debate (2 insiders + 1 lone wolf) |
 | `/plan` | Scope is clear | Tasks with file mapping and verification checklist |
 | `/orchestrate` | Multi-step objective spanning phases | Session orchestrator with dependency tracking |
+| `/research` | Question needs external facts or recent state-of-the-art | WebSearch + WebFetch + MCP, 8-call soft budget, output to `.meta/references/raw/` |
+| `/vision` | Vision section empty or product framing unclear | Guided dialogue → fills Problem / Target user / V1 scope / North star in PILOT.md |
 | `/test` | After implementation | Run pytest with optional arguments |
 | `/lint` | Before commit or after touching >1 file | `ruff check` + `format` on the whole project |
 | `/save-progress` | End of session | Checklist + `PILOT.md` + rewrite `SESSION-CONTEXT.md` |

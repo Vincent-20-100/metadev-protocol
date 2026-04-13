@@ -101,14 +101,14 @@ v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 added governance polish fro
 | # | Task | Source | Status |
 |---|---|---|---|
 | PM.1a | Absorb §4.1 doc-only batch from claude-ai-project-starter brainstorm into PHILOSOPHY, GUIDELINES, CLAUDE.md, new ADR template | brainstorm-2026-04-12 | DONE |
-| PM.1b | `/research` skill — external research (WebSearch + WebFetch + MCP), standardized output to `raw/`, orthogonal to `/brainstorm`. Reference: Agent-Reach | brainstorm-2026-04-13-research-skill | PLAN READY (`active/plan-2026-04-13-research-skill.md`) |
-| PM.1c | `/vision` skill — fills a Vision section in PILOT.md (problem / user / V1 scope / north star). Auto-proposed on first session | brainstorm-2026-04-13-vision-skill | PLAN READY (`active/plan-2026-04-13-vision-skill.md`) |
+| PM.1b | `/research` skill — external research (WebSearch + WebFetch + MCP), standardized output to `raw/`, orthogonal to `/brainstorm`. Reference: Agent-Reach | brainstorm-2026-04-13-research-skill | DONE |
+| PM.1c | `/vision` skill — fills a Vision section in PILOT.md (problem / user / V1 scope / north star). Auto-proposed on first session | brainstorm-2026-04-13-vision-skill | DONE |
 | PM.1d | C2 wiki tier — **REJECTED for v1.2**, gap acknowledged, revisit when ≥3 real projects demand it | brainstorm-2026-04-13-wiki-tier | REJECTED |
 | PM.2 | Add Guillaume Desforges to launch outreach list with hook from §6 | brainstorm-2026-04-12 | DONE (v1.1.0 — included in outreach spec) |
-| PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | PLAN READY (`active/plan-2026-04-13-tech-watch-script.md`) |
+| PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | DONE |
 | PM.4 | Multi-agent synthesis run — cross-pollinate ALL reference sources for emergent structural innovations (not feature-picking) | debate-2026-04-12 | PENDING |
 | PM.5 | Provenance sidecar convention (deferred from T1.7) | synthesis-2026-04-12 | PENDING |
-| PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration → reject. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Source: Agent-Reach audit session | session-2026-04-12 | PLAN READY (`active/plan-2026-04-13-audit-repo-skill.md`) |
+| PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration → reject. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Source: Agent-Reach audit session | session-2026-04-12 | DONE |
 | PM.7 | Skill/agent discoverability problem — the LLM doesn't proactively propose skills and agents enough. New users who don't know features exist won't get full value. Need to improve CLAUDE.md automatisms, onboarding, and/or skill suggestion triggers | session-2026-04-12 | DONE (v1.1.0 — automatism #11 + trigger table) |
 
 ---
