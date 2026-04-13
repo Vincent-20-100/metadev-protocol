@@ -13,6 +13,7 @@ Built with **Claude** (Anthropic) as AI pair. See [CONTRIBUTORS.md](CONTRIBUTORS
 | Project | Author | What we learned |
 |---------|--------|-----------------|
 | [nix-copier-python](https://github.com/GuillaumeDesworkes/nix-copier-python) | Guillaume Desforges | Copier + Nix template architecture — proved that opinionated scaffolding with reproducible builds works at scale |
+| [claude-ai-project-starter](https://github.com/GuillaumeDesforges/claude-ai-project-starter) | Guillaume Desforges | v1.2.0 — absorbed philosophy prose and engineering defaults: three pillars (A2), working rhythm (A3), anti-patterns (A4), correction-loop rule (A6), doc-decay rule (A7), trunk-based (B1), modular monolith (B2), stdlib-first (B4), errors as knowledge (B5), third-occurrence automation (B6), ADR template (B8) |
 | [Graphify](https://github.com/safishamsi/graphify) | Safi Shamsi | Knowledge graph patterns — deterministic AST extraction, confidence-tagged edges, transactional pipelines, cost tracking |
 | [Feynman](https://github.com/getcompanion-ai/feynman) | Companion AI | Multi-agent research system — provenance sidecars, honesty constraints, verification persona |
 | [Earnings Call Analyst](https://github.com/yedanzhang-ai/earnings-call-analyst) | Yedan Zhang | LLM pipeline with tiered verification — green/amber/red confidence scoring, versioned prompt files |

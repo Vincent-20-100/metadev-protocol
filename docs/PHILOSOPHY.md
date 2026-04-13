@@ -30,6 +30,17 @@ The cost is not the individual session. It's the compound debt across dozens of 
 
 It's not a toolbox where you pick what you need. It's an opinionated workshop where everything is pre-installed and ready. The LLM follows the workflow naturally — the user doesn't remind.
 
+## Three pillars
+
+Every project built with metadev-protocol stands on three commitments:
+
+- **Product excellence** — *"Ship less, ship better. Every feature earns its place."*
+- **Technical agility** — *"Small, reversible decisions over big upfront designs. Optimize for changeability, because the first architecture will be wrong."*
+- **AI intensity** — *"The human role shifts from doing to directing, reviewing, and deciding."*
+
+These are not aspirations — they are constraints on every session.
+<!-- Source: Guillaume Desforges / claude-ai-project-starter, absorbed 2026-04-13 -->
+
 ## Core principles
 
 ### 1. Separate the product from the process

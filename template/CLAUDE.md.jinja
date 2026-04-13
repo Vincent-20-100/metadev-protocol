@@ -74,6 +74,9 @@ These behaviors are mandatory. Apply them without being asked.
 
 Non-negotiable. These apply to every action.
 
+<!-- Correction loop rule: if the user corrects the AI on the same point twice, that point belongs in this file, not in their memory. -->
+> **Pattern detected?** If you find yourself correcting the AI on the same thing twice, add it to CLAUDE.md — the rule belongs in the contract, not in your memory.
+
 1. **Single responsibility** — one function, one purpose
 2. **Config over hardcode** — prefer yaml/toml config files over scattered variables
 3. **Minimize hardcoding** — anything that can change = config or parameter

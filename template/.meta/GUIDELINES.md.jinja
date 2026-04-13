@@ -5,6 +5,14 @@
 
 ## Working with AI
 
+**Working rhythm:**
+
+1. **Define intent** — what, why, constraints. Write it down before involving AI.
+2. **Let AI draft** — research, plan, implement. Trust the process, not the output.
+3. **Review critically** — AI is confident but not always right. Challenge every assumption.
+4. **Commit and capture** — one logical unit, capture the decision, move on.
+5. **Improve** — learn from wins and failures. Update CLAUDE.md when a pattern repeats.
+
 **Anti-patterns to watch for:**
 
 - **Over-engineering** — building for hypothetical futures instead of present needs
@@ -13,6 +21,7 @@
 
 If you find yourself correcting AI on the same thing twice, add it to CLAUDE.md.
 Outdated documentation reduces AI effectiveness more than no documentation.
+Update docs at the same commit that changes behaviour — never later.
 
 **Practical defaults:**
 
@@ -29,10 +38,19 @@ When making a technology or architecture decision, answer:
 
 ## Code structure
 
+- **Default to a modular monolith** — one codebase, clear module boundaries, no microservices until you've exhausted the monolith. *"AI reasons about a monolith far better than a mesh of services. You can always split later; you can't easily merge back."*
 - Prefer small, focused functions over long ones
 - Group related logic in modules, not mega-files
 - Keep entry points thin — route to logic, don't contain it
 - When a function grows beyond ~30 lines, consider splitting
+
+## Dependencies
+
+**Dependencies are a liability.** Every package you add is a maintenance burden, a supply-chain risk, and a future version conflict. Ask stdlib first:
+
+1. Can the stdlib solve this? If yes, use it.
+2. Is the package well-maintained, widely trusted, and adds significant leverage? If yes, add it.
+3. If in doubt, write the 20-line function yourself.
 
 ## Configuration
 
@@ -62,6 +80,7 @@ When making a technology or architecture decision, answer:
 
 One commit = one complete logical unit. Not one file, not one timer tick.
 
+- **Trunk-based development** — work directly on `main` (or short-lived branches that merge within a day). No long-lived feature branches. *"The real CI is the discipline of always keeping `main` green, not just a GitHub Actions workflow."*
 - **Granularity** — a commit is a feature, a fix, or a decision. A `feat:` touching 5 files is one commit, not five
 - **Review test** — a reviewer should understand the commit in under 5 minutes
 - **Bisectable** — each commit must pass tests independently so `git bisect` works
