@@ -212,6 +212,7 @@ dependencies = [
 [package.optional-dependencies]
 test = [
     { name = "pytest" },
+    { name = "pyyaml" },
 ]
 
 [package.metadata]
@@ -220,6 +221,7 @@ requires-dist = [
     { name = "pre-commit", specifier = ">=4.2.0" },
     { name = "pytest", marker = "extra == 'test'", specifier = ">=8.0" },
     { name = "pyyaml", specifier = ">=6.0" },
+    { name = "pyyaml", marker = "extra == 'test'", specifier = ">=6.0" },
     { name = "ruff", specifier = ">=0.11.0" },
 ]
 provides-extras = ["test"]
