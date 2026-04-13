@@ -135,6 +135,7 @@ the entire value of the template.
 | `/debate` | skill | hard trade-off with 2+ defensible options, or user asks to challenge an idea | **Propose** |
 | `/orchestrate` | skill | multi-step objective spanning spec + plan + implementation across phases | **Propose** |
 | `/research` | skill | question needs external facts, recent state-of-the-art, or competitive info | **Propose** |
+| `/radar` | skill | automated tech-watch: fetch emerging news and repos near the project, build navigable KB in `.meta/references/research/` | **Propose** |
 | `/vision` | skill | Vision section is empty OR user asks about product framing / target user / scope | **Propose** |
 | `/test` | skill | code was just written or modified and no test run has happened yet | **Auto** (after impl) |
 | `/lint` | skill | before commit OR after touching >1 source file | **Auto** |
@@ -148,6 +149,8 @@ the entire value of the template.
 **Auto** = invoke without asking (announce it in one line). **Propose** = ask the user
 first, explaining why this tool applies. Never stay silent when a trigger matches — the
 user can always decline, but a missed proposal is a lost feature.
+
+**Designing a new skill?** Apply the Skill vs tool filter from `.meta/GUIDELINES.md` before writing any code. List the steps, classify each as deterministic vs LLM, calculate the ratio. ≥ 80% deterministic = `scripts/` + thin wrapper, not a pure skill.
 
 Recommended plugin (install with `/install-plugin obra/superpowers`):
 
