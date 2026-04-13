@@ -1,7 +1,7 @@
 # PILOT.md — metadev-protocol
 
-**Date:** 2026-04-12
-**Phase:** Pre-launch — v1.1.0 shipped, preparing Phase 4 (launch)
+**Date:** 2026-04-13
+**Phase:** Pre-launch — v1.4.0 shipped, Phase 4 (launch) ready to execute
 
 ---
 
@@ -30,7 +30,15 @@ Solo developers starting AI-assisted Python projects lose hours to setup frictio
 
 ## Current state
 
-v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 added governance polish from 4-repo audit (honesty constraint, confidence gates, synthesis type, brand guide, demo script, banner). v1.1.0 adds skill discoverability mechanism (automatism #11 Rule of 3 + inverted-default trigger table) and full README rework (pixel-art banner, Before/After + Rails diagrams). Phase 4 (launch) in progress: outreach spec and post drafts ready, messaging system specified.
+v1.4.0 shipped. Full changelog:
+- **v1.0.0** — public release, universal scaffold, 7 skills, pre-commit hooks, CI
+- **v1.0.1** — governance polish (honesty constraint, confidence gates, synthesis type, banner, demo script)
+- **v1.1.0** — skill discoverability (trigger table, Rule of 3), README rework, /research, /vision, /audit-repo, tech-watch script
+- **v1.2.0** — /radar skill (5-source tech-watch pipeline, progressive KB), devil's-advocate agent, skill-vs-tool principle in GUIDELINES
+- **v1.3.0** — enable_server_auth_check param (optional GitHub Action blocking Claude-authored PRs), GUIDELINES commit authorship section fixed
+- **v1.4.0** — git history cleaned (Co-authored-by stripped), dual-stage authorship hook (pre-commit + commit-msg), OpenTimestamps proof anchored in Bitcoin
+
+Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution.
 
 ---
 
@@ -70,10 +78,12 @@ v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 added governance polish fro
 ### Phase 3 — Git hygiene (before public access)
 | # | Task | Status |
 |---|---|---|
-| 3.1 | Orphan branch → `v1.0.0` (clean break) | DEFERRED (final merge step) |
+| 3.1 | History cleanup — strip Co-authored-by, delete ghost branch | DONE (v1.4.0) |
 | 3.2 | Pre-commit hook: block `GIT_AUTHOR_NAME == Claude` | DONE |
 | 3.3 | CONTRIBUTORS.md | DONE |
 | 3.4 | README staleness re-check (pre-merge audit) | DONE |
+| 3.5 | Block Co-authored-by trailers (commit-msg hook) | DONE (v1.4.0) |
+| 3.6 | OpenTimestamps proof anchored in Bitcoin | DONE (v1.4.0) |
 
 ### Phase 4 — Launch
 | # | Task | Status |
@@ -108,11 +118,13 @@ v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 added governance polish fro
 | PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | DONE |
 | PM.4 | Multi-agent synthesis run — cross-pollinate ALL reference sources for emergent structural innovations (not feature-picking) | debate-2026-04-12 | PENDING |
 | PM.5 | Provenance sidecar convention (deferred from T1.7) | synthesis-2026-04-12 | PENDING |
-| PM.8 | `/radar` skill — automated tech-watch (script + thin skill, 5 tier-0 sources, progressive disclosure KB) | brainstorm-2026-04-13-radar-skill | DONE |
-| PM.9 | `devil's-advocate` agent — Rule of 3 auto-invoke, steelman + contest + expose | feedback_devils_advocate | DONE |
-| PM.10 | Skill vs tool principle — codified in GUIDELINES.md.jinja, applied retroactively at next touch | session-2026-04-13 | DONE |
-| PM.11 | Refactor `/research` under skill-vs-tool principle | session-2026-04-13 | PENDING |
-| PM.12 | Refactor `/audit-repo` under skill-vs-tool principle | session-2026-04-13 | PENDING |
+| PM.8 | `/radar` skill — automated tech-watch (script + thin skill, 5 tier-0 sources, progressive disclosure KB) | brainstorm-2026-04-13-radar-skill | DONE (v1.2.0) |
+| PM.9 | `devil's-advocate` agent — Rule of 3 auto-invoke, steelman + contest + expose | feedback_devils_advocate | DONE (v1.2.0) |
+| PM.10 | Skill vs tool principle — codified in GUIDELINES.md.jinja, applied retroactively at next touch | session-2026-04-13 | DONE (v1.2.0) |
+| PM.11 | Refactor `/research` under skill-vs-tool principle | session-2026-04-13 | PENDING — plan only, no brainstorm needed |
+| PM.12 | Refactor `/audit-repo` under skill-vs-tool principle | session-2026-04-13 | PENDING — plan only, no brainstorm needed |
+| PM.13 | enable_server_auth_check param + GitHub Action (commit author enforcement) | debate-2026-04-13 | DONE (v1.3.0) |
+| PM.14 | Multi-agent synthesis run — cross-pollinate all refs for emergent innovations | session-2026-04-13 | PENDING — brainstorm first |
 | PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration → reject. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Source: Agent-Reach audit session | session-2026-04-12 | DONE |
 | PM.7 | Skill/agent discoverability problem — the LLM doesn't proactively propose skills and agents enough. New users who don't know features exist won't get full value. Need to improve CLAUDE.md automatisms, onboarding, and/or skill suggestion triggers | session-2026-04-12 | DONE (v1.1.0 — automatism #11 + trigger table) |
 
