@@ -115,6 +115,7 @@ the whole point of dogfooding the template.
 | `/test` | skill | template code or scripts modified and no test run has happened yet | **Auto** (after impl) |
 | `/lint` | skill | before commit OR after touching >1 source file | **Auto** |
 | `/save-progress` | skill | end of session OR user says "stop", "pause", "on arrête" | **Propose** |
+| `/audit-repo` | skill | user shares a GitHub repo URL to analyze OR tech-watch output surfaced a new candidate | **Propose** |
 | `code-reviewer` | agent | ≥3 files touched in current plan, or a plan step just completed | **Auto** |
 | `security-auditor` | agent | changes to `.pre-commit`, `audit_public_safety.py`, secrets handling, CI workflows | **Propose** |
 | `devil's-advocate` | agent | 3 consecutive user agreements without friction (Rule of 3) | **Auto** |
