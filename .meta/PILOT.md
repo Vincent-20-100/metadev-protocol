@@ -108,6 +108,11 @@ v1.0.0 shipped (clean orphan branch, tagged). v1.0.1 added governance polish fro
 | PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | DONE |
 | PM.4 | Multi-agent synthesis run — cross-pollinate ALL reference sources for emergent structural innovations (not feature-picking) | debate-2026-04-12 | PENDING |
 | PM.5 | Provenance sidecar convention (deferred from T1.7) | synthesis-2026-04-12 | PENDING |
+| PM.8 | `/radar` skill — automated tech-watch (script + thin skill, 5 tier-0 sources, progressive disclosure KB) | brainstorm-2026-04-13-radar-skill | DONE |
+| PM.9 | `devil's-advocate` agent — Rule of 3 auto-invoke, steelman + contest + expose | feedback_devils_advocate | DONE |
+| PM.10 | Skill vs tool principle — codified in GUIDELINES.md.jinja, applied retroactively at next touch | session-2026-04-13 | DONE |
+| PM.11 | Refactor `/research` under skill-vs-tool principle | session-2026-04-13 | PENDING |
+| PM.12 | Refactor `/audit-repo` under skill-vs-tool principle | session-2026-04-13 | PENDING |
 | PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration → reject. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Source: Agent-Reach audit session | session-2026-04-12 | DONE |
 | PM.7 | Skill/agent discoverability problem — the LLM doesn't proactively propose skills and agents enough. New users who don't know features exist won't get full value. Need to improve CLAUDE.md automatisms, onboarding, and/or skill suggestion triggers | session-2026-04-12 | DONE (v1.1.0 — automatism #11 + trigger table) |
 
