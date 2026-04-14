@@ -325,6 +325,33 @@ class TestPreCommitConfig:
         ]
         assert "audit-public-safety-quick" in hook_ids
 
+    def test_skills_contract_hook_registered(self, generated_project: Path) -> None:
+        config = yaml.safe_load(
+            (generated_project / ".pre-commit-config.yaml").read_text()
+        )
+        hook_ids = [
+            hook["id"] for repo in config["repos"] for hook in repo.get("hooks", [])
+        ]
+        assert "check-skills-contract" in hook_ids
+
+    def test_skills_contract_script_present(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "check_skills_contract.py").is_file()
+
+    def test_skills_contract_passes_on_fresh_project(
+        self, generated_project: Path
+    ) -> None:
+        result = subprocess.run(
+            ["python", "scripts/check_skills_contract.py"],
+            cwd=generated_project,
+            capture_output=True,
+            text=True,
+        )
+        assert result.returncode == 0, (
+            f"check_skills_contract.py failed on a fresh generated project:\n"
+            f"stdout: {result.stdout}\n"
+            f"stderr: {result.stderr}"
+        )
+
     def test_meta_naming_hook_registered(self, generated_project: Path) -> None:
         config = yaml.safe_load(
             (generated_project / ".pre-commit-config.yaml").read_text()

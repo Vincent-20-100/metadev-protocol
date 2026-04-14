@@ -38,3 +38,9 @@ repos:
         entry: python scripts/audit_public_safety.py --mode=quick
         language: system
         pass_filenames: true
+      - id: check-skills-contract
+        name: Skills & agents trigger table ↔ filesystem contract
+        entry: python scripts/check_skills_contract.py
+        language: system
+        pass_filenames: false
+        always_run: true
