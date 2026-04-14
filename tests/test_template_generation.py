@@ -267,6 +267,12 @@ class TestSkills:
             skill_file = skills_dir / skill / "SKILL.md"
             assert skill_file.is_file(), f"{skill}/SKILL.md missing"
 
+    def test_research_has_output_schema(self, generated_project: Path) -> None:
+        schema = (
+            generated_project / ".claude" / "skills" / "research" / "output-schema.md"
+        )
+        assert schema.is_file(), "research/output-schema.md must be present"
+
 
 class TestRadarYAGNI:
     """Verify /radar doesn't pollute generated projects before first run."""
