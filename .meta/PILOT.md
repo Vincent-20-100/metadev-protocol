@@ -120,14 +120,14 @@ Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted
 | PM.3 | Tech watch script — scrape GitHub trending for claude-code/agentic/ai-coding/copier topics, feed `.meta/references/raw/` automatically. Script not skill (lightweight, cron-friendly). Connects to Nightshift vision | session-2026-04-12 | DONE |
 | PM.4 | Multi-agent synthesis run — cross-pollinate ALL reference sources for emergent structural innovations (not feature-picking) | debate-2026-04-12 | PENDING |
 | PM.5 | Provenance sidecar convention (deferred from T1.7) | synthesis-2026-04-12 | PENDING |
-| PM.8 | `/radar` skill — automated tech-watch (script + thin skill, 5 tier-0 sources, progressive disclosure KB) | brainstorm-2026-04-13-radar-skill | DONE (v1.2.0) |
+| PM.8 | `/radar` skill — automated tech-watch (script + thin skill, 5 tier-0 sources, progressive disclosure KB) | brainstorm-2026-04-13-radar-skill | DONE (v1.2.0) → ABSORBED into `/tech-watch` sweep mode (v1.6.0) |
 | PM.9 | `devil's-advocate` agent — Rule of 3 auto-invoke, steelman + contest + expose | feedback_devils_advocate | DONE (v1.2.0) |
 | PM.10 | Skill vs tool principle — codified in GUIDELINES.md.jinja, applied retroactively at next touch | session-2026-04-13 | DONE (v1.2.0) |
-| PM.11 | Refactor `/research` under skill-vs-tool principle | session-2026-04-13 | PENDING — plan only, no brainstorm needed |
-| PM.12 | Refactor `/audit-repo` under skill-vs-tool principle | session-2026-04-13 | PENDING — plan only, no brainstorm needed |
+| PM.11 | Refactor `/research` under skill-vs-tool principle | session-2026-04-13 | DONE (v1.5.0) |
+| PM.12 | Refactor `/audit-repo` under skill-vs-tool principle | session-2026-04-13 | SUPERSEDED by fusion into `/tech-watch` (v1.6.0) |
 | PM.13 | enable_server_auth_check param + GitHub Action (commit author enforcement) | debate-2026-04-13 | DONE (v1.3.0) |
-| PM.14 | Multi-agent synthesis run — cross-pollinate all refs for emergent innovations | session-2026-04-13 | PENDING — brainstorm first |
-| PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration → reject. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Source: Agent-Reach audit session | session-2026-04-12 | DONE |
+| PM.14 | Multi-agent synthesis run — cross-pollinate all refs for emergent innovations | session-2026-04-13 | DONE (v1.5.0) — `.meta/references/synthesis/emergent-patterns.md` |
+| PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration → reject. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Source: Agent-Reach audit session | session-2026-04-12 | DONE → ABSORBED into `/tech-watch` deep mode (v1.6.0) |
 | PM.7 | Skill/agent discoverability problem — the LLM doesn't proactively propose skills and agents enough. New users who don't know features exist won't get full value. Need to improve CLAUDE.md automatisms, onboarding, and/or skill suggestion triggers | session-2026-04-12 | DONE (v1.1.0 — automatism #11 + trigger table) |
 | PM.15 | **Deep audit + brainstorm on `JuliusBrussee/caveman`** — gold mine of patterns: multi-LLM native (CLAUDE.md + AGENTS.md + GEMINI.md side-by-side), multi-IDE plugin distribution (`.cursor/`, `.windsurf/`, `.clinerules/`, `.codex/`, `.claude-plugin/`), benchmarks/evals first-class (`benchmarks/run.py`, `evals/{llm_run,measure,plot}.py`, snapshots), commands in TOML format (`commands/*.toml`), statusline integration, install/uninstall hooks lifecycle. Full audit then brainstorm on what to integrate into metadev — potentially a major v2.0.0 direction if multi-LLM/multi-IDE support is retained | session-2026-04-14 | PENDING — high priority after v1.6.0 |
 
