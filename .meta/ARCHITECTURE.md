@@ -132,10 +132,10 @@ in a single command, conforms to `pyproject.toml` PEP 517/518 standard.
 
 ## ADR-006: Skills T1 — workflow automation
 
-**Status:** Accepted
+**Status:** SUPERSEDED by ADR-010 (v1.6.0 skills architecture)
 **Date:** 2026-04-02
 
-**Decision:** 5 skills shipped with every generated project.
+**Decision (historical):** 5 skills shipped with every generated project.
 
 | Skill | Purpose | Output |
 |-------|---------|--------|
@@ -146,6 +146,23 @@ in a single command, conforms to `pyproject.toml` PEP 517/518 standard.
 | `/test` | `pytest` runner with optional arguments | Terminal report |
 
 **Principle:** Skills are the right place for dev workflow. Not CLAUDE.md (too short, always loaded), not hooks (too rigid). Skills are loaded on demand, shared via git, composable.
+
+The v1.6.0 inventory (10 skills + 5 agents, dual-maintained, mechanically contract-checked) is described in ADR-010.
+
+---
+
+## ADR-010: Skills & agents architecture v1.6.0
+
+**Status:** Accepted
+**Date:** 2026-04-15
+**Full text:** `.meta/decisions/adr-010-skills-architecture.md`
+
+**Decision summary:** ship 10 skills and 5 agents, dual-maintained meta ↔ template, enforced by `scripts/check_skills_contract.py` in pre-commit. Fuse `/radar` + `/audit-repo` into `/tech-watch` (sweep + deep modes). Promote 4 previously-ghost agents (`code-reviewer`, `test-engineer`, `security-auditor`, `data-analyst`) to real files, additive to the `superpowers` plugin. Thin `/test` and `/save-progress` under the skill-vs-tool principle.
+
+| Skills (10) | Agents (5, local) |
+|---|---|
+| brainstorm, spec, debate, plan, orchestrate | devil's-advocate |
+| research, vision, tech-watch, test, save-progress | code-reviewer, test-engineer, security-auditor, data-analyst |
 
 ---
 

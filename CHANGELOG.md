@@ -6,6 +6,47 @@ This project uses [semantic versioning](https://semver.org/).
 
 ---
 
+## [v1.6.0] — 2026-04-15 — Skills architecture overhaul
+
+Structural release. ADR-010 supersedes ADR-006.
+
+### Added
+- **`scripts/check_skills_contract.py`** — pre-commit hook asserting every trigger-table row maps to a real artifact. Default mode checks template-only; `--strict` also enforces meta ↔ template full parity.
+- **Meta `.claude/settings.json`** — committed session settings for the meta-repo. Dogfooding is now explicit, not aspirational.
+- **Meta `.meta/GUIDELINES.md`, `.claude/agents/`, `.claude/rules/`** — meta now mirrors the template's full `.claude/` tree.
+- **4 new local agents shipped in both meta and template:**
+  - `code-reviewer` — post-implementation review, tiered CRITICAL/WARN/NIT, distinct from devils-advocate
+  - `test-engineer` — generative test author, not a runner
+  - `security-auditor` — OWASP sweep scoped to touched code
+  - `data-analyst` — audits statistical claims, pipelines, metrics
+- **`/tech-watch` unified skill** — fuses `/radar` (sweep) and `/audit-repo` (deep) into a single skill with a shared card schema at `.meta/references/research/`.
+- **`scripts/tech_watch/` package** (dual meta + template) — `sweep/` submodule (ex-radar) and `deep.py` module (ex-audit_repo), dispatched from `__main__.py` based on whether a URL is passed.
+- **`scripts/save_progress_preflight.py`** — deterministic 5-check block for `/save-progress`, replacing inline skill work.
+- **Tests:** `TestMetaParity` (skills, agents, rules, settings, guidelines), `TestAgents`, `TestTechWatchYAGNI`.
+- **ADR-010** — `.meta/decisions/adr-010-skills-architecture.md`.
+
+### Changed
+- **Trigger tables (meta + template) rewritten:**
+  - 4 ghost agents that previously advertised unshipped functionality are now real and invocable
+  - `/radar` and `/audit-repo` rows collapsed into a single `/tech-watch` row
+- **Superpowers framing** — the "Recommended plugin" section now states explicitly that the 8 local workflow skills are fallbacks (work out-of-the-box) and that superpowers ships superior versions; the 4 local agents are additive, not fallbacks.
+- **`/test` and `/save-progress`** thinned under the skill-vs-tool filter.
+- **ADR-006 superseded** by ADR-010 (v1.6.0 skills inventory: 10 skills + 5 agents, dual-maintained).
+
+### Removed
+- `/radar` skill (absorbed into `/tech-watch` sweep mode) and `template/scripts/radar/` package.
+- `/audit-repo` skill (absorbed into `/tech-watch` deep mode) and `scripts/audit_repo/` (meta).
+- `scripts/tech_watch.py` — legacy v1.0 orphan, superseded by the new package at the same directory name.
+
+### Migration notes (v1.5.0 → v1.6.0 via `copier update`)
+- `/radar` invocations become `/tech-watch` (no args = sweep, same behavior).
+- `/audit-repo <url>` becomes `/tech-watch <url>` (deep mode).
+- Card output path is unchanged: `.meta/references/research/`.
+- `[project.optional-dependencies] radar` renamed to `tech-watch` in `pyproject.toml`.
+- 4 new agents appear under `.claude/agents/` — nothing to migrate.
+
+---
+
 ## [v1.2.0] — 2026-04-13 — Research skill, vision skill, audit-repo skill, tech watch, prose absorption
 
 ### Added

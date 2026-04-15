@@ -20,7 +20,7 @@ Solo developers starting AI-assisted Python projects lose hours to setup frictio
 ### V1 scope
 - Must: `copier copy` generates a fully configured Python project (CLAUDE.md + .meta/ + skills + hooks + pre-commit)
 - Must: versioned semver tags enable `copier update` to propagate improvements to existing projects
-- Should: 8+ skills covering the full dev loop (brainstorm → plan → ship)
+- Should: 10 skills covering the full dev loop (brainstorm → plan → ship), plus 5 local agents
 - Won't (v1): multi-language support, IDE plugins, hosted registry
 
 ### North star metric
@@ -30,13 +30,15 @@ Solo developers starting AI-assisted Python projects lose hours to setup frictio
 
 ## Current state
 
-v1.4.0 shipped. Full changelog:
+v1.6.0 shipped. Full changelog:
 - **v1.0.0** — public release, universal scaffold, 7 skills, pre-commit hooks, CI
 - **v1.0.1** — governance polish (honesty constraint, confidence gates, synthesis type, banner, demo script)
 - **v1.1.0** — skill discoverability (trigger table, Rule of 3), README rework, /research, /vision, /audit-repo, tech-watch script
 - **v1.2.0** — /radar skill (5-source tech-watch pipeline, progressive KB), devil's-advocate agent, skill-vs-tool principle in GUIDELINES
 - **v1.3.0** — enable_server_auth_check param (optional GitHub Action blocking Claude-authored PRs), GUIDELINES commit authorship section fixed
 - **v1.4.0** — git history cleaned (Co-authored-by stripped), dual-stage authorship hook (pre-commit + commit-msg), OpenTimestamps proof anchored in Bitcoin
+- **v1.5.0** — /research and /audit-repo thinned under skill-vs-tool principle, multi-agent synthesis run (emergent-patterns.md), skills contract script v1
+- **v1.6.0** — skills architecture overhaul (ADR-010): ghost agents deleted then re-shipped as real files (code-reviewer, test-engineer, security-auditor, data-analyst), meta ↔ template full parity enforced, /radar + /audit-repo fused into /tech-watch (sweep + deep), /test and /save-progress thinned
 
 Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution.
 

@@ -146,3 +146,17 @@ One template per language with universal folders is more flexible and maintainab
 - Temporary generation scripts → always .meta/scratch, never scripts/
 
 **Status:** Brainstorm started, full session needed to finalize. See `.meta/scratch/adr-009-brainstorm.md`.
+
+---
+
+## 2026-04-15 — ADR-010: Skills & agents architecture v1.6.0
+
+**Decision:** Ship 10 skills and 5 agents, dual-maintained meta ↔ template, enforced mechanically by `scripts/check_skills_contract.py` in pre-commit. Fuse `/radar` + `/audit-repo` into `/tech-watch` (sweep + deep modes, shared card schema). Promote 4 ghost agents (`code-reviewer`, `test-engineer`, `security-auditor`, `data-analyst`) to real files, additive to the `superpowers` plugin. Thin `/test` and `/save-progress` under the skill-vs-tool principle.
+
+**Context:** Pre-ship audit (PM.15) found three defects: ghost agent rows referencing non-existent files, fake dogfooding (meta `.claude/` was a subset of template), and ambiguous surface (`/radar` vs `/audit-repo` competing in the slash palette).
+
+**Supersedes:** ADR-006 (v1.0 skill inventory).
+
+**Rejected:** keeping `/radar` and `/audit-repo` separate (rejected — "orthogonal depth axis" claim contradicted by fused card format); deleting the 4 agents (rejected — they cover real workflows devils-advocate does not); shipping agents template-only (rejected — asymmetric meta means the template never gets real use by its own author).
+
+**Full text:** `.meta/decisions/adr-010-skills-architecture.md`

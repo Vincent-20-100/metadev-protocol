@@ -72,7 +72,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 
 - **11 automatisms** — context loading at session start, mandatory plan before any edit, architecture sync, session handoff, Rule of 3 anti-consensus challenge. Hard-wired in `CLAUDE.md`, they fire without prompting.
 - **9 rules** — the non-negotiable contract between you and the AI. Few hard rules that are always followed beat many soft rules that are sometimes ignored.
-- **10 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/research`, `/vision`, `/test`, `/lint`, `/save-progress`. Reusable across every project you generate.
+- **10 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/research`, `/vision`, `/tech-watch`, `/test`, `/save-progress`. Reusable across every project you generate.
 - **5 agent personas** — code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate. Defined in `AGENTS.md`, invoked on demand.
 - **Hooks over instructions** — every Python file is auto-linted on save (ruff PostToolUse hook), dangerous operations are blocked or require confirmation, co-authored-by trailers suppressed natively.
 - **Session continuity** — `PILOT.md` (project dashboard) + `SESSION-CONTEXT.md` (living context rewritten each session). Claude remembers what you decided three weeks ago.
@@ -85,7 +85,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 
 ## The Toolkit
 
-Every generated project ships with 10 skills, 5 agent personas, and 3 guardrail scripts. Skills and agents are invoked by name; scripts run as pre-commit hooks and CI steps.
+Every generated project ships with 10 skills, 5 agent personas, and 4 guardrail scripts. Skills and agents are invoked by name; scripts run as pre-commit hooks and CI steps.
 
 ### Skills — `/command` in Claude Code
 
@@ -98,9 +98,9 @@ Every generated project ships with 10 skills, 5 agent personas, and 3 guardrail 
 | `/orchestrate` | Multi-step objective across phases | Session orchestrator with dependency tracking and phase transitions |
 | `/research` | Question needs external facts or recent state-of-the-art | WebSearch + WebFetch + MCP, 8-call soft budget, structured output to `.meta/references/raw/` |
 | `/vision` | Vision section empty or product framing unclear | Guided 4-question dialogue → fills Problem / Target user / V1 scope / North star in PILOT.md |
+| `/tech-watch` | Weekly veille or ad-hoc deep analysis of a specific repo | Sweep mode: fetches emerging repos/articles near your themes into `.meta/references/research/`. Deep mode: `/tech-watch <url>` produces a tiered structural audit of one repo |
 | `/test` | After implementation | Runs `pytest` with optional arguments, reports failures |
-| `/lint` | Before commit or after touching >1 file | `ruff check` + `format` on the whole project |
-| `/save-progress` | End of session | Pre-commit checklist, updates `PILOT.md`, rewrites `SESSION-CONTEXT.md` |
+| `/save-progress` | End of session | Pre-commit checklist (auto-extracted to `scripts/save_progress_preflight.py`), updates `PILOT.md`, rewrites `SESSION-CONTEXT.md` |
 
 ### Agent personas — invoked on demand via `Task` tool
 
@@ -119,6 +119,7 @@ Every generated project ships with 10 skills, 5 agent personas, and 3 guardrail 
 | `audit_public_safety.py` | pre-commit hook + 2 GitHub Actions | 40+ secret regex patterns, sensitive files (`.env`, `id_rsa`, etc.), `.gitignore` coverage gaps |
 | `check_git_author.py` | pre-commit hook | Commits authored as `Claude` / `Anthropic` / co-authored-by trailers |
 | `check_meta_naming.py` | pre-commit hook | `.meta/active/` and `.meta/archive/` files that violate the `<type>-<YYYY-MM-DD>-<slug>.md` convention |
+| `check_skills_contract.py` | pre-commit hook | Trigger-table rows that don't map to real skill or agent files on disk |
 
 ### Just the skills, no template
 
