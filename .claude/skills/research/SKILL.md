@@ -7,7 +7,7 @@ description: External research with WebSearch + WebFetch + MCP — structured ou
 
 Gather structured external research on a question and write findings to
 `.meta/references/raw/`. Orthogonal to `/brainstorm` (internal ideation) and
-`/audit-repo` (GitHub repo deep dives).
+`/tech-watch` (GitHub repo deep dives).
 
 **When to use:** the answer depends on facts outside your training data —
 recent libraries, competitor tools, emerging patterns, state-of-the-art, or
@@ -60,7 +60,7 @@ following `output-schema.md` (same directory as this SKILL.md). Every field
 in the schema is mandatory.
 
 Then propose one next step: `/brainstorm` (decision needed), `/spec` (scope
-clear), `/audit-repo` (specific repo surfaced), or nothing (self-contained).
+clear), `/tech-watch` (specific repo surfaced), or nothing (self-contained).
 
 ---
 

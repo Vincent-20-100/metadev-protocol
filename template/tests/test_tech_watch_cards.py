@@ -1,11 +1,15 @@
-"""Tests for scripts.radar.cards — card write, mention append, slugify."""
+"""Tests for scripts.tech_watch.sweep.cards — card write, mention append, slugify."""
 
 from datetime import date
 from pathlib import Path
 
 
-from scripts.radar.cards import append_mention, find_card_by_url, write_new_card
-from scripts.radar.sources.base import Item
+from scripts.tech_watch.sweep.cards import (
+    append_mention,
+    find_card_by_url,
+    write_new_card,
+)
+from scripts.tech_watch.sweep.sources.base import Item
 
 
 def _make_item(

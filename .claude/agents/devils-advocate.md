@@ -75,4 +75,4 @@ This question should target the riskiest assumption you found. If the user's ans
 A good challenge is specific, falsifiable, and uncomfortable. It points at something real that could go wrong — not a theoretical edge case nobody cares about, but a practical failure mode that would matter if it happened.
 
 Bad: "What if requirements change?" (too vague, applies to everything)
-Good: "This assumes you run `/radar` weekly, but the scoring logic has no temporal decay — items from 3 months ago will rank equally with yesterday's finds. Is that actually acceptable?"
+Good: "This assumes you run `/tech-watch` weekly, but the scoring logic has no temporal decay — items from 3 months ago will rank equally with yesterday's finds. Is that actually acceptable?"

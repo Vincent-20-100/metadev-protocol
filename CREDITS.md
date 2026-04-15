@@ -24,7 +24,7 @@ Built with **Claude** (Anthropic) as AI pair. See [CONTRIBUTORS.md](CONTRIBUTORS
 
 | Project | Author | License | What was vendored |
 |---------|--------|---------|-------------------|
-| [Agent-Reach](https://github.com/Panniantong/Agent-Reach) | Panniantong | MIT | `Channel` ABC → `Source` ABC (renamed), `channels/github.py` and `channels/rss.py` structure patterns. Vendored into `template/scripts/radar/sources/` with attribution headers. |
+| [Agent-Reach](https://github.com/Panniantong/Agent-Reach) | Panniantong | MIT | `Channel` ABC → `Source` ABC (renamed), `channels/github.py` and `channels/rss.py` structure patterns. Vendored into `template/scripts/tech_watch/sweep/sources/` with attribution headers. |
 
 ## Tools
 

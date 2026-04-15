@@ -1,11 +1,11 @@
-"""Tests for scripts.radar.themes — scoring, filtering, yaml I/O."""
+"""Tests for scripts.tech_watch.sweep.themes — scoring, filtering, yaml I/O."""
 
 from datetime import date
 from pathlib import Path
 
 
-from scripts.radar.sources.base import Item
-from scripts.radar.themes import (
+from scripts.tech_watch.sweep.sources.base import Item
+from scripts.tech_watch.sweep.themes import (
     Theme,
     ThemesConfig,
     filter_items,

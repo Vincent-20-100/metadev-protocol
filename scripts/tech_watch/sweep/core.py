@@ -51,7 +51,7 @@ def run(
     mode: str = "normal",
     project_dir: Path | None = None,
 ) -> RunReport:
-    """Main /radar run: fetch → dedup → score → rank → write → index.
+    """Main /tech-watch run: fetch → dedup → score → rank → write → index.
 
     Args:
         mode: "normal" for top-K veille, "deep" for wider budgets.

@@ -196,4 +196,4 @@ Template versions use semver tags (`v1.0.0`, `v1.1.0`, …). External projects d
 
 **Phase 4 — Public launch (in progress).** Beta outreach to curated contacts, draft posts (LinkedIn, X, Reddit, HN), demo GIF, public launch sequence.
 
-**Post-merge backlog.** `/audit-repo` skill for cross-pollination, tech watch script, multi-agent synthesis run across reference sources, provenance sidecar convention. See `.meta/PILOT.md` for live status.
+**Post-merge backlog.** `/tech-watch` skill for cross-pollination, tech watch script, multi-agent synthesis run across reference sources, provenance sidecar convention. See `.meta/PILOT.md` for live status.

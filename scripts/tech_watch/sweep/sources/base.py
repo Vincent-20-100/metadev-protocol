@@ -2,7 +2,7 @@
 # Original: https://github.com/Panniantong/Agent-Reach
 # Copyright (c) Panniantong
 # Modifications: renamed Channel → Source, added Item dataclass,
-# adapted fetch signature for metadev-protocol /radar skill.
+# adapted fetch signature for metadev-protocol /tech-watch skill.
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ class Item:
 
 
 class Source(ABC):
-    """Abstract base class for all /radar data sources.
+    """Abstract base class for all /tech-watch data sources.
 
     Subclasses implement fetch() to return normalized Items.
     The tier field signals the setup complexity (0 = zero config).

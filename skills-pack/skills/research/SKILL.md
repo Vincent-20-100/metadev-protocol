@@ -7,7 +7,7 @@ description: External research with WebSearch + WebFetch + MCP — structured ou
 
 Gather structured external research on a question and write the findings to
 `.meta/references/raw/`. Clean orthogonality with `/brainstorm` (internal
-ideation) and `/audit-repo` (GitHub repo deep dives).
+ideation) and `/tech-watch` (GitHub repo deep dives).
 
 **When to use:** the answer depends on facts outside your training data —
 recent libraries, competitor tools, emerging patterns, state-of-the-art, or
@@ -87,7 +87,7 @@ following the locked schema below.
 Based on findings, propose:
 - `/brainstorm` — if a decision needs to be made
 - `/spec` — if the scope is clear enough to formalize
-- `/audit-repo` — if a specific repo surfaced and deserves a deep dive
+- `/tech-watch` — if a specific repo surfaced and deserves a deep dive
 - Nothing — if research is self-contained
 
 ---

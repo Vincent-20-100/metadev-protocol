@@ -1,9 +1,9 @@
-"""Tests for scripts.radar.dedup — URL canonicalization and known-check."""
+"""Tests for scripts.tech_watch.sweep.dedup — URL canonicalization and known-check."""
 
 from pathlib import Path
 
 
-from scripts.radar.dedup import canonicalize, is_known
+from scripts.tech_watch.sweep.dedup import canonicalize, is_known
 
 
 class TestCanonicalizeGitHub:

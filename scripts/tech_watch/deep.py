@@ -1,16 +1,12 @@
-"""Clone + fingerprint + tree + cleanup for /audit-repo skill.
-
-Usage:
-    uv run python -m scripts.audit_repo <url> [--angle <hint>]
+"""Deep mode for /tech-watch: clone + fingerprint + tree for one repo.
 
 Emits a single JSON document on stdout. The LLM consumes this JSON and writes
-the tiered audit report. All the deterministic work lives here; analysis and
+the tiered audit card. All the deterministic work lives here; analysis and
 narrative stay with the skill.
 """
 
 from __future__ import annotations
 
-import argparse
 import json
 import re
 import shutil
@@ -187,27 +183,20 @@ def fingerprint_repo(root: Path, url: str) -> dict[str, object]:
     return fp
 
 
-def main() -> int:
-    parser = argparse.ArgumentParser(
-        prog="scripts.audit_repo",
-        description="Clone + fingerprint a GitHub repo for /audit-repo.",
-    )
-    parser.add_argument("url", help="GitHub repository URL")
-    parser.add_argument("--angle", default="general", help="Optional analysis angle")
-    args = parser.parse_args()
-
-    slug = slugify(args.url)
-    tmp_root = Path(tempfile.gettempdir()) / f"audit-{slug}"
+def run_deep(url: str, angle: str = "general") -> int:
+    slug = slugify(url)
+    tmp_root = Path(tempfile.gettempdir()) / f"tech-watch-deep-{slug}"
     if tmp_root.exists():
         shutil.rmtree(tmp_root)
 
     try:
-        clone(args.url, tmp_root)
+        clone(url, tmp_root)
     except subprocess.CalledProcessError as exc:
         payload = {
+            "mode": "deep",
             "slug": slug,
-            "url": args.url,
-            "angle": args.angle,
+            "url": url,
+            "angle": angle,
             "error": "clone_failed",
             "stderr": (exc.stderr or "").strip(),
         }
@@ -216,22 +205,19 @@ def main() -> int:
         return 1
 
     try:
-        fingerprint = fingerprint_repo(tmp_root, args.url)
+        fingerprint = fingerprint_repo(tmp_root, url)
         tree_output = build_tree(tmp_root, max_depth=2)
     finally:
         shutil.rmtree(tmp_root, ignore_errors=True)
 
     payload = {
+        "mode": "deep",
         "slug": slug,
-        "url": args.url,
-        "angle": args.angle,
+        "url": url,
+        "angle": angle,
         "fingerprint": fingerprint,
         "tree_output": tree_output,
     }
     json.dump(payload, sys.stdout, indent=2)
     sys.stdout.write("\n")
     return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

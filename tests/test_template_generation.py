@@ -251,7 +251,7 @@ class TestSkills:
         "vision",
         "test",
         "save-progress",
-        "radar",
+        "tech-watch",
     ]
 
     def test_all_skills_present(self, generated_project: Path) -> None:
@@ -295,14 +295,14 @@ class TestAgents:
             assert agent in present, f"agent '{agent}' missing from generated project"
 
 
-class TestRadarYAGNI:
-    """Verify /radar doesn't pollute generated projects before first run."""
+class TestTechWatchYAGNI:
+    """Verify /tech-watch doesn't pollute generated projects before first run."""
 
     def test_research_dir_absent_at_generation(self, generated_project: Path) -> None:
         research_dir = generated_project / ".meta" / "references" / "research"
         assert not research_dir.exists(), (
             "research/ must not exist at generation time — "
-            "it is created by /radar at first run only"
+            "it is created by /tech-watch at first run only"
         )
 
     def test_research_themes_absent_at_generation(
@@ -311,21 +311,31 @@ class TestRadarYAGNI:
         themes_file = generated_project / ".meta" / "research-themes.yaml"
         assert not themes_file.exists(), (
             "research-themes.yaml must not exist at generation time — "
-            "it is created by /radar at first run only"
+            "it is created by /tech-watch at first run only"
         )
 
-    def test_radar_script_present(self, generated_project: Path) -> None:
-        assert (generated_project / "scripts" / "radar" / "__main__.py").is_file()
+    def test_tech_watch_script_present(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "tech_watch" / "__main__.py").is_file()
 
-    def test_radar_optional_dep_declared(self, generated_project: Path) -> None:
+    def test_tech_watch_sweep_package_present(self, generated_project: Path) -> None:
+        assert (
+            generated_project / "scripts" / "tech_watch" / "sweep" / "core.py"
+        ).is_file()
+
+    def test_tech_watch_deep_module_present(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "tech_watch" / "deep.py").is_file()
+
+    def test_tech_watch_optional_dep_declared(self, generated_project: Path) -> None:
         import tomllib
 
         pyproject = tomllib.loads((generated_project / "pyproject.toml").read_text())
         optional_deps = pyproject.get("project", {}).get("optional-dependencies", {})
-        assert "radar" in optional_deps, "radar optional dep group must be declared"
-        radar_deps = optional_deps["radar"]
-        assert any("feedparser" in d for d in radar_deps)
-        assert any("huggingface_hub" in d for d in radar_deps)
+        assert "tech-watch" in optional_deps, (
+            "tech-watch optional dep group must be declared"
+        )
+        deps = optional_deps["tech-watch"]
+        assert any("feedparser" in d for d in deps)
+        assert any("huggingface_hub" in d for d in deps)
 
 
 class TestPreCommitConfig:
@@ -390,9 +400,9 @@ class TestMetaParity:
     repo itself, not a generated project.
     """
 
-    # Transitional whitelist — cleared in C5 (tech-watch fusion).
-    META_ONLY_SKILLS = {"audit-repo"}
-    TEMPLATE_ONLY_SKILLS = {"radar"}
+    # Full parity post-C5 (tech-watch fusion). No exceptions.
+    META_ONLY_SKILLS: set[str] = set()
+    TEMPLATE_ONLY_SKILLS: set[str] = set()
 
     def test_meta_skills_mirror_template(self) -> None:
         tpl = {

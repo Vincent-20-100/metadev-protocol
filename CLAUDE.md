@@ -114,7 +114,7 @@ the whole point of dogfooding the template.
 | `/orchestrate` | skill | multi-step objective spanning spec + plan + implementation across phases | **Propose** |
 | `/research` | skill | question needs external facts, recent state-of-the-art, or competitive info | **Propose** |
 | `/vision` | skill | Vision section is empty OR user asks about product framing / target user / scope | **Propose** |
-| `/audit-repo` | skill | user shares a GitHub repo URL to analyze OR tech-watch output surfaced a new candidate | **Propose** |
+| `/tech-watch` | skill | sweep mode: periodic tech veille across themes; deep mode: user shares a GitHub repo URL to analyze | **Propose** |
 | `/test` | skill | template code or scripts modified and no test run has happened yet | **Auto** (after impl) |
 | `/save-progress` | skill | end of session OR user says "stop", "pause", "on arrête" | **Propose** |
 | `devil's-advocate` | agent | 3 consecutive user agreements without friction (Rule of 3) | **Auto** |

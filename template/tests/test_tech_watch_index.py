@@ -1,11 +1,11 @@
-"""Tests for scripts.radar.index — INDEX.md generation."""
+"""Tests for scripts.tech_watch.sweep.index — INDEX.md generation."""
 
 from datetime import date
 from pathlib import Path
 
-from scripts.radar.cards import write_new_card
-from scripts.radar.index import regenerate_index
-from scripts.radar.sources.base import Item
+from scripts.tech_watch.sweep.cards import write_new_card
+from scripts.tech_watch.sweep.index import regenerate_index
+from scripts.tech_watch.sweep.sources.base import Item
 
 
 def _item(title: str, source: str = "github", score: float = 100.0) -> Item:
@@ -45,7 +45,7 @@ class TestRegenerateIndex:
         assert "## data-science" in content
 
     def test_index_sorted_by_mentions_desc(self, tmp_path: Path):
-        from scripts.radar.cards import append_mention
+        from scripts.tech_watch.sweep.cards import append_mention
 
         research_dir = tmp_path / "research"
         item_a = _item("popular-repo")
