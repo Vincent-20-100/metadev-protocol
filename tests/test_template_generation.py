@@ -274,6 +274,27 @@ class TestSkills:
         assert schema.is_file(), "research/output-schema.md must be present"
 
 
+class TestAgents:
+    """Verify that expected agents are present in the generated project."""
+
+    EXPECTED_AGENTS = [
+        "devils-advocate",
+        "code-reviewer",
+        "test-engineer",
+        "security-auditor",
+        "data-analyst",
+    ]
+
+    def test_all_agents_present(self, generated_project: Path) -> None:
+        agents_dir = generated_project / ".claude" / "agents"
+        assert agents_dir.is_dir(), "agents directory must exist"
+        present = {
+            p.stem for p in agents_dir.iterdir() if p.is_file() and p.suffix == ".md"
+        }
+        for agent in self.EXPECTED_AGENTS:
+            assert agent in present, f"agent '{agent}' missing from generated project"
+
+
 class TestRadarYAGNI:
     """Verify /radar doesn't pollute generated projects before first run."""
 

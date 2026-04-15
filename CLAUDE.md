@@ -118,6 +118,10 @@ the whole point of dogfooding the template.
 | `/test` | skill | template code or scripts modified and no test run has happened yet | **Auto** (after impl) |
 | `/save-progress` | skill | end of session OR user says "stop", "pause", "on arrête" | **Propose** |
 | `devil's-advocate` | agent | 3 consecutive user agreements without friction (Rule of 3) | **Auto** |
+| `code-reviewer` | agent | ≥3 files touched in current plan, or a plan step just completed | **Auto** |
+| `test-engineer` | agent | new module, new public API, or missing coverage on touched code | **Propose** |
+| `security-auditor` | agent | auth, secrets, input validation, crypto, network boundaries, file uploads | **Propose** |
+| `data-analyst` | agent | pipeline, ETL, metric computation, statistical claim, or dataset quality question | **Propose** |
 
 **Auto** = invoke without asking (announce it in one line). **Propose** = ask first,
 explaining why this tool applies. Never stay silent when a trigger matches.
@@ -126,6 +130,8 @@ explaining why this tool applies. Never stay silent when a trigger matches.
 friction. At 3 in a row, invoke the devil's-advocate agent before continuing. The
 signal is countable (agreements, not topics) and the user will never self-request a
 challenge — that's why it must fire automatically.
+
+**Superpowers fallback relationship:** the local skills (`brainstorm`, `plan`, `spec`, `debate`, `orchestrate`, `research`, `test`, `save-progress`) are fallbacks — they work out-of-the-box. The `superpowers` plugin ships superior versions of the same workflows (`superpowers:brainstorming`, `superpowers:writing-plans`, `superpowers:executing-plans`, etc.); when installed, prefer its versions. The 4 local agents (`code-reviewer`, `test-engineer`, `security-auditor`, `data-analyst`) are additive, not fallbacks — they stay local even with superpowers installed.
 
 ## Stack
 
