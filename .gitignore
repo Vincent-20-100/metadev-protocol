@@ -35,3 +35,6 @@ node_modules/
 
 # Tech watch dedup cache
 .meta/references/raw/.tech-watch-seen.json
+
+# scratch — ephemeral session notes (equivalent to drafts/)
+.meta/scratch/
