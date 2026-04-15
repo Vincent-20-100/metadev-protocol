@@ -224,11 +224,11 @@ class TestMetaVisibility:
         assert (generated_project / ".meta" / "PILOT.md").is_file()
 
     def test_pilot_has_vision_section(self, generated_project: Path) -> None:
-        pilot = (generated_project / ".meta" / "PILOT.md").read_text()
+        pilot = (generated_project / ".meta" / "PILOT.md").read_text(encoding="utf-8")
         assert "## Vision" in pilot
 
     def test_pilot_vision_has_four_subsections(self, generated_project: Path) -> None:
-        pilot = (generated_project / ".meta" / "PILOT.md").read_text()
+        pilot = (generated_project / ".meta" / "PILOT.md").read_text(encoding="utf-8")
         for subsection in (
             "### Problem",
             "### Target user",
