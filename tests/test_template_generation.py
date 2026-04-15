@@ -360,3 +360,57 @@ class TestPreCommitConfig:
             hook["id"] for repo in config["repos"] for hook in repo.get("hooks", [])
         ]
         assert "check-meta-naming" in hook_ids
+
+
+class TestMetaParity:
+    """Assert meta ↔ template symmetry for .claude/ and .meta/ trees.
+
+    Runs without the generated_project fixture — checks the metadev-protocol
+    repo itself, not a generated project.
+    """
+
+    # Transitional whitelist — cleared in C5 (tech-watch fusion).
+    META_ONLY_SKILLS = {"audit-repo"}
+    TEMPLATE_ONLY_SKILLS = {"radar"}
+
+    def test_meta_skills_mirror_template(self) -> None:
+        tpl = {
+            p.name
+            for p in (ROOT / "template" / ".claude" / "skills").iterdir()
+            if p.is_dir()
+        }
+        meta = {p.name for p in (ROOT / ".claude" / "skills").iterdir() if p.is_dir()}
+        assert (tpl - self.TEMPLATE_ONLY_SKILLS) - meta == set(), (
+            f"template-only skills not mirrored in meta: {(tpl - self.TEMPLATE_ONLY_SKILLS) - meta}"
+        )
+        assert (meta - self.META_ONLY_SKILLS) - tpl == set(), (
+            f"meta-only skills not mirrored in template: {(meta - self.META_ONLY_SKILLS) - tpl}"
+        )
+
+    def test_meta_agents_mirror_template(self) -> None:
+        tpl = {
+            p.stem
+            for p in (ROOT / "template" / ".claude" / "agents").iterdir()
+            if p.suffix == ".md"
+        }
+        meta = {
+            p.stem for p in (ROOT / ".claude" / "agents").iterdir() if p.suffix == ".md"
+        }
+        assert tpl == meta, f"agent parity mismatch: tpl={tpl} meta={meta}"
+
+    def test_meta_rules_mirror_template(self) -> None:
+        tpl = {
+            p.name
+            for p in (ROOT / "template" / ".claude" / "rules").iterdir()
+            if p.suffix == ".md"
+        }
+        meta = {
+            p.name for p in (ROOT / ".claude" / "rules").iterdir() if p.suffix == ".md"
+        }
+        assert tpl == meta, f"rules parity mismatch: tpl={tpl} meta={meta}"
+
+    def test_meta_has_settings_json(self) -> None:
+        assert (ROOT / ".claude" / "settings.json").is_file()
+
+    def test_meta_has_guidelines(self) -> None:
+        assert (ROOT / ".meta" / "GUIDELINES.md").is_file()

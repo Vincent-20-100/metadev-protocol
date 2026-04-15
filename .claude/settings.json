@@ -1,0 +1,60 @@
+{
+  "attribution": {
+    "commit": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read",
+      "Glob",
+      "Grep",
+      "TodoWrite",
+      "Edit(*)",
+      "Write(*)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "ask": [],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(sudo *)",
+      "Bash(dd *)",
+      "Bash(mkfs *)",
+      "Bash(chmod -R 777 *)",
+      "Bash(curl * | sh)",
+      "Bash(wget * | sh)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Edit(.git/**)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.pypirc)",
+      "Read(~/.netrc)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | xargs -I {} sh -c 'case \"{}\" in *.py) uv run ruff format \"{}\" 2>/dev/null && uv run ruff check \"{}\" --fix 2>/dev/null;; esac; exit 0'"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "grep -q 'first_session: true' .meta/PILOT.md 2>/dev/null && echo '>>> FIRST SESSION DETECTED \u2014 Welcome! Read PILOT.md for project overview and available skills.' || cat .meta/PILOT.md 2>/dev/null | head -30 || true"
+          }
+        ]
+      }
+    ]
+  }
+}
