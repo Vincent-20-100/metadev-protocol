@@ -15,7 +15,7 @@ PM.15 audited 7 repos to inform metadev-protocol's next structural direction. Th
 2. **Claude Code IS the agent harness** — deepagents demonstrated that building a custom runtime harness is unnecessary; the right move is reframing metadev's existing skills + agents using the middleware-stack vocabulary (todos → fs → subagents → summarization → permissions-last).
 3. **Benchmarks/evals first-class by convergence** — 3 sources (caveman, gstack, ECC) each ship different but complementary eval harnesses. The minimal viable version is a deterministic scorecard (ECC pattern).
 
-Additionally, the EgoVault Knowledge Compiler architecture (3-tier: raw chunks → compiled notes → compiled context, with a Librarian tool using isolated context) inspired a new local agent: the librarian, which curates deep-source context on behalf of the conversational agent, enforced by a deterministic PreToolUse gate.
+Additionally, the EgoVault Knowledge Compiler architecture (3-tier: raw chunks → compiled notes → compiled context, with a Librarian tool using isolated context) inspired a new local agent: the librarian, which curates deep-source context on behalf of the conversational agent. A structured debate (`debate-2026-04-16-deep-source-gate-hook.md`) evaluated whether a PreToolUse hook should enforce librarian usage — the conclusion: **no hook**, because the LLM has Bash/Grep/Glob access that bypasses any Read-only gate, making mechanical enforcement impossible without crippling the workflow. The librarian's value comes from being *better* than raw reads (curated extracts + confidence + sources), not from making raw reads impossible.
 
 ---
 
@@ -30,7 +30,7 @@ Additionally, the EgoVault Knowledge Compiler architecture (3-tier: raw chunks �
 | Evals | Harness scorecard (deterministic) | Extension of contract check, $0 cost, CI-safe |
 | Agent harness | None (Claude Code is the harness) | deepagents insight — reframe vocabulary, don't build runtime |
 | Librarian agent | 6th local agent, read-only curator | Inspired by EgoVault Knowledge Compiler, curate() tier 0/1 pattern |
-| Deep-source gate | PreToolUse hook blocking Read on .meta/references/ | Deterministic enforcement, forces librarian usage |
+| Deep-source gate | **No hook** — convention only | Debate resolved: Read gate is bypassable via Bash/Grep/Glob; enforcement impossible without crippling workflow. Librarian wins by being *better*, not by blocking alternatives. Convention in CLAUDE.md never mentions `.meta/references/` as a direct target. |
 
 ---
 
@@ -42,42 +42,33 @@ Additionally, the EgoVault Knowledge Compiler architecture (3-tier: raw chunks �
 
 - `template/.claude/agents/librarian.md` — 6th local agent, dual meta + template
   - Mandate: read-only context curator, cherry-picks from deep sources
-  - Process: receives question → Grep in `.meta/references/`, `docs/`, `src/` → Bash extraction (sed/head) → optional tier 1 LLM synthesis → returns {extracts, synthesis, sources, confidence}
+  - Process: receives question → Grep in `.meta/references/`, `docs/`, `src/` → Read or Bash extraction of targeted passages → optional tier 1 LLM synthesis → returns {extracts, synthesis, sources, confidence}
   - Hard rules: never modifies files, max 5 extracts of 30 lines each, confidence = source-count-based (1=low, 2=medium, 3+=high), says "nothing found" instead of fabricating
   - Trigger: **Propose** (not Auto) — conversational agent asks user before dispatching
 - `.claude/agents/librarian.md` — meta mirror
-- `template/scripts/gate_deep_sources.py` (~20 LOC) — reads `tool_input.file_path` from stdin JSON, exits 1 if path matches `.meta/references/`, exits 0 otherwise
-- `scripts/gate_deep_sources.py` — meta mirror
 
 **Files modified:**
 
-- `template/.claude/settings.json.jinja` — add PreToolUse hook entry:
-  ```json
-  { "matcher": "Read", "hooks": [{ "type": "command", "command": "python scripts/gate_deep_sources.py" }] }
-  ```
-- `.claude/settings.json` — meta: same hook added
-- `template/CLAUDE.md.jinja` — add librarian trigger row
-- `CLAUDE.md` — meta: same row
-- `tests/test_template_generation.py` — TestAgents.EXPECTED_AGENTS adds "librarian" (6 total), new TestLibrarianGate class
+- `template/CLAUDE.md.jinja` — add librarian trigger row + convention aiguisée: `.meta/references/` is NEVER mentioned as a direct Read target anywhere in the session contract. The librarian is the only documented path to deep sources. The conversational agent is instructed to delegate, not to browse.
+- `CLAUDE.md` — meta: same
+- `tests/test_template_generation.py` — TestAgents.EXPECTED_AGENTS adds "librarian" (6 total)
 
-**Whitelist for gate exceptions:**
+**No gate hook.** Per debate resolution (`debate-2026-04-16-deep-source-gate-hook.md`): a Read-only gate is bypassable via Bash/Grep/Glob, making mechanical enforcement impossible without crippling the agent's workflow. The librarian wins adoption by being *better* than raw reads (curated + confidence-scored + source-cited), not by making raw reads impossible. Convention in CLAUDE.md is the enforcement layer; the librarian's superior output is the incentive layer.
 
-The gate script accepts an optional `--allow` flag or env var for skills/agents that legitimately need Read access to `.meta/references/` (e.g., `/save-progress` summarizing recent work). Whitelist is maintained in the script, not in settings.json.
-
-**Access hierarchy (enforced):**
+**Access hierarchy (by convention, not enforcement):**
 
 | Source tier | Conversational agent | Librarian agent |
 |---|---|---|
-| Gold (CLAUDE.md, PILOT.md, rules/, skills/) | Read ✅ | Read ✅ |
-| Deep (.meta/references/, docs/) | Read ❌ (gate blocks) | Grep + Bash ✅ |
-| Code (src/, tests/, scripts/) | Read ✅ | Grep + Bash ✅ |
+| Gold (CLAUDE.md, PILOT.md, rules/, skills/) | Direct access ✅ | Direct access ✅ |
+| Deep (.meta/references/, docs/) | **Delegate to librarian** (convention) | Full access (Read, Grep, Bash) ✅ |
+| Code (src/, tests/, scripts/) | Direct access ✅ | Full access ✅ |
 
 **Risks:**
 
 | Risk | Mitigation |
 |---|---|
 | Librarian invoked too often | Trigger = Propose, user decides |
-| Gate blocks legitimate use | Whitelist mechanism in gate script |
+| Conversational agent reads deep sources directly despite convention | Convention aiguisée (no mention of direct path) + librarian is faster/better. If observed at scale, revisit enforcement in v2.1. |
 | Grep returns too much noise | Hard rule: max 5 extracts × 30 lines = 150 lines cap |
 
 ---
@@ -138,7 +129,6 @@ Zero code changes required — the sync script already handles the `cursorrules`
 | Agents | 10 | 6 agents present, frontmatter valid (name, description, model) |
 | Hosts | 10 | AGENTS.md + GEMINI.md exist, are import-stubs, sync check passes |
 | Contract | 10 | Trigger table ↔ filesystem (delegates to check_skills_contract.py) |
-| Gate | 10 | gate_deep_sources.py present, wired in settings.json PreToolUse hooks |
 | Taxonomy | 10 | .meta/ dirs correct (active/, archive/, drafts/, decisions/, references/{raw,interim,synthesis}/) |
 | Safety | 10 | audit_public_safety.py + check_git_author.py + check_meta_naming.py present, pre-commit wired |
 
@@ -149,7 +139,7 @@ Zero code changes required — the sync script already handles the `cursorrules`
 
 **Files modified:**
 
-- `tests/test_template_generation.py` — TestHarnessAudit: test_perfect_score_on_fresh_project (70/70), test_json_output_valid
+- `tests/test_template_generation.py` — TestHarnessAudit: test_perfect_score_on_fresh_project (60/60), test_json_output_valid
 
 **Future eval tiers (documented, not shipped):**
 
@@ -176,11 +166,11 @@ Zero code changes required — the sync script already handles the `cursorrules`
 **Tag:** `v2.0.0` annotated with full changelog + migration notes.
 
 **Migration notes v1.6.0 → v2.0.0:**
-- New files: AGENTS.md, GEMINI.md, evals/, scripts/sync_hosts.py, sync-config.yaml, .claude/agents/librarian.md, scripts/gate_deep_sources.py
-- settings.json gains PreToolUse hook — may conflict if customized
+- New files: AGENTS.md, GEMINI.md, evals/, scripts/sync_hosts.py, sync-config.yaml, .claude/agents/librarian.md
 - .pre-commit-config.yaml gains sync-hosts hook
-- No files deleted, no renames
-- Downstream action: `copier update`, resolve conflicts in settings.json and .pre-commit-config.yaml if customized
+- CLAUDE.md gains librarian trigger row + convention aiguisée (deep sources via librarian only)
+- No files deleted, no renames, no settings.json hook changes
+- Downstream action: `copier update`, resolve conflicts in CLAUDE.md and .pre-commit-config.yaml if customized
 
 ---
 
@@ -193,6 +183,7 @@ Zero code changes required — the sync script already handles the `cursorrules`
 | LLM-judge eval (tier C) | Cost + complexity, not enough testable skills yet | v3+ |
 | Memory architecture (Knowledge Compiler) | EgoVault scope, not metadev template scope | EgoVault project |
 | Custom agent harness | Claude Code IS the harness (deepagents insight) | Never |
+| PreToolUse gate hook on .meta/references/ | Debate resolved: bypassable via Bash/Grep/Glob, enforcement impossible without crippling workflow. Convention + librarian superiority is the real enforcement. | Revisit only if convention failure observed at scale |
 | .meta/ taxonomy changes | Core identity, validated, no reason to touch | Never |
 | XML workflow DSL (BMAD) | Interesting but alien to metadev's Markdown-first philosophy | Revisit if skill count >15 |
 | Surprise scoring (graphify) | No card pipeline in template to score against | v2.1+ with /tech-watch maturity |
