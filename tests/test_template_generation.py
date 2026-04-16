@@ -283,6 +283,7 @@ class TestAgents:
         "test-engineer",
         "security-auditor",
         "data-analyst",
+        "librarian",
     ]
 
     def test_all_agents_present(self, generated_project: Path) -> None:

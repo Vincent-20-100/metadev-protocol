@@ -144,14 +144,17 @@ the entire value of the template.
 | `test-engineer` | agent | new module, new public API, or missing coverage on touched code | **Propose** |
 | `security-auditor` | agent | auth, secrets, input validation, crypto, network boundaries, file uploads | **Propose** |
 | `data-analyst` | agent | pipeline, ETL, metric computation, statistical claim, or dataset quality question | **Propose** |
+| `librarian` | agent | conversation needs facts beyond gold sources (audit, pattern in refs, code detail not loaded) | **Propose** |
 
 **Auto** = invoke without asking (announce it in one line). **Propose** = ask the user
 first, explaining why this tool applies. Never stay silent when a trigger matches — the
 user can always decline, but a missed proposal is a lost feature.
 
+**Deep sources convention:** `.meta/references/` contains audit cards, research outputs, and synthesis documents. The conversational agent should NOT read these directly — delegate to the `librarian` agent, which cherry-picks relevant extracts with confidence scoring. Gold sources (CLAUDE.md, PILOT.md, `.claude/rules/`, `.claude/skills/`) remain directly accessible.
+
 **Designing a new skill?** Apply the Skill vs tool filter from `.meta/GUIDELINES.md` before writing any code. List the steps, classify each as deterministic vs LLM, calculate the ratio. ≥ 80% deterministic = `scripts/` + thin wrapper, not a pure skill.
 
-The local skills `brainstorm`, `plan`, `spec`, `debate`, `orchestrate`, `research`, `test`, `save-progress` are **fallbacks** — they work out-of-the-box with zero setup. The `superpowers` plugin ships superior and more complete versions of the same workflows (`superpowers:brainstorming`, `superpowers:writing-plans`, `superpowers:executing-plans`, etc.). When the plugin is installed, prefer its versions. The 4 local agents (`code-reviewer`, `test-engineer`, `security-auditor`, `data-analyst`) are **additive**, not fallbacks — they complement superpowers' own agents and stay local even when the plugin is installed.
+The local skills `brainstorm`, `plan`, `spec`, `debate`, `orchestrate`, `research`, `test`, `save-progress` are **fallbacks** — they work out-of-the-box with zero setup. The `superpowers` plugin ships superior and more complete versions of the same workflows (`superpowers:brainstorming`, `superpowers:writing-plans`, `superpowers:executing-plans`, etc.). When the plugin is installed, prefer its versions. The 5 local agents (`code-reviewer`, `test-engineer`, `security-auditor`, `data-analyst`, `librarian`) are **additive**, not fallbacks — they complement superpowers' own agents and stay local even when the plugin is installed.
 
 Recommended plugin (install with `/install-plugin obra/superpowers`):
 

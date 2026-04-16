@@ -122,16 +122,19 @@ the whole point of dogfooding the template.
 | `test-engineer` | agent | new module, new public API, or missing coverage on touched code | **Propose** |
 | `security-auditor` | agent | auth, secrets, input validation, crypto, network boundaries, file uploads | **Propose** |
 | `data-analyst` | agent | pipeline, ETL, metric computation, statistical claim, or dataset quality question | **Propose** |
+| `librarian` | agent | conversation needs facts beyond gold sources (audit, pattern in refs, code detail not loaded) | **Propose** |
 
 **Auto** = invoke without asking (announce it in one line). **Propose** = ask first,
 explaining why this tool applies. Never stay silent when a trigger matches.
+
+**Deep sources convention:** `.meta/references/` contains audit cards, research outputs, and synthesis documents. The conversational agent should NOT read these directly — delegate to the `librarian` agent, which cherry-picks relevant extracts with confidence scoring. Gold sources (CLAUDE.md, PILOT.md, `.claude/rules/`, `.claude/skills/`) remain directly accessible.
 
 **Rule of 3 (anti-consensus bias):** count consecutive user agreements without
 friction. At 3 in a row, invoke the devil's-advocate agent before continuing. The
 signal is countable (agreements, not topics) and the user will never self-request a
 challenge — that's why it must fire automatically.
 
-**Superpowers fallback relationship:** the local skills (`brainstorm`, `plan`, `spec`, `debate`, `orchestrate`, `research`, `test`, `save-progress`) are fallbacks — they work out-of-the-box. The `superpowers` plugin ships superior versions of the same workflows (`superpowers:brainstorming`, `superpowers:writing-plans`, `superpowers:executing-plans`, etc.); when installed, prefer its versions. The 4 local agents (`code-reviewer`, `test-engineer`, `security-auditor`, `data-analyst`) are additive, not fallbacks — they stay local even with superpowers installed.
+**Superpowers fallback relationship:** the local skills (`brainstorm`, `plan`, `spec`, `debate`, `orchestrate`, `research`, `test`, `save-progress`) are fallbacks — they work out-of-the-box. The `superpowers` plugin ships superior versions of the same workflows (`superpowers:brainstorming`, `superpowers:writing-plans`, `superpowers:executing-plans`, etc.); when installed, prefer its versions. The 5 local agents (`code-reviewer`, `test-engineer`, `security-auditor`, `data-analyst`, `librarian`) are additive, not fallbacks — they stay local even with superpowers installed.
 
 ## Stack
 
