@@ -1,0 +1,41 @@
+# Multi-host sync configuration for metadev-protocol.
+# Source of truth: .claude/ directory + CLAUDE.md
+# Generated stubs: AGENTS.md, GEMINI.md (and tier 2/3 when enabled)
+#
+# Run: uv run python scripts/sync_hosts.py
+# Check: uv run python scripts/sync_hosts.py --check
+
+hosts:
+  claude:
+    target: .claude/
+    format: skill-dir
+    primary: true  # source of truth — never overwritten by sync
+
+  codex:
+    target: AGENTS.md
+    format: import-stub
+    source_ref: CLAUDE.md
+
+  gemini:
+    target: GEMINI.md
+    format: import-stub
+    source_ref: CLAUDE.md
+
+  # --- Tier 2 (uncomment when ready to dogfood) ---
+  # To add Cursor support:
+  #   1. Uncomment the block below
+  #   2. Run: uv run python scripts/sync_hosts.py
+  #   3. Commit the generated .cursor/rules/ files
+  #
+  # cursor:
+  #   target: .cursor/rules/
+  #   format: cursorrules
+  #   strip_frontmatter: true
+  #
+  # windsurf:
+  #   target: .windsurf/rules/
+  #   format: markdown-flat
+  #
+  # cline:
+  #   target: .clinerules/
+  #   format: markdown-flat
