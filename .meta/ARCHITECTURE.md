@@ -166,10 +166,24 @@ The v1.6.0 inventory (10 skills + 5 agents, dual-maintained, mechanically contra
 
 ---
 
+## ADR-011: v2.0 multi-host + librarian + harness audit
+
+**Status:** Accepted
+**Date:** 2026-04-17
+**Full text:** `.meta/decisions/adr-011-v2-multi-host-librarian.md`
+
+**Decision summary:** ship v2.0 with (1) multi-host CI fan-out (`sync-config.yaml` + `scripts/sync_hosts.py` auto-generate `AGENTS.md` and `GEMINI.md` as @import stubs pointing at `CLAUDE.md`, with tier 2 hosts commented); (2) a 6th local agent `librarian` — read-only curator cherry-picking from `.meta/references/`, `docs/`, `src/` with `file:line` citations and confidence; (3) `evals/harness_audit.py` — a deterministic 6-category scorecard (Skills, Agents, Hosts, Contract, Taxonomy, Safety; 60 pts max) with `--self` and `--path` modes.
+
+**Agent count:** 5 → 6 (librarian added).
+
+**Convention aiguisee:** deep sources (`.meta/references/`) must be accessed via the librarian, not directly by the conversational agent. Gold sources (CLAUDE.md, PILOT.md, `.claude/rules/`, `.claude/skills/`) remain directly accessible. Enforced by convention in CLAUDE.md, not by a gate hook (debate-resolved 2026-04-16 — bypassable hooks punish edge cases; librarian superiority removes the need).
+
+---
+
 ## Explicitly out of scope
 
 - **CI/CD** on this template repo: unjustified overhead for solo development
 - **Automated template tests**: `copier copy . /tmp/test --defaults` locally is sufficient
 - **Multi-language**: this template is Python-only, intentionally
 - **Docker** in minimal profile: don't over-engineer small projects
-- **Multi-LLM support**: Claude Code only for MVP (.cursorrules later)
+- ~~**Multi-LLM support**: Claude Code only for MVP (.cursorrules later)~~ — superseded by ADR-011 (tier 1: Claude + Codex + Gemini; tier 2: Cursor, Windsurf, Cline commented in `sync-config.yaml`)

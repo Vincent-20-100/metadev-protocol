@@ -19,6 +19,9 @@ Built with **Claude** (Anthropic) as AI pair. See [CONTRIBUTORS.md](CONTRIBUTORS
 | [Earnings Call Analyst](https://github.com/yedanzhang-ai/earnings-call-analyst) | Yedan Zhang | LLM pipeline with tiered verification — green/amber/red confidence scoring, versioned prompt files |
 | [Superpowers](https://github.com/toddgilb/superpowers) | Todd Gilbert | Skills ecosystem — brainstorming, planning, and code review as composable skills |
 | [Everything Claude Code](https://github.com/mrpbennett/everything-claude-code) | Various | Community-driven skill collection — patterns for linting, TDD, security review |
+| [caveman](https://github.com/JuliusBrussee/caveman) | Julius Brussee | Multi-host CI fan-out pattern — `CLAUDE.md` + `AGENTS.md` + `GEMINI.md` side-by-side, generated stubs, IDE plugin distribution. Direct inspiration for v2.0 `sync_hosts.py` and `sync-config.yaml` |
+| [deepagents](https://github.com/langchain-ai/deepagents) | LangChain | Middleware vocabulary for agent harnesses — the "planning tool, sub-agents, filesystem access, system prompt" framing that informed the v2.0 harness-audit categories |
+| [EgoVault Knowledge Compiler](https://github.com/Vincent-20-100/egovault) | Vincent | 3-tier compilation (raw → notes → context) + Librarian tool (tier 0 deterministic). Direct inspiration for the v2.0 `librarian` agent and the deep-sources convention in CLAUDE.md |
 
 ## Vendored code
 

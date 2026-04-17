@@ -73,7 +73,9 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 - **11 automatisms** — context loading at session start, mandatory plan before any edit, architecture sync, session handoff, Rule of 3 anti-consensus challenge. Hard-wired in `CLAUDE.md`, they fire without prompting.
 - **9 rules** — the non-negotiable contract between you and the AI. Few hard rules that are always followed beat many soft rules that are sometimes ignored.
 - **10 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/research`, `/vision`, `/tech-watch`, `/test`, `/save-progress`. Reusable across every project you generate.
-- **5 agent personas** — code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate. Defined in `AGENTS.md`, invoked on demand.
+- **6 agent personas** — code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate, librarian. Invoked on demand via the `Task` tool.
+- **Multi-LLM day one** — Claude Code is the source of truth. `AGENTS.md` (Codex) and `GEMINI.md` (Gemini CLI) are auto-regenerated @import stubs pointing at `CLAUDE.md`. Tier 2 (Cursor, Windsurf, Cline) is a one-line edit in `sync-config.yaml`.
+- **Deterministic harness audit** — `evals/harness_audit.py` scores the repo on 6 categories (Skills, Agents, Hosts, Contract, Taxonomy, Safety, 60 pts max). Invariant: a well-formed generated project scores 60/60.
 - **Hooks over instructions** — every Python file is auto-linted on save (ruff PostToolUse hook), dangerous operations are blocked or require confirmation, co-authored-by trailers suppressed natively.
 - **Session continuity** — `PILOT.md` (project dashboard) + `SESSION-CONTEXT.md` (living context rewritten each session). Claude remembers what you decided three weeks ago.
 - **`.meta/` taxonomy** — `active/` · `archive/` · `drafts/` · `decisions/` · `references/`. Filename convention enforced by pre-commit hook.
@@ -85,7 +87,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 
 ## The Toolkit
 
-Every generated project ships with 10 skills, 5 agent personas, and 4 guardrail scripts. Skills and agents are invoked by name; scripts run as pre-commit hooks and CI steps.
+Every generated project ships with 10 skills, 6 agent personas, 4 guardrail scripts, and a harness audit scorecard. Skills and agents are invoked by name; scripts run as pre-commit hooks and CI steps.
 
 ### Skills — `/command` in Claude Code
 
@@ -111,6 +113,7 @@ Every generated project ships with 10 skills, 5 agent personas, and 4 guardrail 
 | `security-auditor` | Auth, secrets, input validation, crypto, network boundaries | Threat-models the change, flags OWASP categories |
 | `data-analyst` | Pipeline, ETL, metric computation, statistical claim | Validates methodology, challenges sampling, checks reproducibility |
 | `devil's-advocate` | Auto-triggered by Rule of 3 (3 user agreements without friction) | Adversarial challenge to surface blind spots |
+| `librarian` | Conversation needs facts from `.meta/references/`, `docs/`, or deep in `src/` | Cherry-picks extracts with `file:line` citations and confidence; read-only |
 
 ### Guardrail scripts — pre-commit + CI
 
@@ -120,6 +123,8 @@ Every generated project ships with 10 skills, 5 agent personas, and 4 guardrail 
 | `check_git_author.py` | pre-commit hook | Commits authored as `Claude` / `Anthropic` / co-authored-by trailers |
 | `check_meta_naming.py` | pre-commit hook | `.meta/active/` and `.meta/archive/` files that violate the `<type>-<YYYY-MM-DD>-<slug>.md` convention |
 | `check_skills_contract.py` | pre-commit hook | Trigger-table rows that don't map to real skill or agent files on disk |
+| `sync_hosts.py` | pre-commit hook + CI workflow | Drift between `CLAUDE.md` / `.claude/` and the auto-generated `AGENTS.md` / `GEMINI.md` stubs |
+| `evals/harness_audit.py` | manual + CI | 6-category scorecard (60 pts). Invariant: generated project = 60/60 |
 
 ### Just the skills, no template
 
@@ -138,26 +143,33 @@ No `.meta/` taxonomy, no hooks, no CLAUDE.md contract — just the skills.
 
 ```
 my-project/
-├── CLAUDE.md                       # Session contract (11 automatisms + 9 rules)
-├── AGENTS.md                       # Agent personas (5 specialists)
+├── CLAUDE.md                       # Session contract (source of truth)
+├── AGENTS.md                       # Auto-generated Codex stub → CLAUDE.md
+├── GEMINI.md                       # Auto-generated Gemini stub → CLAUDE.md
+├── sync-config.yaml                # Host registry (tier 1 active, tier 2 commented)
 ├── pyproject.toml                  # uv, ruff, pytest
-├── .pre-commit-config.yaml         # Lint + hooks + secret scan
+├── .pre-commit-config.yaml         # Lint + hooks + secret scan + sync-hosts check
 │
 ├── src/my_project/                 # Package source
 ├── tests/                          # Test suite
 ├── scripts/
 │   ├── check_meta_naming.py        # .meta/ filename convention
 │   ├── check_git_author.py         # Block AI authorship
-│   └── audit_public_safety.py      # Secret + sensitive file scanner
+│   ├── audit_public_safety.py      # Secret + sensitive file scanner
+│   └── sync_hosts.py               # Regenerate AGENTS.md / GEMINI.md stubs
+├── evals/
+│   └── harness_audit.py            # Deterministic 6-category scorecard
 ├── data/                           # raw/ → interim/ → processed/
 │
 ├── .github/workflows/
 │   ├── public-safety.yml           # Audit on push/PR to main
-│   └── public-alert.yml            # Alert on repo publicization
+│   ├── public-alert.yml            # Alert on repo publicization
+│   └── sync-hosts.yml              # Fail on stub drift
 │
 ├── .claude/
 │   ├── settings.json               # Permissions, hooks, security
-│   └── skills/                     # 10 built-in skills
+│   ├── skills/                     # 10 built-in skills
+│   └── agents/                     # 6 agent personas (incl. librarian)
 │
 └── .meta/
     ├── PILOT.md                    # Project dashboard (AI reads first)

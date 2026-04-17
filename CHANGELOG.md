@@ -6,6 +6,36 @@ This project uses [semantic versioning](https://semver.org/).
 
 ---
 
+## [v2.0.0] — 2026-04-17 — Multi-host + Librarian + Harness audit
+
+Major release. ADR-011 complements ADR-010.
+
+### Added
+- **Librarian agent** (6th local agent, dual meta + template) — read-only curator for `.meta/references/`, `docs/`, `src/`. Returns extracts with `file:line` citations and confidence scoring.
+- **Multi-host CI fan-out:**
+  - `sync-config.yaml` — host registry (`claude` primary, `codex` + `gemini` import-stubs, tier 2/3 commented)
+  - `scripts/sync_hosts.py` — stdlib + yaml, idempotent, `--check` mode for CI
+  - `AGENTS.md` + `GEMINI.md` — 4-line auto-generated @import stubs pointing at `CLAUDE.md` (never hand-edited)
+  - `.github/workflows/sync-hosts.yml` — CI job failing on stub drift
+  - `sync-hosts` pre-commit hook
+- **`evals/harness_audit.py`** — deterministic 6-category scorecard (Skills, Agents, Hosts, Contract, Taxonomy, Safety; 60 pts max). Modes: `--self` (meta) and `--path` (generated project). Emits text or `--json`.
+- **Convention aiguisee in CLAUDE.md** — deep sources (`.meta/references/`) must be accessed via the librarian, not by the conversational agent directly. Gold sources remain directly accessible.
+- **ADR-011** — `.meta/decisions/adr-011-v2-multi-host-librarian.md`.
+- **Tests:** `TestMultiHost` (generated-project stubs), `TestHarnessAuditSelf` (meta scores 60/60), `tests/test_sync_hosts.py`.
+
+### Changed
+- **Trigger tables (meta + template)** — librarian row added.
+- **`TestAgents.EXPECTED_AGENTS`** — 5 → 6.
+- **Pre-commit** — new `sync-hosts --check` hook fires on changes to `.claude/skills/`, `.claude/agents/`, `CLAUDE.md`, or `sync-config.yaml`.
+
+### Migration v1.6.0 → v2.0.0
+- New files: `AGENTS.md`, `GEMINI.md`, `evals/`, `scripts/sync_hosts.py`, `sync-config.yaml`, `.claude/agents/librarian.md`, `.github/workflows/sync-hosts.yml`.
+- `CLAUDE.md` gains a librarian trigger row and a deep-sources convention block.
+- `.pre-commit-config.yaml` gains the `sync-hosts` hook.
+- No files deleted, no renames. `copier update` is additive.
+
+---
+
 ## [v1.6.0] — 2026-04-15 — Skills architecture overhaul
 
 Structural release. ADR-010 supersedes ADR-006.

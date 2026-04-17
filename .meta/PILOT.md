@@ -1,7 +1,7 @@
 # PILOT.md — metadev-protocol
 
-**Date:** 2026-04-13
-**Phase:** Pre-launch — v1.4.0 shipped, Phase 4 (launch) ready to execute
+**Date:** 2026-04-17
+**Phase:** v2.0.0 shipped — multi-host + librarian + harness audit
 
 ---
 
@@ -30,7 +30,7 @@ Solo developers starting AI-assisted Python projects lose hours to setup frictio
 
 ## Current state
 
-v1.6.0 shipped. Full changelog:
+v2.0.0 shipped. Full changelog:
 - **v1.0.0** — public release, universal scaffold, 7 skills, pre-commit hooks, CI
 - **v1.0.1** — governance polish (honesty constraint, confidence gates, synthesis type, banner, demo script)
 - **v1.1.0** — skill discoverability (trigger table, Rule of 3), README rework, /research, /vision, /audit-repo, tech-watch script
@@ -39,6 +39,7 @@ v1.6.0 shipped. Full changelog:
 - **v1.4.0** — git history cleaned (Co-authored-by stripped), dual-stage authorship hook (pre-commit + commit-msg), OpenTimestamps proof anchored in Bitcoin
 - **v1.5.0** — /research and /audit-repo thinned under skill-vs-tool principle, multi-agent synthesis run (emergent-patterns.md), skills contract script v1
 - **v1.6.0** — skills architecture overhaul (ADR-010): ghost agents deleted then re-shipped as real files (code-reviewer, test-engineer, security-auditor, data-analyst), meta ↔ template full parity enforced, /radar + /audit-repo fused into /tech-watch (sweep + deep), /test and /save-progress thinned
+- **v2.0.0** — multi-host + librarian + harness audit (ADR-011): AGENTS.md/GEMINI.md auto-generated @import stubs (Claude primary, Codex + Gemini import-stubs, tier 2 commented), 6th local agent `librarian` (read-only deep-source curator with file:line citations + confidence), `evals/harness_audit.py` 6-category deterministic scorecard (60 pts, meta invariant 60/60), deep-sources convention in CLAUDE.md (librarian-only, not enforced by gate hook — debate-resolved)
 
 Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution.
 
@@ -129,7 +130,7 @@ Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted
 | PM.14 | Multi-agent synthesis run — cross-pollinate all refs for emergent innovations | session-2026-04-13 | DONE (v1.5.0) — `.meta/references/synthesis/emergent-patterns.md` |
 | PM.6 | `/audit-repo` skill (meta-repo only, not shipped) — structured analysis of external repos with tiered output: use as-is → extract parts → borrow concepts → inspiration → reject. Standardized format enables cross-pollination when 10+ audits accumulated. Feeds PM.4 synthesis run. Source: Agent-Reach audit session | session-2026-04-12 | DONE → ABSORBED into `/tech-watch` deep mode (v1.6.0) |
 | PM.7 | Skill/agent discoverability problem — the LLM doesn't proactively propose skills and agents enough. New users who don't know features exist won't get full value. Need to improve CLAUDE.md automatisms, onboarding, and/or skill suggestion triggers | session-2026-04-12 | DONE (v1.1.0 — automatism #11 + trigger table) |
-| PM.15 | **Deep audit + brainstorm on `JuliusBrussee/caveman` + 10 other refs** — gold mine of patterns: multi-LLM native (CLAUDE.md + AGENTS.md + GEMINI.md side-by-side), multi-IDE plugin distribution (`.cursor/`, `.windsurf/`, `.clinerules/`, `.codex/`, `.claude-plugin/`), benchmarks/evals first-class, TOML commands, statusline, install/uninstall hooks. Cross-pollinated with everything-claude-code, gstack, claude-mem, BMAD-METHOD, graphify, Agent-Reach, feynman, claude-ai-project-starter, deepagents, stromboli. Full audit via parallel subagents → brainstorm synthesis → potentially major v2.0.0 direction if multi-LLM/multi-IDE support is retained | session-2026-04-15 | IN PROGRESS — Vague 1/2 launched |
+| PM.15 | **Deep audit + brainstorm on `JuliusBrussee/caveman` + 10 other refs** — gold mine of patterns: multi-LLM native (CLAUDE.md + AGENTS.md + GEMINI.md side-by-side), multi-IDE plugin distribution (`.cursor/`, `.windsurf/`, `.clinerules/`, `.codex/`, `.claude-plugin/`), benchmarks/evals first-class, TOML commands, statusline, install/uninstall hooks. Cross-pollinated with everything-claude-code, gstack, claude-mem, BMAD-METHOD, graphify, Agent-Reach, feynman, claude-ai-project-starter, deepagents, stromboli. Full audit via parallel subagents → brainstorm synthesis → shipped as v2.0.0 (multi-host fan-out, librarian, harness audit). See ADR-011 | session-2026-04-15 | DONE (v2.0.0) |
 | PM.16 | `--persist` flag on `/tech-watch` deep mode — opt-in Layer 3 vendoring (persistent clones under `~/.cache/metadev-audits/`) for iterative synthesis workflows. Codify the 4-layer progressive disclosure pattern as a metadev convention once PM.15 validates its utility. See `reference_progressive_disclosure_4layer.md` | session-2026-04-15 | BACKLOG — post PM.15 |
 
 ---

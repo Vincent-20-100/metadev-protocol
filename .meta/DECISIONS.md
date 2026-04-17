@@ -160,3 +160,17 @@ One template per language with universal folders is more flexible and maintainab
 **Rejected:** keeping `/radar` and `/audit-repo` separate (rejected — "orthogonal depth axis" claim contradicted by fused card format); deleting the 4 agents (rejected — they cover real workflows devils-advocate does not); shipping agents template-only (rejected — asymmetric meta means the template never gets real use by its own author).
 
 **Full text:** `.meta/decisions/adr-010-skills-architecture.md`
+
+---
+
+## 2026-04-17 — ADR-011: v2.0 multi-host + librarian + harness audit
+
+**Decision:** Ship v2.0 with (1) multi-host CI fan-out — `sync-config.yaml` + `scripts/sync_hosts.py` generate `AGENTS.md` and `GEMINI.md` as auto-regenerated @import stubs pointing at `CLAUDE.md`; (2) a 6th local agent `librarian` (read-only, cherry-picks extracts from `.meta/references/`, `docs/`, `src/` with `file:line` citations and confidence); (3) `evals/harness_audit.py` — a deterministic 6-category scorecard (Skills, Agents, Hosts, Contract, Taxonomy, Safety; 60 pts max) with `--self` and `--path` modes. Meta-repo invariant: 60/60.
+
+**Context:** PM.15 caveman audit surfaced single-host bias (CLAUDE.md was the only agent entry point while peers ship AGENTS.md / GEMINI.md / Cursor / Windsurf / Cline patterns), saturated conversational context (`.meta/references/` files loaded whole when extracts would suffice — same signal as the Karpathy LLM-wiki and EgoVault Knowledge Compiler patterns), and no deterministic harness benchmark (drift invisible until user complaint).
+
+**Complements:** ADR-010.
+
+**Rejected:** PreToolUse gate hook enforcing the deep-sources convention (rejected in `.meta/debates/debate-2026-04-16-deep-source-gate-hook.md` — bypassable, punishes edge cases, and librarian superiority removes the need); custom multi-agent harness à la deepagents (rejected — Claude Code is already the harness, reimplementing middleware locks us out of upstream improvements); tier 2 hosts (cursor/windsurf/cline) in v2.0 (deferred — cannot dogfood without installing those IDEs, commented-out block in `sync-config.yaml` is the onboarding path); librarian with write access (rejected — read-only mandate is load-bearing, otherwise it becomes a second implementation agent).
+
+**Full text:** `.meta/decisions/adr-011-v2-multi-host-librarian.md`
