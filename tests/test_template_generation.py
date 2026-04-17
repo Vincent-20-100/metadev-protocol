@@ -446,3 +446,28 @@ class TestMetaParity:
 
     def test_meta_has_guidelines(self) -> None:
         assert (ROOT / ".meta" / "GUIDELINES.md").is_file()
+
+
+class TestMultiHost:
+    """Verify multi-host stubs are generated correctly."""
+
+    def test_agents_md_is_import_stub(self, generated_project: Path) -> None:
+        content = (generated_project / "AGENTS.md").read_text(encoding="utf-8")
+        assert "CLAUDE.md" in content
+
+    def test_gemini_md_exists(self, generated_project: Path) -> None:
+        assert (generated_project / "GEMINI.md").is_file()
+
+    def test_gemini_md_is_import_stub(self, generated_project: Path) -> None:
+        content = (generated_project / "GEMINI.md").read_text(encoding="utf-8")
+        assert "CLAUDE.md" in content
+
+    def test_sync_script_present(self, generated_project: Path) -> None:
+        assert (generated_project / "scripts" / "sync_hosts.py").is_file()
+
+    def test_sync_config_present(self, generated_project: Path) -> None:
+        assert (generated_project / "sync-config.yaml").is_file()
+
+    def test_sync_hosts_workflow(self, generated_project: Path) -> None:
+        wf = generated_project / ".github" / "workflows" / "sync-hosts.yml"
+        assert wf.is_file()
