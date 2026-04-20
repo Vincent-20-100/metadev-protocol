@@ -25,7 +25,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
@@ -105,9 +105,7 @@ def github_search(topic: str, since: str, token: str) -> list[dict]:
     Exits with a non-zero status on authentication or network errors.
     """
     query = f"topic:{topic} pushed:>{since}"
-    params = urllib.parse.urlencode(
-        {"q": query, "sort": "stars", "order": "desc", "per_page": 30}
-    )
+    params = urllib.parse.urlencode({"q": query, "sort": "stars", "order": "desc", "per_page": 30})
     url = f"{GITHUB_API}?{params}"
     req = urllib.request.Request(
         url,
@@ -184,10 +182,8 @@ def main() -> None:
     args = parser.parse_args()
 
     topics = [t.strip() for t in args.topics.split(",") if t.strip()]
-    since_date = (datetime.now(tz=timezone.utc) - timedelta(days=args.since)).strftime(
-        "%Y-%m-%d"
-    )
-    today = datetime.now(tz=timezone.utc).strftime("%Y-%m-%d")
+    since_date = (datetime.now(tz=UTC) - timedelta(days=args.since)).strftime("%Y-%m-%d")
+    today = datetime.now(tz=UTC).strftime("%Y-%m-%d")
 
     # Resolve token
     env = load_env(Path(".env"))
@@ -260,9 +256,7 @@ status: active
 
     print(f"tech_watch: {len(unique_new)} new repos → {out_path}")
     if not unique_new:
-        print(
-            "tech_watch: dedup cache is working — re-run with --since N to widen the window"
-        )
+        print("tech_watch: dedup cache is working — re-run with --since N to widen the window")
 
 
 if __name__ == "__main__":

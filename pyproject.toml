@@ -20,6 +20,21 @@ test = ["pytest>=8.0", "pyyaml>=6.0"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
+[tool.ruff]
+target-version = "py312"
+# Project line-length deviates from common defaults. See .claude/rules/linting.md.
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"scripts/**/*.py" = ["E501"]
+"tests/**/*.py" = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+
 [build-system]
 requires = ["uv_build>=0.11.2,<0.12.0"]
 build-backend = "uv_build"

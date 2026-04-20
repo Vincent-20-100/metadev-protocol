@@ -19,9 +19,7 @@ class TestHarnessAuditSelf:
             capture_output=True,
             text=True,
         )
-        assert result.returncode == 0, (
-            f"harness audit failed: {result.stdout}\n{result.stderr}"
-        )
+        assert result.returncode == 0, f"harness audit failed: {result.stdout}\n{result.stderr}"
 
     def test_json_output_valid(self) -> None:
         result = subprocess.run(

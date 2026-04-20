@@ -3,7 +3,7 @@ enforcement: hard-block
 hooks: [H001, H002, H014, H016]
 ---
 
-> **Enforcement:** hard-block (except E501 → advisory) — ruff pre-commit + CI fail on violation.
+> **Enforcement:** hard-block on `src/` (E501 active), advisory on `scripts/` and `tests/` (per-file-ignores) — ruff pre-commit + CI fail on violation in `src/`.
 
 # Linting conventions
 
@@ -11,7 +11,7 @@ hooks: [H001, H002, H014, H016]
 
 The project enforces these ruff rule categories (see `pyproject.toml`):
 
-- `E` — pycodestyle errors (except `E501` line-length, see below)
+- `E` — pycodestyle errors
 - `F` — Pyflakes (unused imports, undefined names)
 - `W` — pycodestyle warnings
 - `I` — isort (import sorting)
@@ -23,8 +23,10 @@ The project enforces these ruff rule categories (see `pyproject.toml`):
 ## Line length policy
 
 - **`line-length = 100`** — project default. Applied by `ruff format` as a wrap target.
-- **`E501` is ignored globally** — line-length is a formatter target, not a hard-block. Rationale: DX. A line at 102 chars should not fail your commit; the formatter handles wrapping what it can.
-- **Semantic rules stay hard-block** — `F`, `W`, `B`, `SIM`, etc. are real bugs or refactor signals.
+- **`E501` active on `src/`, ignored on `scripts/` and `tests/`** (via `per-file-ignores`).
+  - On `src/` the rule stays hard-block: line-length is a **complexity proxy** — a 150-char line in application code usually signals a function doing too much.
+  - On `scripts/` and `tests/` the rule is advisory: CLI help strings, error messages, and test fixtures read better unwrapped.
+- **Semantic rules stay hard-block everywhere** — `F`, `W`, `B`, `SIM`, etc. are real bugs or refactor signals regardless of directory.
 
 ### Why 100 and not 79 / 88 / 80?
 

@@ -27,15 +27,17 @@ build-backend = "uv_build"
 
 [tool.ruff]
 target-version = "py312"
-# Deviation from PEP 8 (79), Black (88), Google (80).
-# Justification: CLI error messages and argparse help strings read better without wrap.
+# Project line-length deviates from common defaults. See .claude/rules/linting.md.
 line-length = 100
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "N", "UP", "B", "SIM"]
-# line-length is a ruff-format target, not a hard-block (DX).
-# Semantic rules (F, W, B, SIM, etc.) stay enforced.
-ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# Scripts and tests tolerate long lines (CLI help strings, fixtures).
+# src/ keeps E501 active as a complexity proxy.
+"scripts/**/*.py" = ["E501"]
+"tests/**/*.py" = ["E501"]
 
 [tool.ruff.format]
 quote-style = "double"
