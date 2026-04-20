@@ -1,7 +1,9 @@
 # PILOT.md — metadev-protocol
 
-**Date:** 2026-04-17
-**Phase:** v2.0.0 shipped — multi-host + librarian + harness audit
+**Date:** 2026-04-20
+**Phase:** v2.0.0 shipped — chantier hooks↔rules en cours
+
+> **⚠ Session interrompue 2026-04-20 — chantier en cours :** lis `.meta/active/session-2026-04-20-resume-hooks-rules.md` AVANT toute action. Spec + audit + débat produits dans `.meta/active/`, attend validation Vincent sur 4 décisions D1-D4.
 
 ---
 
