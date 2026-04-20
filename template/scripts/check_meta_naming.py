@@ -45,8 +45,7 @@ def check(paths: list[str]) -> int:
             )
     if errors:
         print(
-            "check_meta_naming: invalid filename(s) under .meta/active/ "
-            "or .meta/archive/:",
+            "check_meta_naming: invalid filename(s) under .meta/active/ or .meta/archive/:",
             file=sys.stderr,
         )
         for e in errors:

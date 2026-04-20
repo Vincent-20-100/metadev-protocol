@@ -33,9 +33,7 @@ class WebSource(Source):
                 timeout=30,
             )
             if result.returncode != 0:
-                logger.warning(
-                    "Jina Reader failed for %s: %s", url, result.stderr.strip()
-                )
+                logger.warning("Jina Reader failed for %s: %s", url, result.stderr.strip())
                 return ""
             return result.stdout
         except Exception:

@@ -29,9 +29,7 @@ class RSSSource(Source):
 
             feed = feedparser.parse(self.feed_url, agent=self.user_agent)
             if feed.bozo and not feed.entries:
-                logger.warning(
-                    "RSS parse error for %s: %s", self.feed_url, feed.bozo_exception
-                )
+                logger.warning("RSS parse error for %s: %s", self.feed_url, feed.bozo_exception)
                 return []
 
             today = date.today()
