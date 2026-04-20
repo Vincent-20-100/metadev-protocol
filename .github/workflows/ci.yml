@@ -23,12 +23,14 @@ jobs:
       - run: uv run pre-commit run --all-files
 
   test:
+    # Fast unit tests only. Template generation is covered by the template-test
+    # matrix above (which already runs copier copy across 4 profile combos).
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v3
       - run: uv sync --extra test
-      - run: uv run python -m pytest
+      - run: uv run python -m pytest tests/test_tech_watch_cards.py tests/test_tech_watch_dedup.py tests/test_tech_watch_index.py tests/test_tech_watch_themes.py tests/test_harness_audit.py
 
   template-test:
     runs-on: ubuntu-latest
