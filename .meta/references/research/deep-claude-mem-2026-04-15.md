@@ -129,7 +129,7 @@ A dedicated `PrivacyCheckValidator` also exists at `src/services/worker/validati
 
 ### 3.3 Documentation quality
 
-- **README** is feature-rich, with a public docs site (`docs.claude-mem.ai`), 34 localized translations, and a clear "Quick Start" / "How It Works" / "MCP Search Tools" flow. 
+- **README** is feature-rich, with a public docs site (`docs.claude-mem.ai`), 34 localized translations, and a clear "Quick Start" / "How It Works" / "MCP Search Tools" flow.
 - Architecture page series: Overview, Evolution v3→v5, Hooks, Worker Service, Database, Search Architecture.
 - Per-directory `CLAUDE.md` files exist inside `src/`, `src/cli/`, `src/services/`, `src/services/domain/`, `src/services/sqlite/`, `plugin/`, etc. — this is *their* version of distributed session context for Claude Code to read on entry into a subtree. Very on-brand for this kind of repo, and consistent with the skill-vs-tool principle (don't fatten the root CLAUDE.md; push context where the work happens).
 - `CHANGELOG.md` at root. Migration history in-source (`src/services/sqlite/migrations.ts`) doubles as an evolution log — each migration has a why-comment.
