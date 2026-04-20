@@ -20,6 +20,14 @@ Vincent a signalé que le scaffold généré par metadev-protocol casse au premi
    - **D3** : PR strictement séquentielles, mais PR-1 ship un stub doc minimal pour éviter LLM-blind gap
    - **D4** : Toujours générer la règle multi-host + prose marker (pas de Jinja conditionnelle)
 
+## URGENT — backlog prioritaire après PR-2
+
+**CI cassée sur `main` depuis ~1 semaine** (screenshot Vincent 2026-04-20) :
+- `CI #15-#22` fails systématiquement (lint ou pre-commit)
+- `Public safety audit #14-#22` fails systématiquement
+
+Hypothèse : même cause racine que le bootstrap cassé (line-length 88 trop strict), PR-1 pourrait déjà le fixer. Sinon investigation dédiée juste après PR-2. Candidat "over-hard-hook" à démoter dans PR-3/PR-4.
+
 ## Prochaine étape (où on s'est arrêtés)
 
 Vincent doit valider les 4 recos du débat. Ensuite le séquençage prévu était :
