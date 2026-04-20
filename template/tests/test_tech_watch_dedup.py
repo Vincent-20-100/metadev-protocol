@@ -2,7 +2,6 @@
 
 from pathlib import Path
 
-
 from scripts.tech_watch.sweep.dedup import canonicalize, is_known
 
 

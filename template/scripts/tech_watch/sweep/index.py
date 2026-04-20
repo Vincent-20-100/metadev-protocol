@@ -65,8 +65,7 @@ def regenerate_index(research_dir: Path) -> None:
                     "pitch": meta.get("pitch", ""),
                     "mentions_count": int(meta.get("mentions_count", "1")),
                     "discovered": meta.get("discovered", ""),
-                    "has_synthesis": meta.get("has_synthesis", "false").lower()
-                    == "true",
+                    "has_synthesis": meta.get("has_synthesis", "false").lower() == "true",
                 }
             )
 
@@ -97,9 +96,7 @@ def regenerate_index(research_dir: Path) -> None:
 
         for card in cards:
             title_link = (
-                f"[{card['title']}]({card['source_url']})"
-                if card["source_url"]
-                else card["title"]
+                f"[{card['title']}]({card['source_url']})" if card["source_url"] else card["title"]
             )
             synthesis = "✓" if card["has_synthesis"] else ""
             lines.append(

@@ -8,9 +8,7 @@ from .rss import RSSSource
 
 logger = logging.getLogger(__name__)
 
-_USER_AGENT = (
-    "radar/0.1 (metadev-protocol; +https://github.com/Vincent-20-100/metadev-protocol)"
-)
+_USER_AGENT = "radar/0.1 (metadev-protocol; +https://github.com/Vincent-20-100/metadev-protocol)"
 
 
 class RedditSource(Source):

@@ -66,9 +66,7 @@ class GitHubSource(Source):
         if not shutil.which("gh"):
             issues.append("gh CLI not found — install from https://cli.github.com")
         else:
-            result = subprocess.run(
-                ["gh", "auth", "status"], capture_output=True, text=True
-            )
+            result = subprocess.run(["gh", "auth", "status"], capture_output=True, text=True)
             if result.returncode != 0:
                 issues.append("gh not authenticated — run `gh auth login`")
         return issues

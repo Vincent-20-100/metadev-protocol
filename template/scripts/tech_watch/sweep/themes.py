@@ -16,9 +16,7 @@ class Theme:
     name: str
     keywords: list[str] = field(default_factory=list)
     negative_keywords: list[str] = field(default_factory=list)
-    sources: list[str] = field(
-        default_factory=lambda: ["github", "hf", "rss", "reddit"]
-    )
+    sources: list[str] = field(default_factory=lambda: ["github", "hf", "rss", "reddit"])
     weight: float = 1.0
 
 
@@ -77,9 +75,7 @@ def save_themes(config: ThemesConfig, path: Path) -> None:
             for t in config.themes
         ],
     }
-    path.write_text(
-        yaml.dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8"
-    )
+    path.write_text(yaml.dump(data, allow_unicode=True, sort_keys=False), encoding="utf-8")
 
 
 def score_item(item: Item, theme: Theme) -> float:

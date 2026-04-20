@@ -267,9 +267,7 @@ def check_secret_patterns(files: list[str]) -> Violations:
                 for lineno, line in enumerate(fh, 1):
                     for label, pattern in SECRET_PATTERNS:
                         if pattern.search(line):
-                            v.messages.append(
-                                f"  {filepath}:{lineno}  {label} -> <REDACTED>"
-                            )
+                            v.messages.append(f"  {filepath}:{lineno}  {label} -> <REDACTED>")
         except OSError:
             continue
     return v
