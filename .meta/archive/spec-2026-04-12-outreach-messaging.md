@@ -116,15 +116,15 @@ status: active
 ```
 Salut {name},
 
-Je suis Vincent, je développe metadev-protocol — un template Copier 
-pour bootstrapper des projets Python avec un protocole de collaboration 
+Je suis Vincent, je développe metadev-protocol — un template Copier
+pour bootstrapper des projets Python avec un protocole de collaboration
 AI intégré (workflow gates, .meta/ taxonomy, audit de sécurité).
 
 {relation_block}
 
 Tu es cité dans nos CREDITS : https://github.com/Vincent-20-100/metadev-protocol/blob/main/CREDITS.md
 
-Je te présente la v1.0.0 en avant-première : 
+Je te présente la v1.0.0 en avant-première :
 https://github.com/Vincent-20-100/metadev-protocol
 
 Si tu as 5 minutes pour jeter un œil, ton retour m'aiderait beaucoup.
@@ -137,15 +137,15 @@ Vincent
 ```
 Hi {name},
 
-I'm Vincent, building metadev-protocol — a Copier template for 
-bootstrapping AI-assisted Python projects with built-in workflow gates, 
+I'm Vincent, building metadev-protocol — a Copier template for
+bootstrapping AI-assisted Python projects with built-in workflow gates,
 .meta/ taxonomy, and security audit.
 
 {relation_block}
 
 You're credited in our CREDITS: https://github.com/Vincent-20-100/metadev-protocol/blob/main/CREDITS.md
 
-Here's the v1.0.0, fresh out: 
+Here's the v1.0.0, fresh out:
 https://github.com/Vincent-20-100/metadev-protocol
 
 If you have 5 minutes to take a look, your feedback would mean a lot.
@@ -160,7 +160,7 @@ Vincent
 ```
 Hi {name}/{team},
 
-I built metadev-protocol, a Copier template for AI-assisted Python projects. 
+I built metadev-protocol, a Copier template for AI-assisted Python projects.
 {tool} is central to how it works: {usage_detail}.
 
 I think it could serve as a good real-world showcase for {tool}.
@@ -178,7 +178,7 @@ Vincent
 ```
 Hi {name},
 
-I built an open-source Copier template that gives AI coding assistants 
+I built an open-source Copier template that gives AI coding assistants
 persistent project memory and safety gates. {one_line_why_they_care}.
 
 https://github.com/Vincent-20-100/metadev-protocol

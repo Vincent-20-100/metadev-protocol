@@ -6,7 +6,7 @@ matches the canonical pattern:
 
     <type>-<YYYY-MM-DD>-<kebab-slug>.md
 
-Allowed types: spec, plan, brainstorm, debate, session.
+Allowed types: spec, plan, brainstorm, debate, session, synthesis.
 Exempt filenames: .gitkeep (so empty dir markers remain valid).
 """
 
@@ -41,7 +41,7 @@ def check(paths: list[str]) -> int:
             errors.append(
                 f"  {raw}\n"
                 f"    expected: <type>-<YYYY-MM-DD>-<slug>.md "
-                f"(type ∈ spec|plan|brainstorm|debate|session)"
+                f"(type ∈ spec|plan|brainstorm|debate|session|synthesis)"
             )
     if errors:
         print(
