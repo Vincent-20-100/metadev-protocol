@@ -1,9 +1,7 @@
 # PILOT.md — metadev-protocol
 
 **Date:** 2026-04-20
-**Phase:** v2.0.0 shipped — chantier hooks↔rules en cours
-
-> **⚠ Session interrompue 2026-04-20 — chantier en cours :** lis `.meta/active/session-2026-04-20-resume-hooks-rules.md` AVANT toute action. Spec + audit + débat produits dans `.meta/active/`, attend validation Vincent sur 4 décisions D1-D4.
+**Phase:** v2.1.0 shipped — hooks↔rules pairing complete
 
 ---
 
@@ -42,8 +40,9 @@ v2.0.0 shipped. Full changelog:
 - **v1.5.0** — /research and /audit-repo thinned under skill-vs-tool principle, multi-agent synthesis run (emergent-patterns.md), skills contract script v1
 - **v1.6.0** — skills architecture overhaul (ADR-010): ghost agents deleted then re-shipped as real files (code-reviewer, test-engineer, security-auditor, data-analyst), meta ↔ template full parity enforced, /radar + /audit-repo fused into /tech-watch (sweep + deep), /test and /save-progress thinned
 - **v2.0.0** — multi-host + librarian + harness audit (ADR-011): AGENTS.md/GEMINI.md auto-generated @import stubs (Claude primary, Codex + Gemini import-stubs, tier 2 commented), 6th local agent `librarian` (read-only deep-source curator with file:line citations + confidence), `evals/harness_audit.py` 6-category deterministic scorecard (60 pts, meta invariant 60/60), deep-sources convention in CLAUDE.md (librarian-only, not enforced by gate hook — debate-resolved)
+- **v2.1.0** — hooks↔rules pairing (PR #1): 5 new rules in D1 hybrid format (YAML frontmatter + blockquote header) — `linting.md`, `skills-contract.md`, `multi-host.md`, `branching.md`, `secrets.md`. Template ruff strictness revised (line-length 88→100, E501 active on `src/` but per-file-ignored on `scripts/`+`tests/`). Bootstrap friction resolved: first commit on generated scaffold now passes all 13 pre-commit hooks. Meta-repo dogfood: `[tool.ruff]` config mirrored from template. `audit_public_safety.py` denylist tightened (`.env.*`/`credentials*`/`secrets*` → explicit filename lists, no more false positives on docs). CI on `main` unblocked (was red ~1 week). Debate record: template parametrization modes — Option C convergence (empty_dirs flag) but implementation parked pending external user demand.
 
-Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution.
+Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution, PR-3 (conventional-pre-commit + ruff BLE/TRY), PR-4 (doctrine cleanup — C1 conflict R023↔H013, anti-patterns log).
 
 ---
 
