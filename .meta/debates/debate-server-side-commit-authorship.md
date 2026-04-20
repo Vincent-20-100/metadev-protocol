@@ -114,7 +114,7 @@ local hook entirely. The hook only runs on the developer's machine.
 3. **Wire inclusion to `execution_mode`:**
    - `safe` mode: workflow is **not included** (solo dev, no external agents, hook is enough)
    - `full-auto` mode: workflow is **included** (external agent execution paths are expected)
-   
+
    This reflects reality: full-auto mode *is* the mode where cloud AI sandboxes create branches and PRs. Safe mode is local-only. The enforcement should match the threat model.
 
 4. **Update GUIDELINES.md:** Replace "the hook alone is enough" with an accurate statement: "the hook prevents accidental commits from your machine; if you use cloud AI sandboxes or have external contributors, also enable the server-side check."
