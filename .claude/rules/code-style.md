@@ -1,3 +1,10 @@
+---
+enforcement: hard-block
+hooks: [H001, H002, H014, H016]
+---
+
+> **Enforcement:** hard-block — ruff pre-commit + CI fail on violation.
+
 # Code style conventions
 
 ## Naming
