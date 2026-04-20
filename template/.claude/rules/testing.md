@@ -1,3 +1,10 @@
+---
+enforcement: hard-block
+hooks: [H032, H033]
+---
+
+> **Enforcement:** hard-block — save_progress_preflight fails if tests don't pass before commit.
+
 # Testing conventions
 
 ## Structure
