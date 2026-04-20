@@ -32,7 +32,11 @@ from pathlib import PurePosixPath
 
 SENSITIVE_FILENAME_PATTERNS: list[str] = [
     ".env",
-    ".env.*",
+    ".env.local",
+    ".env.production",
+    ".env.staging",
+    ".env.development",
+    ".env.test",
     "*.pem",
     "*.key",
     "*.p12",
@@ -44,8 +48,18 @@ SENSITIVE_FILENAME_PATTERNS: list[str] = [
     ".npmrc",
     ".pypirc",
     ".netrc",
-    "credentials*",
-    "secrets*",
+    "credentials.json",
+    "credentials.yaml",
+    "credentials.yml",
+    "credentials.toml",
+    "credentials.env",
+    "credentials.txt",
+    "secrets.json",
+    "secrets.yaml",
+    "secrets.yml",
+    "secrets.toml",
+    "secrets.env",
+    "secrets.txt",
     "*.sqlite",
     "*.sqlite3",
     "*.db",
@@ -267,9 +281,7 @@ def check_secret_patterns(files: list[str]) -> Violations:
                 for lineno, line in enumerate(fh, 1):
                     for label, pattern in SECRET_PATTERNS:
                         if pattern.search(line):
-                            v.messages.append(
-                                f"  {filepath}:{lineno}  {label} -> <REDACTED>"
-                            )
+                            v.messages.append(f"  {filepath}:{lineno}  {label} -> <REDACTED>")
         except OSError:
             continue
     return v

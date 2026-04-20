@@ -31,10 +31,7 @@ def canonicalize(url: str, source_name: str) -> str:
         # Canonical: https://huggingface.co/<owner>/<model>
         # Strip /resolve/*, /blob/*, /discussions/*, etc.
         parts = parsed.path.strip("/").split("/")
-        if len(parts) >= 2:
-            canonical_path = "/" + "/".join(parts[:2])
-        else:
-            canonical_path = parsed.path
+        canonical_path = "/" + "/".join(parts[:2]) if len(parts) >= 2 else parsed.path
         return urlunparse(("https", "huggingface.co", canonical_path, "", "", ""))
 
     if source_name == "web":

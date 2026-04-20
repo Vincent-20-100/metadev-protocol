@@ -25,9 +25,7 @@ _COAUTHOR_RE = re.compile(r"co-authored-by:[^\n]*", re.IGNORECASE)
 def check_author() -> str | None:
     """Return error message if the git author identity is forbidden."""
     try:
-        ident = subprocess.check_output(
-            ["git", "var", "GIT_AUTHOR_IDENT"], text=True
-        ).strip()
+        ident = subprocess.check_output(["git", "var", "GIT_AUTHOR_IDENT"], text=True).strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
         return None
 
@@ -61,12 +59,8 @@ def check_coauthors(msg_file: Path) -> str | None:
 
 
 def main() -> int:
-    if len(sys.argv) > 1:
-        # commit-msg stage: pre-commit passes the message file as first arg
-        error = check_coauthors(Path(sys.argv[1]))
-    else:
-        # pre-commit stage: check author identity
-        error = check_author()
+    # commit-msg stage passes the message file as first arg; pre-commit stage has no args.
+    error = check_coauthors(Path(sys.argv[1])) if len(sys.argv) > 1 else check_author()
 
     if error:
         print(error, file=sys.stderr)

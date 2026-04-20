@@ -101,9 +101,7 @@ def run(
         for theme in config.themes:
             if source.__class__.__name__.lower().replace("source", "") not in [
                 s.lower() for s in theme.sources
-            ] and not any(
-                s in source.__class__.__name__.lower() for s in theme.sources
-            ):
+            ] and not any(s in source.__class__.__name__.lower() for s in theme.sources):
                 continue
             query = " ".join(theme.keywords[:3])  # use top 3 keywords
             fetched = source.fetch(query=query, limit=limit_per_source)

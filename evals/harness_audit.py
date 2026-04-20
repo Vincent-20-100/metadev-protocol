@@ -56,19 +56,11 @@ CATEGORY_MAX = 10
 
 
 def _skills_dir(root: Path, is_meta: bool) -> Path:
-    return (
-        (root / "template" / ".claude" / "skills")
-        if is_meta
-        else (root / ".claude" / "skills")
-    )
+    return (root / "template" / ".claude" / "skills") if is_meta else (root / ".claude" / "skills")
 
 
 def _agents_dir(root: Path, is_meta: bool) -> Path:
-    return (
-        (root / "template" / ".claude" / "agents")
-        if is_meta
-        else (root / ".claude" / "agents")
-    )
+    return (root / "template" / ".claude" / "agents") if is_meta else (root / ".claude" / "agents")
 
 
 def check_skills(root: Path, is_meta: bool) -> list[tuple[str, int]]:
