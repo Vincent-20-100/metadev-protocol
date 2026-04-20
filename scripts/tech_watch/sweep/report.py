@@ -29,7 +29,7 @@ class RunReport:
         return json.dumps(data, ensure_ascii=False, indent=2)
 
     @classmethod
-    def from_json(cls, text: str) -> "RunReport":
+    def from_json(cls, text: str) -> RunReport:
         data = json.loads(text)
         sources = [SourceResult(**s) for s in data.pop("sources", [])]
         return cls(**data, sources=sources)
