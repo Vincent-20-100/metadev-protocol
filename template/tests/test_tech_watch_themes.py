@@ -3,7 +3,6 @@
 from datetime import date
 from pathlib import Path
 
-
 from scripts.tech_watch.sweep.sources.base import Item
 from scripts.tech_watch.sweep.themes import (
     Theme,

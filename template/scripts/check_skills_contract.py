@@ -49,9 +49,7 @@ def parse_rows(table_text: str) -> tuple[set[str], set[str]]:
     return skills, agents
 
 
-def check_tree(
-    claude_md: Path, skills_dir: Path, agents_dir: Path, label: str
-) -> list[str]:
+def check_tree(claude_md: Path, skills_dir: Path, agents_dir: Path, label: str) -> list[str]:
     """Validate one tree (meta or template). Return list of violation messages."""
     violations: list[str] = []
     if not claude_md.exists():
@@ -67,9 +65,7 @@ def check_tree(
     referenced_skills, referenced_agents = parse_rows(table)
 
     actual_skills: set[str] = (
-        {p.name for p in skills_dir.iterdir() if p.is_dir()}
-        if skills_dir.is_dir()
-        else set()
+        {p.name for p in skills_dir.iterdir() if p.is_dir()} if skills_dir.is_dir() else set()
     )
     actual_agents: set[str] = (
         {p.stem for p in agents_dir.iterdir() if p.is_file() and p.suffix == ".md"}

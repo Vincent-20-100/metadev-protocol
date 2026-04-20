@@ -3,7 +3,6 @@
 from datetime import date
 from pathlib import Path
 
-
 from scripts.tech_watch.sweep.cards import (
     append_mention,
     find_card_by_url,
