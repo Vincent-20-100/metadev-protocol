@@ -62,8 +62,8 @@ These behaviors are mandatory. Apply them without being asked.
    applies in both `safe` and `full-auto` execution modes — the mode only
    controls what Claude Code permits at the tool-call level, not whether
    the AI re-asks semantic questions mid-plan.
-5. **Milestone completed** — update PILOT.md (status table, objectives, next steps)
-6. **End of session** — rewrite SESSION-CONTEXT.md: architecture snapshot, active decisions, traps, open questions
+5. **Milestone completed** — update PILOT.md immediately (status table, next steps). Do not wait for end of session. Apply `.claude/rules/memory.md` end-of-session protocol: rewrite SESSION-CONTEXT.md (never append), check line budgets, run 5-commit reset check (`git log --oneline -5`)
+6. **End of session** — rewrite SESSION-CONTEXT.md from scratch: remove stale decisions before adding new ones. Commit SESSION-CONTEXT.md + PILOT.md together. False context causes more damage than missing context — when in doubt, delete
 7. **Every commit** — one complete logical unit per commit (not per file, not per timer). Must be reviewable in <5 minutes and bisectable (tests pass independently). Conventional format: `feat:`, `fix:`, `docs:`, `chore:`, `refactor:`. The plan determines granularity — decompose upfront, not in git. Never commit partial work to satisfy a timer.
 8. **Architecture changes** — if `.meta/ARCHITECTURE.md` doesn't exist and architecture is defined, create it. Keep it in sync with the code. On divergence, ask the user: if intentional, rewrite the file; if not, guide back to the defined architecture
 9. **Context recall** — if you lack context on a past decision, check `.meta/archive/` for session archives and historical plans/specs before asking the user
