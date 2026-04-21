@@ -69,6 +69,7 @@ metadev-protocol/
 7. **Semver tags are immutable** — never rewrite or move a tag, always bump the version
 8. **Tag every release** — after merging a set of features, create a semver tag with an annotated message summarizing changes. This is mandatory: `copier update` relies on tags to diff versions for external projects
 9. **Tag message = changelog** — the annotated tag message must list what changed (added, changed, removed, fixed) so external projects can review before updating
+10. **Session discipline** — follow `.claude/rules/memory.md` at every session end: rewrite SESSION-CONTEXT.md (never append), update PILOT.md on status change. Every 5 commits: full rewrite regardless of apparent freshness (`git log --oneline -5`)
 
 ## Versioning
 
