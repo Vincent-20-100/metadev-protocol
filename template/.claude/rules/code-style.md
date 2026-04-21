@@ -14,6 +14,8 @@ hooks: [H001, H002, H014, H016]
 - Private attributes: `_leading_underscore`
 
 ## Language
+> **Advisory** — no hook enforces natural language. Relies on LLM discipline and review. Ruff catches `N` (naming) violations but not English vs French in docstrings.
+
 - All code, comments, docstrings, and commit messages in English
 - Variable and function names should be self-documenting
 

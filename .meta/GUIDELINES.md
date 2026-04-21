@@ -141,6 +141,18 @@ The server-side Action (if you generated this project with `enable_server_auth_c
 
 If you only work locally and never merge from cloud AI sandboxes or external contributors, the hook alone is sufficient. Enable the Action as soon as you start using any tool that commits on your behalf outside your machine.
 
+## Anti-patterns (lessons learned)
+
+Record frictions that cost us real time. Each entry has a date, the observed symptom, the resolved root cause, and a pointer to the fix. Future-you reads this before starting a new chantier.
+
+- **2026-04-19 — Bootstrap scaffold broken on first commit.** `copier copy` + `git commit` failed with 15 ruff errors because `line-length=88` was uniform and no rule doc guided the LLM. Root cause: strictness not differentiated per category, no advisory signal in `.claude/rules/`. Fix: PR-1 (v2.1.0) — `line-length=100`, `E501` per-file-ignores on `scripts/`+`tests/`, created `linting.md`. Doctrine: *hooks without a matching rule become traps.*
+
+- **2026-04-20 — CI on `main` red for ~1 week.** `audit_public_safety.py` denylist (`.env.*`, `credentials*`, `secrets*`) was flagging its own documentation (`secrets.md`, `.env.example`). Root cause: overly broad glob patterns. Fix: PR-2.5 — replaced broad patterns with explicit filename lists (`.env.local`, `secrets.json`, etc.). Doctrine: *a denylist must never swallow its own docs; prefer explicit lists over globs.*
+
+- **2026-04-20 — Meta-repo format ping-pong at line-length 88 vs template 100.** Environment ruff-format kept reformatting template files back to 88 because meta `pyproject.toml` had no `[tool.ruff]` config (inheriting ruff defaults). Root cause: meta not dogfooding its own template's linting config. Fix: PR-2.5 — added mirror `[tool.ruff]` to meta `pyproject.toml`. Doctrine: *the meta-repo must apply to itself what it ships to users.*
+
+- **2026-04-20 — Long-running Sonnet agent timeout with zero output.** A comprehensive audit agent was instructed to write a single final document at the end. It timed out at 29 min, losing all work. Fix: rewrite with checkpoint pattern — skeleton-first, incremental append per analyzed item, 15-min self-imposed budget. Redelivered in 2 min. Doctrine: *never trust an agent to write a final artifact at the end — force incremental disk writes.*
+
 ## Refactoring signals
 
 - When you copy-paste: extract
