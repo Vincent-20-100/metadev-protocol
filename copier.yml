@@ -88,22 +88,22 @@ _tasks:
 
 _message_after_copy: |
 
-  ╔══════════════════════════════════════════════════════════╗
-  ║                                                          ║
-  ║   {{ project_name }}                                     ║
-  ║   created with The Meta Protocol                         ║
-  ║                                                          ║
-  ╠══════════════════════════════════════════════════════════╣
-  ║                                                          ║
-  ║   Next steps:                                            ║
-  ║     1. cd {{ project_slug }}                             ║
-  ║     2. Open .meta/PILOT.md — set your first goal         ║
-  ║     3. Launch: claude                                    ║
-  ║                                                          ║
-  ║   Stack     Python {{ python_version }} · uv · ruff      ║
-  ║   Skills    /brainstorm /plan /debate /spec /test         ║
-  ║   Safety    40+ secret patterns scanned at every commit   ║
-  ║   Agents    code-reviewer · test-engineer · security      ║
-  ║             data-analyst · devil's-advocate               ║
-  ║                                                          ║
-  ╚══════════════════════════════════════════════════════════╝
+  ──────────────────────────────────────────────────────────
+
+    {{ project_name }}
+    created with The Meta Protocol
+
+  ──────────────────────────────────────────────────────────
+
+    Next steps:
+      1. cd {{ project_slug }}
+      2. Open .meta/PILOT.md — set your first goal
+      3. Launch: claude
+
+    Stack     Python {{ python_version }} · uv · ruff
+    Skills    /brainstorm /plan /debate /spec /test
+    Safety    40+ secret patterns scanned at every commit
+    Agents    code-reviewer · test-engineer · security
+              data-analyst · devil's-advocate
+
+  ──────────────────────────────────────────────────────────
