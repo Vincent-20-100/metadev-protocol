@@ -9,7 +9,7 @@
 project_name:
   type: str
   help: "Project name (e.g., egovault, price-tracker)"
-  default: "my-project"
+  default: "{{ _copier_conf.dst_path.name }}"
 
 project_slug:
   type: str
