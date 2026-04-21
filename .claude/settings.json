@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "if [ -n \"$CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE\" ]; then git config --local user.name 'Vincent' 2>/dev/null; git config --local user.email 'vincent.lamy.33@gmail.com' 2>/dev/null; git config --local commit.gpgsign false 2>/dev/null; command -v pre-commit >/dev/null 2>&1 && pre-commit install --install-hooks 2>/dev/null || true; echo '>>> Claude Code remote: git identity set to Vincent + pre-commit hooks installed' >&2; fi; exit 0"
+            "command": "if [ -n \"$CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE\" ]; then IDENTITY=\"\"; [ -f .claude/identity.local.yaml ] && IDENTITY=.claude/identity.local.yaml; [ -z \"$IDENTITY\" ] && [ -f .claude/identity.yaml ] && IDENTITY=.claude/identity.yaml; if [ -n \"$IDENTITY\" ]; then NAME=$(sed -n 's/^name:[[:space:]]*//p' \"$IDENTITY\" | head -1); EMAIL=$(sed -n 's/^email:[[:space:]]*//p' \"$IDENTITY\" | head -1); git config --local user.name \"$NAME\" 2>/dev/null; git config --local user.email \"$EMAIL\" 2>/dev/null; git config --local commit.gpgsign false 2>/dev/null; command -v pre-commit >/dev/null 2>&1 && pre-commit install --install-hooks 2>/dev/null || true; echo \">>> Claude Code remote: git identity set to $NAME from $IDENTITY\" >&2; else echo \">>> Claude Code remote detected but no .claude/identity.yaml found\" >&2; fi; fi; exit 0"
           }
         ]
       },

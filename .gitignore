@@ -32,6 +32,7 @@ node_modules/
 
 # Claude Code — local settings (never commit)
 .claude/settings.local.json
+.claude/identity.local.yaml
 
 # Tech watch dedup cache
 .meta/references/raw/.tech-watch-seen.json
