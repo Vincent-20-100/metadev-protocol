@@ -44,7 +44,7 @@ v2.0.0 shipped. Full changelog:
 - **v2.1.1** — audit drift fixes + CI dogfood (PR #2): 2 meta↔template critical drifts closed (`check_meta_naming.py` missing `synthesis` in error message, 4 hygiene hooks missing from meta `.pre-commit-config.yaml`). Meta-repo now runs the CI it ships to users (`sync-hosts.yml` workflow added, 42 tech_watch tests mirrored from template, `ci.yml` test job). Template gets a generic `ci.yml` (lint + pre-commit + test) — generated projects previously had zero lint/test CI. `python -m scripts.tech_watch` documented in CLAUDE.md.jinja Commands.
 - **v2.1.2** — conventional-pre-commit + ruff BLE (PR #3, audit gaps G8+G13): `compilerla/conventional-pre-commit` v4.0.0 added on `commit-msg` stage (template + meta) — enforces the Conventional Commits format already mandated by CLAUDE.md rule 7. Ruff `BLE` ruleset added (zero existing violations, pure insurance against future silent-error patterns). `TRY` (tryceratops) deliberately NOT added (27 stylistic violations, no bug signal).
 
-Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution, PR-4 (doctrine cleanup — retrograde G7/G15 hard-blocks without hooks, anti-patterns log, broader hard-block DX audit).
+Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution. PR-4 doctrine cleanup DONE (PR #8 identity.yaml, PR #9 hook DX + README copier questions).
 
 ---
 

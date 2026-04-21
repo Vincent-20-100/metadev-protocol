@@ -10,41 +10,34 @@
 
 ## Architecture snapshot
 
-<!-- ≤ 8 lines — current modules and how they communicate -->
-
 Template system: `copier.yml` drives generation from `template/`. Meta-repo and
 generated projects share `.claude/rules/` and skills (dogfood pattern). Pre-commit
-hooks enforce contracts (skills, secrets, naming, git author).
+hooks enforce contracts (skills, secrets, naming, git author). identity.yaml drives
+SessionStart git-author override in remote Claude Code sessions.
 
 ## Active decisions
 
-<!-- ≤ 15 lines — format: "We do X because Y. Rejected: Z." -->
-
-- memory.md shipped as advisory rule (no hook). Rejected: hook on line count — enforces
-  form not quality, same pattern as code-style.md.
-- SESSION-CONTEXT target ≤ 50 lines nominal (not hard block). Rejected: adaptive 50/80
-  — upper bound becomes default over time.
-- Session defined as milestone (commit) not Claude Code conversation. Aligns with
-  existing commit discipline.
+- memory.md ships as advisory rule (no hook). Rejected: hook on line count.
+- SESSION-CONTEXT target ≤ 50 lines nominal (not hard block). Rejected: adaptive 50/80.
+- Session = milestone (commit), not Claude Code conversation.
+- H004/H005 CI bypass (not CLAUDE_CODE env var conditioning): CI covers the real false-positive
+  scenario (fresh clone, runner). CLAUDE_CODE var detection is added complexity without coverage gain.
+- H008/H022 feature flag (sync_hosts): `if not config_exists: exit 0` — already implemented
+  before PR-4-B2. Single-host projects skip silently, multi-host invariant preserved.
 
 ## Traps to avoid
 
-<!-- ≤ 10 lines — format: "Don't do X — it causes Y (observed DATE)" -->
-
 - Don't commit from remote Claude Code session without identity.yaml — container
   overwrites git author with Claude (observed 2026-04-21, fixed via SessionStart hook).
-- Don't append SESSION-CONTEXT — stale decisions accumulate silently and misdirect
-  fresh LLM context.
+- Don't append SESSION-CONTEXT — stale decisions accumulate silently.
+- `uv sync --extra test` required (not just `uv sync`) to get pytest + pyyaml in venv.
+- Branch `claude/prevent-scope-creep-MCwhs` was 21 commits behind main — always rebase
+  before working on a long-lived feature branch.
 
 ## Open questions
 
-<!-- ≤ 8 lines — one question per line -->
-
-- hooks↔rules pairing chantier: synthesis-2026-04-21-hard-block-dx-audit.md pending
-  implementation (PR-4-B2 not yet opened).
+- Phase 4 launch: vhs install blocking demo GIF recording.
 
 ## Pending plans
-
-<!-- ≤ 9 lines — format: "- plan-<slug>.md — <one-line status>" -->
 
 - Phase 4 launch (outreach + demo GIF) — unblocked, awaiting vhs install for GIF.
