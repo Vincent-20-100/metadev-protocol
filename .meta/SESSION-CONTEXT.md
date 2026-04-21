@@ -12,32 +12,40 @@
 
 Template system: `copier.yml` drives generation from `template/`. Meta-repo and
 generated projects share `.claude/rules/` and skills (dogfood pattern). Pre-commit
-hooks enforce contracts (skills, secrets, naming, git author). identity.yaml drives
-SessionStart git-author override in remote Claude Code sessions.
+hooks enforce contracts. `.pre-commit-config.yaml.jinja` now gates H008 on
+`enable_multi_host`. 5 multi-host artifacts (AGENTS.md, GEMINI.md, sync-config.yaml,
+scripts/sync_hosts.py, sync-hosts.yml) excluded by default via Jinja `_exclude`.
 
 ## Active decisions
 
-- memory.md ships as advisory rule (no hook). Rejected: hook on line count.
-- SESSION-CONTEXT target ≤ 50 lines nominal (not hard block). Rejected: adaptive 50/80.
+- **Claude-only is the template default (ADR-012).** Multi-host is opt-in via
+  `copier copy . proj --data enable_multi_host=true`. No prompt at default copy
+  (`when: false`). Rejected: 2 per-host bools (YAGNI), negative flag (silent
+  regression on update), sub-template / post-gen script (two sources of truth).
+- **D4 clarification:** rule files ship unconditionally, feature artifacts do not.
+  v2.0.0 had over-applied D4 by shipping the entire multi-host feature unconditionally.
+- SESSION-CONTEXT target ≤ 50 lines nominal (not hard block).
 - Session = milestone (commit), not Claude Code conversation.
-- H004/H005 CI bypass (not CLAUDE_CODE env var conditioning): CI covers the real false-positive
-  scenario (fresh clone, runner). CLAUDE_CODE var detection is added complexity without coverage gain.
-- H008/H022 feature flag (sync_hosts): `if not config_exists: exit 0` — already implemented
-  before PR-4-B2. Single-host projects skip silently, multi-host invariant preserved.
 
 ## Traps to avoid
 
-- Don't commit from remote Claude Code session without identity.yaml — container
-  overwrites git author with Claude (observed 2026-04-21, fixed via SessionStart hook).
+- **Post-v2.2.0, do not assume AGENTS.md / GEMINI.md / sync-config.yaml exist in a
+  generated project** — they are opt-in. Default projects are Claude-only.
+- When editing `template/.pre-commit-config.yaml.jinja`, remember the file is now
+  Jinja-rendered. Any `{% %}` or `{{ }}` in the YAML body must be escaped.
+- Don't commit from remote Claude Code session without identity.yaml (observed
+  2026-04-21, fixed via SessionStart hook).
 - Don't append SESSION-CONTEXT — stale decisions accumulate silently.
-- `uv sync --extra test` required (not just `uv sync`) to get pytest + pyyaml in venv.
-- Branch `claude/prevent-scope-creep-MCwhs` was 21 commits behind main — always rebase
-  before working on a long-lived feature branch.
 
 ## Open questions
 
-- Phase 4 launch: vhs install blocking demo GIF recording.
+- Phase 4 launch: vhs install still blocking demo GIF recording.
+- Should future opt-in features follow the same `when: false` + `--data` pattern,
+  or prompt at copier copy? Case-by-case for now.
 
 ## Pending plans
 
 - Phase 4 launch (outreach + demo GIF) — unblocked, awaiting vhs install for GIF.
+- Tag v2.2.0 after commits land. Annotated message must include migration note for
+  projects that actively use multi-host (they must answer `enable_multi_host=true`
+  on `copier update`).

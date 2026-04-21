@@ -74,7 +74,7 @@ Drafts are gitignored. Validated artifacts (`active/`) and history (`archive/`) 
 - **9 rules** — the non-negotiable contract between you and the AI. Few hard rules that are always followed beat many soft rules that are sometimes ignored.
 - **10 skills** — `/brainstorm`, `/spec`, `/debate`, `/plan`, `/orchestrate`, `/research`, `/vision`, `/tech-watch`, `/test`, `/save-progress`. Reusable across every project you generate.
 - **6 agent personas** — code-reviewer, test-engineer, security-auditor, data-analyst, devil's-advocate, librarian. Invoked on demand via the `Task` tool.
-- **Multi-LLM day one** — Claude Code is the source of truth. `AGENTS.md` (Codex) and `GEMINI.md` (Gemini CLI) are auto-regenerated @import stubs pointing at `CLAUDE.md`. Tier 2 (Cursor, Windsurf, Cline) is a one-line edit in `sync-config.yaml`.
+- **Claude-first, multi-LLM opt-in** — default generation produces a Claude-only project. Multi-host support (Codex via `AGENTS.md`, Gemini via `GEMINI.md`, auto-regenerated @import stubs pointing at `CLAUDE.md`, plus `sync-config.yaml` + `scripts/sync_hosts.py` + pre-commit hook H008 + CI workflow) activates via `copier copy . my-proj --data enable_multi_host=true`. See ADR-012 for the rationale.
 - **Deterministic harness audit** — `evals/harness_audit.py` scores the repo on 6 categories (Skills, Agents, Hosts, Contract, Taxonomy, Safety, 60 pts max). Invariant: a well-formed generated project scores 60/60.
 - **Hooks over instructions** — every Python file is auto-linted on save (ruff PostToolUse hook), dangerous operations are blocked or require confirmation, co-authored-by trailers suppressed natively.
 - **Session continuity** — `PILOT.md` (project dashboard) + `SESSION-CONTEXT.md` (living context rewritten each session). Claude remembers what you decided three weeks ago.
@@ -123,7 +123,7 @@ Every generated project ships with 10 skills, 6 agent personas, 4 guardrail scri
 | `check_git_author.py` | pre-commit hook | Commits authored as `Claude` / `Anthropic` / co-authored-by trailers |
 | `check_meta_naming.py` | pre-commit hook | `.meta/active/` and `.meta/archive/` files that violate the `<type>-<YYYY-MM-DD>-<slug>.md` convention |
 | `check_skills_contract.py` | pre-commit hook | Trigger-table rows that don't map to real skill or agent files on disk |
-| `sync_hosts.py` | pre-commit hook + CI workflow | Drift between `CLAUDE.md` / `.claude/` and the auto-generated `AGENTS.md` / `GEMINI.md` stubs |
+| `sync_hosts.py` | pre-commit hook + CI workflow | Drift between `CLAUDE.md` / `.claude/` and the auto-generated `AGENTS.md` / `GEMINI.md` stubs (multi-host opt-in only) |
 | `evals/harness_audit.py` | manual + CI | 6-category scorecard (60 pts). Invariant: generated project = 60/60 |
 
 ### Just the skills, no template
@@ -144,11 +144,11 @@ No `.meta/` taxonomy, no hooks, no CLAUDE.md contract — just the skills.
 ```
 my-project/
 ├── CLAUDE.md                       # Session contract (source of truth)
-├── AGENTS.md                       # Auto-generated Codex stub → CLAUDE.md
-├── GEMINI.md                       # Auto-generated Gemini stub → CLAUDE.md
-├── sync-config.yaml                # Host registry (tier 1 active, tier 2 commented)
+├── AGENTS.md                       # [opt-in] Auto-generated Codex stub → CLAUDE.md
+├── GEMINI.md                       # [opt-in] Auto-generated Gemini stub → CLAUDE.md
+├── sync-config.yaml                # [opt-in] Host registry (tier 1 active, tier 2 commented)
 ├── pyproject.toml                  # uv, ruff, pytest
-├── .pre-commit-config.yaml         # Lint + hooks + secret scan + sync-hosts check
+├── .pre-commit-config.yaml         # Lint + hooks + secret scan (+ sync-hosts check when multi-host)
 │
 ├── src/my_project/                 # Package source
 ├── tests/                          # Test suite
@@ -156,7 +156,7 @@ my-project/
 │   ├── check_meta_naming.py        # .meta/ filename convention
 │   ├── check_git_author.py         # Block AI authorship
 │   ├── audit_public_safety.py      # Secret + sensitive file scanner
-│   └── sync_hosts.py               # Regenerate AGENTS.md / GEMINI.md stubs
+│   └── sync_hosts.py               # [opt-in] Regenerate AGENTS.md / GEMINI.md stubs
 ├── evals/
 │   └── harness_audit.py            # Deterministic 6-category scorecard
 ├── data/                           # raw/ → interim/ → processed/

@@ -1,7 +1,7 @@
 # PILOT.md — metadev-protocol
 
 **Date:** 2026-04-21
-**Phase:** v2.1.2 shipped — PR-4 doctrine cleanup in progress
+**Phase:** v2.2.0 shipping — Claude-only default (ADR-012)
 
 ---
 
@@ -43,6 +43,7 @@ v2.0.0 shipped. Full changelog:
 - **v2.1.0** — hooks↔rules pairing (PR #1): 5 new rules in D1 hybrid format (YAML frontmatter + blockquote header) — `linting.md`, `skills-contract.md`, `multi-host.md`, `branching.md`, `secrets.md`. Template ruff strictness revised (line-length 88→100, E501 active on `src/` but per-file-ignored on `scripts/`+`tests/`). Bootstrap friction resolved: first commit on generated scaffold now passes all 13 pre-commit hooks. Meta-repo dogfood: `[tool.ruff]` config mirrored from template. `audit_public_safety.py` denylist tightened (`.env.*`/`credentials*`/`secrets*` → explicit filename lists, no more false positives on docs). CI on `main` unblocked (was red ~1 week). Debate record: template parametrization modes — Option C convergence (empty_dirs flag) but implementation parked pending external user demand.
 - **v2.1.1** — audit drift fixes + CI dogfood (PR #2): 2 meta↔template critical drifts closed (`check_meta_naming.py` missing `synthesis` in error message, 4 hygiene hooks missing from meta `.pre-commit-config.yaml`). Meta-repo now runs the CI it ships to users (`sync-hosts.yml` workflow added, 42 tech_watch tests mirrored from template, `ci.yml` test job). Template gets a generic `ci.yml` (lint + pre-commit + test) — generated projects previously had zero lint/test CI. `python -m scripts.tech_watch` documented in CLAUDE.md.jinja Commands.
 - **v2.1.2** — conventional-pre-commit + ruff BLE (PR #3, audit gaps G8+G13): `compilerla/conventional-pre-commit` v4.0.0 added on `commit-msg` stage (template + meta) — enforces the Conventional Commits format already mandated by CLAUDE.md rule 7. Ruff `BLE` ruleset added (zero existing violations, pure insurance against future silent-error patterns). `TRY` (tryceratops) deliberately NOT added (27 stylistic violations, no bug signal).
+- **v2.2.0** — Claude-only default (ADR-012): flips v2.0.0's unconditional multi-host to opt-in via `--data enable_multi_host=true`. 5 artifacts (AGENTS.md, GEMINI.md, sync-config.yaml, scripts/sync_hosts.py, sync-hosts.yml workflow) + pre-commit hook H008 gated via Jinja `_exclude` + `.pre-commit-config.yaml.jinja`. `when: false` on the copier question = no prompt at default copy. Rule `multi-host.md` keeps shipping unconditionally (D4 clarification: rule files ≠ feature artifacts). Migration: `copier update` on egovault/T7/Cert Masterclass removes 5 files — confirmed safe (files unused in last 6 months). Debate: `.meta/debates/debate-2026-04-21-claude-only-mode-implementation.md`.
 
 Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution. PR-4 doctrine cleanup DONE (PR #8 identity.yaml, PR #9 hook DX + README copier questions).
 
