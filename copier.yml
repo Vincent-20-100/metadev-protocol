@@ -18,8 +18,13 @@ project_slug:
 
 author_name:
   type: str
-  help: "Your first name (for pyproject.toml)"
+  help: "Your first name (for pyproject.toml and SessionStart git-author override)"
   default: "User"
+
+author_email:
+  type: str
+  help: "Your email (for pyproject.toml and SessionStart git-author override in Claude Code remote)"
+  default: "you@example.com"
 
 python_version:
   type: str

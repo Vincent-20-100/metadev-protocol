@@ -153,6 +153,8 @@ Record frictions that cost us real time. Each entry has a date, the observed sym
 
 - **2026-04-20 — Long-running Sonnet agent timeout with zero output.** A comprehensive audit agent was instructed to write a single final document at the end. It timed out at 29 min, losing all work. Fix: rewrite with checkpoint pattern — skeleton-first, incremental append per analyzed item, 15-min self-imposed budget. Redelivered in 2 min. Doctrine: *never trust an agent to write a final artifact at the end — force incremental disk writes.*
 
+- **2026-04-21 — Claude Code remote hijacks git author identity.** The cloud_default container rewrites `/root/.gitconfig` at every spin-up with `user.name=Claude`, `user.email=noreply@anthropic.com`, and forces SSH-based GPG signing via `/tmp/code-sign`. Every commit made in a remote Claude session landed with "Claude" as author until this was caught and overridden. Fix: SessionStart hook in `.claude/settings.json` detects `CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE` env var and overrides git config at repo-local scope (which takes precedence over global). Belt-and-suspenders: the same hook runs `pre-commit install` so `check-git-author` fires as a safety net. Doctrine: *when a managed environment forces identity, override at repo-local scope + install the safety-net hook; never trust the cloud default.*
+
 ## Refactoring signals
 
 - When you copy-paste: extract
