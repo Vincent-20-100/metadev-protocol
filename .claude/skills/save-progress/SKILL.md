@@ -36,6 +36,30 @@ It prints a JSON summary and exits non-zero on any failure.
 - [ ] PILOT.md reflects actual state
 - [ ] SESSION-CONTEXT.md captures traps and open questions, not just wins
 
+## Quick-pause mode (--skip-tests)
+
+For mid-session checkpoints where tests are genuinely WIP, you may skip the
+pytest run:
+
+```bash
+uv run python scripts/save_progress_preflight.py --skip-tests
+```
+
+**When to use:** only when tests are intentionally red (e.g., mid-refactor,
+scaffold not yet wired). Not for "tests are slow" or "I can't fix this now."
+
+**Required:** when using `--skip-tests`, add a `Skip-Tests: true` trailer to
+the commit message so the bypass is machine-readable in git history:
+
+```
+fix: partial scaffold for new module
+
+Skip-Tests: true
+```
+
+Also note in SESSION-CONTEXT.md under "Traps to avoid" that tests are red
+and why, so the next session does not ship without fixing them.
+
 ## Rationalizations you must not accept
 
 | Excuse | Why it's wrong |
@@ -44,3 +68,4 @@ It prints a JSON summary and exits non-zero on any failure.
 | "I'll update PILOT.md later." | You won't. Next session reads PILOT.md first; stale = wrong. |
 | "SESSION-CONTEXT.md is fine from last time." | Context decays every session. Rewrite, don't append. |
 | "Small change, skip the preflight." | Small changes break things. The script takes 30 seconds. |
+| "Tests are slow, I'll use --skip-tests." | --skip-tests is for intentionally red tests, not slow ones. |

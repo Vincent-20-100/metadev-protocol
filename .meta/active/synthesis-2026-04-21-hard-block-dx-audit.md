@@ -100,3 +100,33 @@
 ### Key finding
 
 The synthesis's hard-block labels were applied inconsistently: H015/H017 (SessionStart), H027 (public-alert), and H033 (pytest config) are called hard-block but have zero blocking behavior. The real demotion candidates with actual DX friction are H004/H005 (author checks in meta-repo) and H008/H022 (sync-hosts scope too broad for single-host projects).
+
+---
+
+## Implementation status (PR-4-B2, 2026-04-21)
+
+### Already implemented before this PR
+- **H008/H022** (`sync-hosts --check`) — feature flag already present in `scripts/sync_hosts.py`
+  and `template/scripts/sync_hosts.py`: `if args.check and not config_exists(root): exit 0`.
+  Single-host projects skip silently; multi-host invariant fully preserved.
+- **H032** (`save_progress_preflight --skip-tests`) — flag already in both preflight scripts.
+
+### Implemented in this PR
+- **H004** (`check_git_author` pre-commit) — CI bypass: `if os.environ.get("CI"): return None`
+  in `check_author()`. Applied to meta-repo and template scripts.
+- **H005** (`check_git_author` commit-msg) — CI bypass: same guard in `check_coauthors()`.
+- **H032 trailer** — `--skip-tests` now documented in both SKILL.md files with `Skip-Tests: true`
+  trailer requirement; auditable in git history.
+
+### Docs-only reclassifications (label corrections, no code)
+- **H015** (SessionStart PILOT.md welcome) — reclassified: **informational**, never blocks.
+- **H017** (template SessionStart welcome) — reclassified: **informational**, never blocks.
+- **H027** (CI public-alert on repo visibility change) — reclassified: **informational**;
+  already uses `continue-on-error: true`, enforcement label was wrong.
+- **H033** (`testpaths` in pyproject.toml) — reclassified: **pytest config**, not a hook;
+  no blocking mechanism, label was wrong.
+
+### Not implemented (out of scope)
+- H004/H005 CLAUDE_CODE_* conditioning (DA suggestion): CI bypass covers the real use case
+  (fresh clones, CI runners). CLAUDE_CODE env var detection adds complexity without
+  additional coverage — the existing forbidden-substring check already targets agent loops.
