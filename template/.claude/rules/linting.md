@@ -19,6 +19,7 @@ The project enforces these ruff rule categories (see `pyproject.toml`):
 - `UP` — pyupgrade (modern Python syntax)
 - `B` — flake8-bugbear (likely bugs)
 - `SIM` — flake8-simplify (code simplification)
+- `BLE` — flake8-blind-except (enforces explicit exception types, complements `no silent errors` rule)
 
 ## Line length policy
 
