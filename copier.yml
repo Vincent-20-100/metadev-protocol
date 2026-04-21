@@ -79,7 +79,8 @@ _exclude:
   - "{% if not enable_multi_host %}.github/workflows/sync-hosts.yml{% endif %}"
 
 _tasks:
-  - "git init"
+  - "git init -b main"
+  - "git symbolic-ref HEAD refs/heads/main"
   - >
     uv sync && uv run pre-commit install &&
     echo 'Dependencies installed, pre-commit activated.' ||
