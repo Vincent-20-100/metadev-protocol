@@ -96,6 +96,15 @@
     ],
     "SessionStart": [
       {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -n \"$CLAUDE_CODE_REMOTE_ENVIRONMENT_TYPE\" ]; then git config --local user.name '{{ author_name }}' 2>/dev/null; git config --local user.email '{{ author_email }}' 2>/dev/null; git config --local commit.gpgsign false 2>/dev/null; command -v pre-commit >/dev/null 2>&1 && pre-commit install --install-hooks 2>/dev/null || true; echo '>>> Claude Code remote: git identity set to {{ author_name }} + pre-commit hooks installed' >&2; fi; exit 0"
+          }
+        ]
+      },
+      {
         "matcher": "compact",
         "hooks": [
           {
