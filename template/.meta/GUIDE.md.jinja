@@ -68,11 +68,7 @@ Runs a checklist (tests pass? lint clean? no stray files?), then updates PILOT.m
 
 **Use when:** you're done for the session or hit a milestone worth saving.
 
-### /lint — anytime
-
-Runs `uv run ruff check . --fix` and `uv run ruff format .` on the whole project. Reports what changed.
-
-**Use when:** you want a full project lint (individual files are linted automatically by hooks).
+If tests are intentionally red mid-refactor, use `--skip-tests` to save a checkpoint without blocking — but add a `Skip-Tests: true` trailer to the commit message so the bypass is visible in history.
 
 ### /test — anytime
 

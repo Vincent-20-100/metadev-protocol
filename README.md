@@ -219,6 +219,32 @@ cd my-project && claude
 > [!NOTE]
 > Requires [uv](https://github.com/astral-sh/uv), [copier](https://copier.readthedocs.io), and a [Claude Code](https://claude.ai/code) subscription.
 
+### Copier questions
+
+When you run `copier copy`, you'll be asked 6 questions:
+
+| Question | Default | Notes |
+|---|---|---|
+| `project_name` | `my-project` | Human-readable name |
+| `project_slug` | auto-derived | Python package name (snake_case) — leave as-is unless you need a different identifier |
+| `author_name` | `User` | Your first name — used in `pyproject.toml` and to override git author in Claude Code remote sessions |
+| `author_email` | `you@example.com` | Same — used in `pyproject.toml` and remote git author override |
+| `meta_visibility` | `public` | `public` = `.meta/` is committed (team can see decisions, context). `private` = `.meta/` is gitignored (solo or confidential projects) |
+| `execution_mode` | `safe` | `safe` = Claude asks before touching config files, CI, or running destructive commands. `full-auto` = unrestricted (VPS, overnight runs). See [details](docs/execution-modes.md) |
+| `enable_server_auth_check` | `false` | Adds a CI workflow that blocks PRs with Claude/Anthropic-authored commits — useful if you use cloud AI sandboxes |
+
+**Non-interactive mode** (CI or scripted setup):
+
+```bash
+copier copy gh:Vincent-20-100/metadev-protocol my-project --trust --defaults
+# or pre-fill specific values:
+copier copy gh:Vincent-20-100/metadev-protocol my-project --trust \
+  --data project_name="my-project" \
+  --data author_name="Alice" \
+  --data author_email="alice@example.com" \
+  --data execution_mode="safe"
+```
+
 ### Update an existing project
 
 ```bash
