@@ -1,7 +1,7 @@
 # PILOT.md — metadev-protocol
 
-**Date:** 2026-04-20
-**Phase:** v2.1.0 shipped — hooks↔rules pairing complete
+**Date:** 2026-04-21
+**Phase:** v2.1.2 shipped — PR-4 doctrine cleanup in progress
 
 ---
 
@@ -41,8 +41,10 @@ v2.0.0 shipped. Full changelog:
 - **v1.6.0** — skills architecture overhaul (ADR-010): ghost agents deleted then re-shipped as real files (code-reviewer, test-engineer, security-auditor, data-analyst), meta ↔ template full parity enforced, /radar + /audit-repo fused into /tech-watch (sweep + deep), /test and /save-progress thinned
 - **v2.0.0** — multi-host + librarian + harness audit (ADR-011): AGENTS.md/GEMINI.md auto-generated @import stubs (Claude primary, Codex + Gemini import-stubs, tier 2 commented), 6th local agent `librarian` (read-only deep-source curator with file:line citations + confidence), `evals/harness_audit.py` 6-category deterministic scorecard (60 pts, meta invariant 60/60), deep-sources convention in CLAUDE.md (librarian-only, not enforced by gate hook — debate-resolved)
 - **v2.1.0** — hooks↔rules pairing (PR #1): 5 new rules in D1 hybrid format (YAML frontmatter + blockquote header) — `linting.md`, `skills-contract.md`, `multi-host.md`, `branching.md`, `secrets.md`. Template ruff strictness revised (line-length 88→100, E501 active on `src/` but per-file-ignored on `scripts/`+`tests/`). Bootstrap friction resolved: first commit on generated scaffold now passes all 13 pre-commit hooks. Meta-repo dogfood: `[tool.ruff]` config mirrored from template. `audit_public_safety.py` denylist tightened (`.env.*`/`credentials*`/`secrets*` → explicit filename lists, no more false positives on docs). CI on `main` unblocked (was red ~1 week). Debate record: template parametrization modes — Option C convergence (empty_dirs flag) but implementation parked pending external user demand.
+- **v2.1.1** — audit drift fixes + CI dogfood (PR #2): 2 meta↔template critical drifts closed (`check_meta_naming.py` missing `synthesis` in error message, 4 hygiene hooks missing from meta `.pre-commit-config.yaml`). Meta-repo now runs the CI it ships to users (`sync-hosts.yml` workflow added, 42 tech_watch tests mirrored from template, `ci.yml` test job). Template gets a generic `ci.yml` (lint + pre-commit + test) — generated projects previously had zero lint/test CI. `python -m scripts.tech_watch` documented in CLAUDE.md.jinja Commands.
+- **v2.1.2** — conventional-pre-commit + ruff BLE (PR #3, audit gaps G8+G13): `compilerla/conventional-pre-commit` v4.0.0 added on `commit-msg` stage (template + meta) — enforces the Conventional Commits format already mandated by CLAUDE.md rule 7. Ruff `BLE` ruleset added (zero existing violations, pure insurance against future silent-error patterns). `TRY` (tryceratops) deliberately NOT added (27 stylistic violations, no bug signal).
 
-Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution, PR-3 (conventional-pre-commit + ruff BLE/TRY), PR-4 (doctrine cleanup — C1 conflict R023↔H013, anti-patterns log).
+Phase 4 (launch) is unblocked: outreach messages drafted, platform posts drafted. Pending: demo GIF (vhs), launch sequence execution, PR-4 (doctrine cleanup — retrograde G7/G15 hard-blocks without hooks, anti-patterns log, broader hard-block DX audit).
 
 ---
 
