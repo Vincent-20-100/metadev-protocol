@@ -13,6 +13,10 @@ build/
 .vscode/
 .idea/
 
+# Claude Code — local per-user override of the git identity (never commit)
+.claude/identity.local.yaml
+.claude/settings.local.json
+
 # Meta protocol — controlled by meta_visibility copier parameter
 {%- if meta_visibility == "private" %}
 .meta/
