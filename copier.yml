@@ -52,6 +52,12 @@ enable_server_auth_check:
   help: "Add a GitHub Actions workflow that blocks PRs containing Claude/Anthropic-authored commits? Recommended if you use cloud AI sandboxes or have external contributors."
   default: false
 
+enable_multi_host:
+  type: bool
+  help: "Opt in to multi-LLM host coordination (Codex via AGENTS.md, Gemini via GEMINI.md, sync-config.yaml, sync_hosts.py, pre-commit hook H008, CI workflow). Default is Claude-only: none of these files are generated. Activate via `--data enable_multi_host=true` when needed."
+  default: false
+  when: false
+
 # ─────────────────────────────────────────
 # Copier configuration
 # ─────────────────────────────────────────
@@ -66,6 +72,11 @@ _exclude:
   - ".meta/drafts/*"
   - "!.meta/drafts/.gitkeep"
   - "{% if not enable_server_auth_check %}.github/workflows/check-commit-authors.yml{% endif %}"
+  - "{% if not enable_multi_host %}AGENTS.md{% endif %}"
+  - "{% if not enable_multi_host %}GEMINI.md{% endif %}"
+  - "{% if not enable_multi_host %}sync-config.yaml{% endif %}"
+  - "{% if not enable_multi_host %}scripts/sync_hosts.py{% endif %}"
+  - "{% if not enable_multi_host %}.github/workflows/sync-hosts.yml{% endif %}"
 
 _tasks:
   - "git init"

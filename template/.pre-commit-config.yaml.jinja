@@ -50,9 +50,11 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+{%- if enable_multi_host %}
       - id: sync-hosts
         name: Verify multi-host stubs are up-to-date
         entry: python scripts/sync_hosts.py --check
         language: system
         pass_filenames: false
         files: '\.claude/skills/|\.claude/agents/|CLAUDE\.md|sync-config\.yaml'
+{%- endif %}

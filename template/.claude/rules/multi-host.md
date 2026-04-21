@@ -1,12 +1,12 @@
 ---
 enforcement: hard-block
 hooks: [H008, H031]
-applies_when: execution_mode == "multi-host"
+applies_when: enable_multi_host == true
 ---
 
-> **Enforcement:** hard-block in multi-host mode — `scripts/sync_hosts.py` regenerates stubs, pre-commit hook `H008` verifies they are up to date, CI workflow `H031` double-checks.
+> **Enforcement:** hard-block when multi-host is opted in — `scripts/sync_hosts.py` regenerates stubs, pre-commit hook `H008` verifies they are up to date, CI workflow `H031` double-checks.
 
-> **Note:** This rule applies only when `execution_mode: multi-host` is enabled in `copier.yml`. In single-host projects, the rule is inert — `sync-config.yaml` and the stub files are absent. The rule ships unconditionally so that a project upgrading to multi-host mid-project has the doctrine already present (per debate D4, 2026-04-20: avoid silent Jinja-gated rules).
+> **Note:** This rule applies only in projects generated with `--data enable_multi_host=true`. In Claude-only projects (the default), the rule is inert — `sync-config.yaml`, `AGENTS.md`, `GEMINI.md`, and `scripts/sync_hosts.py` are absent. The rule file itself ships unconditionally so that a project opting into multi-host mid-life has the doctrine already present (per debate D4, 2026-04-20: avoid silent Jinja-gated rules). See ADR-012 for the distinction between **rule files** (ship unconditionally) and **feature artifacts** (opt-in).
 
 # Multi-host agent coordination
 
