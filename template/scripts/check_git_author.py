@@ -12,6 +12,7 @@ See .pre-commit-config.yaml for the two hook entries.
 
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import sys
@@ -24,6 +25,8 @@ _COAUTHOR_RE = re.compile(r"co-authored-by:[^\n]*", re.IGNORECASE)
 
 def check_author() -> str | None:
     """Return error message if the git author identity is forbidden."""
+    if os.environ.get("CI"):
+        return None
     try:
         ident = subprocess.check_output(["git", "var", "GIT_AUTHOR_IDENT"], text=True).strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
@@ -42,6 +45,8 @@ def check_author() -> str | None:
 
 def check_coauthors(msg_file: Path) -> str | None:
     """Return error message if the commit message has a forbidden Co-authored-by trailer."""
+    if os.environ.get("CI"):
+        return None
     try:
         content = msg_file.read_text(encoding="utf-8", errors="replace").lower()
     except OSError:
