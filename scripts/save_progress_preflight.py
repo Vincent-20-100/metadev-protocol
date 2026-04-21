@@ -7,10 +7,12 @@ abort before touching .meta/ files.
 
 Usage:
     uv run python scripts/save_progress_preflight.py
+    uv run python scripts/save_progress_preflight.py --skip-tests   # quick-pause
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 from pathlib import Path
@@ -43,14 +45,28 @@ def _check_no_root_drafts(root: Path) -> dict[str, object]:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(prog="save_progress_preflight")
+    parser.add_argument(
+        "--skip-tests",
+        action="store_true",
+        help="Skip the pytest run (for quick-pause scenarios where tests are known WIP)",
+    )
+    args = parser.parse_args()
+
     root = Path(__file__).resolve().parent.parent
-    checks = [
-        _run("pytest", ["uv", "run", "pytest", "-q"]),
-        _run("ruff check", ["uv", "run", "ruff", "check", "."]),
-        _run("ruff format --check", ["uv", "run", "ruff", "format", "--check", "."]),
-        _run("git status", ["git", "status", "--short"]),
-        _check_no_root_drafts(root),
-    ]
+    checks: list[dict[str, object]] = []
+    if args.skip_tests:
+        checks.append({"label": "pytest", "ok": True, "skipped": True})
+    else:
+        checks.append(_run("pytest", ["uv", "run", "pytest", "-q"]))
+    checks.extend(
+        [
+            _run("ruff check", ["uv", "run", "ruff", "check", "."]),
+            _run("ruff format --check", ["uv", "run", "ruff", "format", "--check", "."]),
+            _run("git status", ["git", "status", "--short"]),
+            _check_no_root_drafts(root),
+        ]
+    )
     all_ok = all(c["ok"] for c in checks)
     summary = {"ok": all_ok, "checks": checks}
     print(json.dumps(summary, indent=2, ensure_ascii=False))
