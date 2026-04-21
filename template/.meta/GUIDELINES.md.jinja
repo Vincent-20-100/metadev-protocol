@@ -141,6 +141,16 @@ The server-side Action (if you generated this project with `enable_server_auth_c
 
 If you only work locally and never merge from cloud AI sandboxes or external contributors, the hook alone is sufficient. Enable the Action as soon as you start using any tool that commits on your behalf outside your machine.
 
+## Anti-patterns (lessons learned)
+
+Record frictions that cost you real time. Each entry has a date, the observed symptom, the resolved root cause, and a pointer to the fix. Future-you reads this before starting a new chantier.
+
+Template format:
+
+- **YYYY-MM-DD — short title of the symptom.** One-paragraph description of what failed and how you first noticed it. Root cause: *what was actually broken*. Fix: *commit/PR reference or change*. Doctrine: *one-line rule to prevent recurrence* (italicized for scanability).
+
+Keep entries terse — this is a log, not a post-mortem. Add one as soon as you resolve a real friction, while the context is fresh.
+
 ## Refactoring signals
 
 - When you copy-paste: extract
