@@ -36,6 +36,9 @@ scripts/sync_hosts.py, sync-hosts.yml) excluded by default via Jinja `_exclude`.
 - Don't commit from remote Claude Code session without identity.yaml (observed
   2026-04-21, fixed via SessionStart hook).
 - Don't append SESSION-CONTEXT — stale decisions accumulate silently.
+- PostToolUse ruff --fix strips unused imports after each Edit before their usage is
+  added. Fix: write usage before import (reverse edit order), or use function-local
+  imports for one-off additions.
 
 ## Open questions
 
