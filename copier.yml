@@ -18,13 +18,13 @@ project_slug:
 
 author_name:
   type: str
-  help: "Your name for commit authorship and pyproject.toml. Must match your git config — run 'git config user.name' to check."
-  default: "{{ 'git config user.name' | shell | trim }}"
+  help: "Your name for commit authorship and pyproject.toml. Run 'git config user.name' to get your current value."
+  default: "User"
 
 author_email:
   type: str
-  help: "Your email for commit authorship. Must be registered in your GitHub account for commits to link to your profile. Run 'git config user.email' to check."
-  default: "{{ 'git config user.email' | shell | trim }}"
+  help: "Your email for commit authorship. Must be registered in your GitHub account for commits to link to your profile. Run 'git config user.email' to get your current value."
+  default: "you@example.com"
 
 python_version:
   type: str
