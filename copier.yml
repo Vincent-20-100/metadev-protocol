@@ -18,13 +18,13 @@ project_slug:
 
 author_name:
   type: str
-  help: "Your first name (for pyproject.toml and SessionStart git-author override)"
-  default: "User"
+  help: "Your name for commit authorship and pyproject.toml. Must match your git config — run 'git config user.name' to check."
+  default: "{{ 'git config user.name' | shell | trim }}"
 
 author_email:
   type: str
-  help: "Your email (for pyproject.toml and SessionStart git-author override in Claude Code remote)"
-  default: "you@example.com"
+  help: "Your email for commit authorship. Must be registered in your GitHub account for commits to link to your profile. Run 'git config user.email' to check."
+  default: "{{ 'git config user.email' | shell | trim }}"
 
 python_version:
   type: str
@@ -49,8 +49,8 @@ execution_mode:
 
 enable_server_auth_check:
   type: bool
-  help: "Add a GitHub Actions workflow that blocks PRs containing Claude/Anthropic-authored commits? Recommended if you use cloud AI sandboxes or have external contributors."
-  default: false
+  help: "Add a GitHub Actions workflow that blocks commits authored OR committed by Claude/Anthropic — scans every PR to main and every branch push. Recommended if you use any AI coding tool. Disable only if you enforce authorship by another means."
+  default: true
 
 enable_multi_host:
   type: bool
