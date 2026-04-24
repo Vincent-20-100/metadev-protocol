@@ -27,6 +27,18 @@ def check_author() -> str | None:
     """Return error message if the git author identity is forbidden."""
     if os.environ.get("CI"):
         return None
+
+    # Layer 1: check $GIT_AUTHOR_NAME env var (injected by some AI tools directly)
+    env_name = os.environ.get("GIT_AUTHOR_NAME", "").lower()
+    if env_name and any(bad in env_name for bad in FORBIDDEN_SUBSTRINGS):
+        return (
+            f"check_git_author: $GIT_AUTHOR_NAME='{env_name}' is forbidden.\n"
+            "  Unset the env var or fix your git config:\n"
+            "    git config user.name 'Your Name'\n"
+            "    git config user.email 'you@example.com'"
+        )
+
+    # Layer 2: check git var (reads git config, respects env vars)
     try:
         ident = subprocess.check_output(["git", "var", "GIT_AUTHOR_IDENT"], text=True).strip()
     except (subprocess.CalledProcessError, FileNotFoundError):
