@@ -2,6 +2,12 @@
   "attribution": {
     "commit": ""
   },
+  "env": {
+    "GIT_AUTHOR_NAME": "{{ author_name }}",
+    "GIT_AUTHOR_EMAIL": "{{ author_email }}",
+    "GIT_COMMITTER_NAME": "{{ author_name }}",
+    "GIT_COMMITTER_EMAIL": "{{ author_email }}"
+  },
   "permissions": {
 {%- if execution_mode == 'safe' %}
     "allow": [
@@ -83,6 +89,18 @@
     ]
   },
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python scripts/force_git_author.py",
+            "if": "Bash(git commit *)"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Edit|Write",
