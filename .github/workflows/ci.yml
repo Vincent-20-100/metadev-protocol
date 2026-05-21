@@ -8,8 +8,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
       - run: uv sync
       - run: uv run ruff check .
       - run: uv run ruff format --check .
@@ -17,8 +17,8 @@ jobs:
   pre-commit:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
       - run: uv sync
       - run: uv run pre-commit run --all-files
 
@@ -27,8 +27,8 @@ jobs:
     # matrix above (which already runs copier copy across 4 profile combos).
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
       - run: uv sync --extra test
       - run: uv run python -m pytest tests/test_tech_watch_cards.py tests/test_tech_watch_dedup.py tests/test_tech_watch_index.py tests/test_tech_watch_themes.py tests/test_harness_audit.py
 
@@ -39,8 +39,8 @@ jobs:
         meta_visibility: [public, private]
         execution_mode: [safe, full-auto]
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
+      - uses: actions/checkout@v5
+      - uses: astral-sh/setup-uv@v6
       - run: uv sync
       - name: Generate project (${{ matrix.meta_visibility }} / ${{ matrix.execution_mode }})
         run: |
